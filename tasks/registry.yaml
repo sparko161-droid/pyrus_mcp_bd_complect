@@ -4,7 +4,7 @@ tasks:
     phase: 0
     title: "Project Setup & Environment"
     primary: "python-backend-lead"
-    status: "IN_PROGRESS"
+    status: "DONE"
     deps: []
     reviewer: "chief-architect"
     gate_owners:
@@ -18,7 +18,7 @@ tasks:
     phase: 1
     title: "Architecture & ADRs"
     primary: "chief-architect"
-    status: "PLANNED"
+    status: "READY"
     deps: ["P0-000"]
     reviewer: "ai-cto"
     gate_owners:
