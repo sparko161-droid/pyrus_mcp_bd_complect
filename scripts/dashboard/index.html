@@ -649,6 +649,7 @@
   }
 
   function openDetail(id) {
+    window.openDetail = openDetail;
     const detail = document.getElementById("detail");
 
     if (id === "RULES") {
@@ -752,10 +753,11 @@
         let revState = revTask ? revTask.status : "NO_GATE";
         let color = revState === "DONE" ? "var(--c-done-fg)" : (revState === "PLANNED" ? "var(--ink-faint)" : "var(--c-review-fg)");
         
-        const onClick = revTask ? `onclick="openDetail('${revTask.id}')" style="cursor:pointer;" class="phase-rev-link"` : "";
+        const onClick = revTask ? `onclick="window.openDetail('${revTask.id}')"` : "";
         const hoverCss = revTask ? `onmouseover="this.style.background='var(--line-soft)'" onmouseout="this.style.background='transparent'"` : "";
+        const extraStyle = revTask ? `cursor:pointer;` : "";
         
-        return `<div ${onClick} ${hoverCss} style="display:flex; justify-content:space-between; padding:6px 4px; border-top:1px dashed var(--line-soft); border-radius:4px; transition:background 0.1s;">
+        return `<div ${onClick} ${hoverCss} class="phase-rev-link" style="${extraStyle} display:flex; justify-content:space-between; padding:6px 4px; border-top:1px dashed var(--line-soft); border-radius:4px; transition:background 0.1s;">
           <span style="font-size:13px; color:var(--ink-soft);">P${p}: ${ph ? ph.name : ""}</span>
           <strong style="font-size:12px; color:${color}; text-decoration:${revTask ? 'underline dotted' : 'none'};">Phase Gate: ${revState}</strong>
         </div>`;
