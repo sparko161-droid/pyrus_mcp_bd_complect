@@ -1,10 +1,10 @@
 import json
 from mcp.types import TextContent
-from .registry import readonly_router
+from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.catalogs import CatalogHeader, Catalog
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_catalogs",
     description="Returns the list of all available catalogs (directories).",
     inputSchema={
@@ -18,7 +18,7 @@ async def get_catalogs(arguments: dict) -> list[TextContent]:
     catalogs = [CatalogHeader(**c) for c in data.get("catalogs", [])]
     return [TextContent(type="text", text=json.dumps([c.model_dump() for c in catalogs]))]
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_catalog",
     description="Returns the full contents (items) of a specific catalog by its ID.",
     inputSchema={

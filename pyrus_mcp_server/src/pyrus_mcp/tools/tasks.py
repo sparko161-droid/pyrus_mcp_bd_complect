@@ -1,10 +1,10 @@
 import json
 from mcp.types import TextContent
-from .registry import readonly_router
+from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.tasks import Task
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_task",
     description="Returns the full details of a specific task by its ID, including all comments and fields.",
     inputSchema={
@@ -21,7 +21,7 @@ async def get_task(arguments: dict) -> list[TextContent]:
     task = Task(**data.get("task", {}))
     return [TextContent(type="text", text=json.dumps(task.model_dump()))]
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_registry",
     description="Returns a list of tasks that belong to a specific form (registry).",
     inputSchema={
@@ -39,3 +39,50 @@ async def get_registry(arguments: dict) -> list[TextContent]:
     data = await pyrus_client.get(f"/forms/{form_id}/register?item_count={item_count}")
     tasks = [Task(**t) for t in data.get("tasks", [])]
     return [TextContent(type="text", text=json.dumps([t.model_dump() for t in tasks]))]
+
+@tool_registry.register(
+    name="create_task",
+    description="Creates a new task in Pyrus, optionally based on a form template.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "text": {"type": "string", "description": "The task text or description"},
+            "form_id": {"type": "integer", "description": "Optional form ID to use"},
+            "fields": {
+                "type": "array",
+                "items": {"type": "object"}
+            }
+        },
+        "required": ["text"]
+    }
+)
+async def create_task(arguments: dict) -> list[TextContent]:
+    payload = {"text": arguments["text"]}
+    if "form_id" in arguments:
+        payload["form_id"] = arguments["form_id"]
+    if "fields" in arguments:
+        payload["fields"] = arguments["fields"]
+        
+    data = await pyrus_client.post("/tasks", json=payload)
+    task = Task(**data.get("task", {}))
+    return [TextContent(type="text", text=json.dumps(task.model_dump()))]
+
+@tool_registry.register(
+    name="add_comment",
+    description="Adds a comment, approval, or updates fields in an existing task.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "task_id": {"type": "integer", "description": "The task ID"},
+            "text": {"type": "string", "description": "Comment text"},
+            "approval_choice": {"type": "string", "enum": ["approved", "rejected", "acknowledged"]}
+        },
+        "required": ["task_id"]
+    }
+)
+async def add_comment(arguments: dict) -> list[TextContent]:
+    task_id = arguments.pop("task_id")
+    payload = arguments
+    data = await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
+    task = Task(**data.get("task", {}))
+    return [TextContent(type="text", text=json.dumps(task.model_dump()))]

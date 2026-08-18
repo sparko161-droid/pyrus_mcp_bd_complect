@@ -1,10 +1,10 @@
 import json
 from mcp.types import TextContent
-from .registry import readonly_router
+from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.extra import Announcement
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_announcements",
     description="Returns the list of announcements in the organization.",
     inputSchema={
@@ -18,7 +18,7 @@ async def get_announcements(arguments: dict) -> list[TextContent]:
     announcements = [Announcement(**a) for a in data.get("announcements", [])]
     return [TextContent(type="text", text=json.dumps([a.model_dump() for a in announcements]))]
 
-@readonly_router.register(
+@tool_registry.register(
     name="download_file",
     description="Returns a direct download URL for a file stored in Pyrus.",
     inputSchema={
@@ -36,3 +36,39 @@ async def download_file(arguments: dict) -> list[TextContent]:
     from ..pyrus.auth import pyrus_auth
     url = f"{pyrus_auth.files_url}/files/download/{file_id}"
     return [TextContent(type="text", text=f"Download URL: {url}")]
+
+@tool_registry.register(
+    name="upload_file",
+    description="Uploads a file to Pyrus and returns a GUID that can be used to attach the file to tasks or comments.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "filename": {"type": "string", "description": "The name of the file"},
+            "content_base64": {"type": "string", "description": "Base64 encoded file content"}
+        },
+        "required": ["filename", "content_base64"]
+    }
+)
+async def upload_file(arguments: dict) -> list[TextContent]:
+    import base64
+    filename = arguments["filename"]
+    content = base64.b64decode(arguments["content_base64"])
+    
+    from ..pyrus.auth import pyrus_auth
+    url = f"{pyrus_auth.files_url}/files/upload"
+    
+    import httpx
+    token = await pyrus_auth.get_token()
+    headers = {"Authorization": f"Bearer {token}"}
+    files = {'file': (filename, content)}
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, headers=headers, files=files, timeout=30.0)
+        
+    if response.status_code >= 400:
+        from ..pyrus.exceptions import PyrusAPIError
+        raise PyrusAPIError(f"Upload failed: {response.text}")
+        
+    data = response.json()
+    guid = data.get("guid")
+    return [TextContent(type="text", text=f"File uploaded successfully. GUID: {guid}")]

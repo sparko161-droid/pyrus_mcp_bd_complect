@@ -931,7 +931,7 @@ tasks:
     deps:
       - MCP-072
       - MCP-077
-    status: READY
+    status: DONE
   - id: REV-007
     phase: 7
     title: Phase 7 Coherence Review & Sign-off
@@ -965,7 +965,7 @@ tasks:
     deps:
       - MCP-073
       - MCP-077
-    status: READY
+    status: DONE
   - id: MCP-082
     phase: 8
     title: Implement announcement and KB write tools
@@ -976,7 +976,7 @@ tasks:
     deps:
       - MCP-074
       - MCP-077
-    status: READY
+    status: DONE
   - id: MCP-083
     phase: 8
     title: Implement create/update/assign task tools
@@ -987,7 +987,7 @@ tasks:
     deps:
       - MCP-075
       - MCP-077
-    status: READY
+    status: DONE
   - id: MCP-084
     phase: 8
     title: Implement approvals/subscribers/comments task tools
@@ -997,7 +997,7 @@ tasks:
       - security-agent
     deps:
       - MCP-083
-    status: READY
+    status: DONE
   - id: MCP-085
     phase: 8
     title: Implement task close/reopen/delete tools
@@ -1007,7 +1007,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-083
-    status: READY
+    status: DONE
   - id: MCP-086
     phase: 8
     title: Implement file attachment/version tools
@@ -1018,7 +1018,7 @@ tasks:
     deps:
       - MCP-054
       - MCP-083
-    status: READY
+    status: DONE
   - id: MCP-087
     phase: 8
     title: Perform idempotency and partial-failure analysis for all write tools
@@ -1034,7 +1034,7 @@ tasks:
       - MCP-084
       - MCP-085
       - MCP-086
-    status: READY
+    status: DONE
   - id: MCP-088
     phase: 8
     title: Run sandbox write-operation suite
@@ -1044,7 +1044,7 @@ tasks:
       - security-agent
     deps:
       - MCP-087
-    status: READY
+    status: DONE
   - id: MCP-090
     phase: 9
     title: Generate compatibility report
@@ -1060,7 +1060,7 @@ tasks:
     phase: 8
     title: Phase 8 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-080
       - MCP-081
@@ -1076,7 +1076,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - create_task and add_comment tools mapped to POST /tasks and POST /tasks/{id}/comments.
+      - upload_file uses base64 string from MCP payload to push multipart/form-data directly to Pyrus files_url.
+      - Idempotency is partially handled by Pyrus deduplication, but PyrusClient rate limiter and tenacity prevent spam.
   - id: MCP-091
     phase: 9
     title: Resolve compatibility breaks or create ADR exceptions
@@ -1109,6 +1112,21 @@ tasks:
       - MCP-071
       - MCP-092
     status: READY
+  - id: REV-009
+    phase: 9
+    title: Phase 9 Parity Gate & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-090
+      - MCP-091
+      - MCP-092
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-101
     phase: 10
     title: Implement service-level task comments pagination

@@ -1,10 +1,10 @@
 import json
 from mcp.types import TextContent
-from .registry import readonly_router
+from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.forms import FormTemplate
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_forms",
     description="Returns the list of all form templates available in the organization.",
     inputSchema={
@@ -18,7 +18,7 @@ async def get_forms(arguments: dict) -> list[TextContent]:
     forms = [FormTemplate(**f) for f in data.get("forms", [])]
     return [TextContent(type="text", text=json.dumps([f.model_dump() for f in forms]))]
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_form",
     description="Returns the detailed template of a specific form, including all its fields.",
     inputSchema={

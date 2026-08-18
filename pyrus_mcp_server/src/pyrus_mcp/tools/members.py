@@ -1,9 +1,9 @@
 from mcp.types import TextContent
-from .registry import readonly_router
+from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.members import Person, Role
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_members",
     description="Returns the list of all members (persons/bots) in the organization.",
     inputSchema={
@@ -20,7 +20,7 @@ async def get_members(arguments: dict) -> list[TextContent]:
     import json
     return [TextContent(type="text", text=json.dumps([p.model_dump() for p in persons]))]
 
-@readonly_router.register(
+@tool_registry.register(
     name="get_roles",
     description="Returns the list of all roles in the organization.",
     inputSchema={

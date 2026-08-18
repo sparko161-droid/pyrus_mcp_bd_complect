@@ -23,5 +23,5 @@ class ToolRegistry:
             raise ValueError(f"Tool {name} is not registered")
         return await self.handlers[name](arguments)
 
-# Global router for read-only tools
-readonly_router = ToolRegistry()
+# Global router for all tools
+tool_registry = ToolRegistry()
