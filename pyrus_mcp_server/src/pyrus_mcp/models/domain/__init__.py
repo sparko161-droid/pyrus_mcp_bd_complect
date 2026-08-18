@@ -4,6 +4,7 @@ from .catalogs import Catalog, CatalogHeader, CatalogItem
 from .forms import FormField, FormTemplate
 from .tasks import Task, TaskComment, Approval
 from .extra import File, Announcement
+from .knowledge import KnowledgeDocument, KnowledgeRevision, KnowledgeChunk, KnowledgeEvidence, KnowledgeSearchResult
 
 __all__ = [
     "PyrusBaseModel",
@@ -21,5 +22,10 @@ __all__ = [
     "TaskComment",
     "Approval",
     "File",
-    "Announcement"
+    "Announcement",
+    "KnowledgeDocument",
+    "KnowledgeRevision",
+    "KnowledgeChunk",
+    "KnowledgeEvidence",
+    "KnowledgeSearchResult"
 ]

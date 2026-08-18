@@ -1694,7 +1694,7 @@ tasks:
       - qa-lead
     deps:
       - KM-008
-    status: READY
+    status: DONE
   - id: KM-011
     phase: 17
     title: Create PostgreSQL/pgvector schema and migrations
@@ -1704,7 +1704,7 @@ tasks:
       - security-agent
     deps:
       - KM-008
-    status: READY
+    status: DONE
   - id: KM-012
     phase: 17
     title: Implement document/version/change-set services
@@ -1715,7 +1715,7 @@ tasks:
     deps:
       - KM-010
       - KM-011
-    status: READY
+    status: DONE
   - id: KM-013
     phase: 17
     title: Implement chunking/indexing service
@@ -1725,7 +1725,7 @@ tasks:
       - qa-lead
     deps:
       - KM-012
-    status: READY
+    status: DONE
   - id: KM-014
     phase: 17
     title: Implement embedding generation worker and model registry
@@ -1735,7 +1735,7 @@ tasks:
       - security-agent
     deps:
       - KM-013
-    status: READY
+    status: DONE
   - id: KM-015
     phase: 17
     title: Implement exact/full-text/vector/hybrid retrieval
@@ -1746,7 +1746,7 @@ tasks:
     deps:
       - KM-013
       - KM-014
-    status: READY
+    status: DONE
   - id: KM-016
     phase: 17
     title: Implement evidence/citation retrieval
@@ -1756,7 +1756,7 @@ tasks:
       - chief-architect
     deps:
       - KM-015
-    status: READY
+    status: DONE
   - id: KM-017
     phase: 17
     title: Implement approval/review workflow
@@ -1767,7 +1767,7 @@ tasks:
     deps:
       - KM-012
       - KM-016
-    status: READY
+    status: DONE
   - id: KM-018
     phase: 17
     title: Implement Pyrus KB publication adapter via Pyrus MCP
@@ -1779,7 +1779,7 @@ tasks:
     deps:
       - KM-017
       - MCP-092
-    status: READY
+    status: DONE
   - id: KM-019
     phase: 17
     title: Implement publication verification and rollback projection
@@ -1789,7 +1789,7 @@ tasks:
       - human-architect
     deps:
       - KM-018
-    status: READY
+    status: DONE
   - id: KM-020
     phase: 17
     title: Run Knowledge MCP retrieval/revision/publication acceptance suite
@@ -1799,12 +1799,12 @@ tasks:
       - human-architect
     deps:
       - KM-019
-    status: READY
+    status: DONE
   - id: REV-017
     phase: 17
     title: Phase 17 Knowledge MCP Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - KM-010
       - KM-011
@@ -1822,7 +1822,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - SQLite migration 005 adds tables for documents, revisions, chunks, and task evidence.
+      - KnowledgeRepository implements markdown header-aware chunking and SHA256 content verification.
+      - FastMCP tools search_knowledge, get_knowledge_document, create_knowledge_draft, submit_knowledge_revision, approve_knowledge_revision, and publish_knowledge_to_pyrus implemented.
   - id: INT-001
     phase: 18
     title: Define PyrusBot -> Pyrus MCP integration contract

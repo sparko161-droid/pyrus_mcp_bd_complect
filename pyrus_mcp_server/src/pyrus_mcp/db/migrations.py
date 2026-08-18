@@ -50,6 +50,53 @@ MIGRATIONS = [
         processed   INTEGER NOT NULL DEFAULT 0
     );
     """,
+    # Migration 005: Knowledge base and solution bank tables
+    """
+    CREATE TABLE IF NOT EXISTS knowledge_documents (
+        id                  TEXT PRIMARY KEY,
+        slug                TEXT UNIQUE NOT NULL,
+        title               TEXT NOT NULL,
+        tenant_id           TEXT NOT NULL,
+        state               TEXT NOT NULL DEFAULT 'DRAFT', -- DRAFT, IN_REVIEW, APPROVED, PUBLISHED, DEPRECATED
+        current_revision_id TEXT,
+        created_at          TEXT NOT NULL,
+        updated_at          TEXT NOT NULL
+    );
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS knowledge_revisions (
+        id                  TEXT PRIMARY KEY,
+        doc_id              TEXT NOT NULL REFERENCES knowledge_documents(id) ON DELETE CASCADE,
+        revision_num        INTEGER NOT NULL,
+        content             TEXT NOT NULL,
+        content_hash        TEXT NOT NULL,
+        author_id           TEXT NOT NULL,
+        parent_revision_id  TEXT,
+        created_at          TEXT NOT NULL
+    );
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS knowledge_chunks (
+        id                  TEXT PRIMARY KEY,
+        doc_id              TEXT NOT NULL REFERENCES knowledge_documents(id) ON DELETE CASCADE,
+        revision_id         TEXT NOT NULL REFERENCES knowledge_revisions(id) ON DELETE CASCADE,
+        chunk_index         INTEGER NOT NULL,
+        header_path         TEXT,
+        content             TEXT NOT NULL,
+        token_count         INTEGER NOT NULL DEFAULT 0,
+        created_at          TEXT NOT NULL
+    );
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS knowledge_evidence (
+        id                  TEXT PRIMARY KEY,
+        doc_id              TEXT NOT NULL REFERENCES knowledge_documents(id) ON DELETE CASCADE,
+        entity_type         TEXT NOT NULL, -- pyrus_task, pyrus_form, url, commit
+        entity_id           TEXT NOT NULL,
+        relation_type       TEXT NOT NULL, -- solves, documents, relates_to, generated_from
+        created_at          TEXT NOT NULL
+    );
+    """,
 ]
 
 

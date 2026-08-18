@@ -7,6 +7,7 @@ import pyrus_mcp.tools.catalogs
 import pyrus_mcp.tools.forms
 import pyrus_mcp.tools.tasks
 import pyrus_mcp.tools.misc
+import pyrus_mcp.tools.knowledge
 
 def register_tools(server: Server):
     """
