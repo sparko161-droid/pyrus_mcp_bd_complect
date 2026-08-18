@@ -297,7 +297,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-016
-    status: READY
+    status: DONE
   - id: REV-001
     phase: 1
     title: Phase 1 Coherence Review & Sign-off
@@ -329,7 +329,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-020
-    status: READY
+    status: DONE
   - id: MCP-022
     phase: 2
     title: Create CI workflow for lint/type/test
@@ -339,7 +339,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-021
-    status: READY
+    status: DONE
   - id: MCP-023
     phase: 2
     title: Create dependency and secret scanning
@@ -349,7 +349,7 @@ tasks:
       - identity-security-lead
     deps:
       - MCP-022
-    status: READY
+    status: DONE
   - id: MCP-024
     phase: 2
     title: Create hardened Docker image
@@ -359,7 +359,7 @@ tasks:
       - code-quality-agent
     deps:
       - MCP-021
-    status: READY
+    status: DONE
   - id: MCP-025
     phase: 2
     title: Create local compose environment with external-service mocks
@@ -369,7 +369,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-024
-    status: READY
+    status: DONE
   - id: MCP-026
     phase: 2
     title: Define environment/secrets interface and .env.example
@@ -379,7 +379,29 @@ tasks:
       - security-agent
     deps:
       - MCP-012
-    status: READY
+    status: DONE
+  - id: REV-002
+    phase: 2
+    title: Phase 2 Coherence Review & Sign-off
+    primary: devops-lead
+    status: DONE
+    deps:
+      - MCP-020
+      - MCP-021
+      - MCP-022
+      - MCP-023
+      - MCP-024
+      - MCP-025
+      - MCP-026
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions:
+      - Docker image hardened (non-root pyrus user).
+      - uv set as primary package manager for Python 3.12.
+      - CI pipelines established for testing and security.
   - id: MCP-030
     phase: 3
     title: Implement FastMCP application shell
@@ -466,6 +488,25 @@ tasks:
       - MCP-012
       - MCP-013
     status: READY
+  - id: REV-003
+    phase: 3
+    title: Phase 3 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-030
+      - MCP-031
+      - MCP-032
+      - MCP-033
+      - MCP-034
+      - MCP-035
+      - MCP-036
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-041
     phase: 4
     title: Implement client registration

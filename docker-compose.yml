@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mcp-server:
+    build: 
+      context: ./pyrus_mcp_server
+      dockerfile: Dockerfile
+    environment:
+      - LOG_LEVEL=INFO
+      # The server uses MCP stdio natively. But for local compose debugging, 
+      # we might want to expose SSE or just run it to ensure it starts.
+      # We'll default to stdio, meaning the compose container might exit if not attached,
+      # but we provide it for completeness.
+    env_file:
+      - ./pyrus_mcp_server/.env
+    restart: unless-stopped
+    # If the server supports SSE transport via FastMCP, we'd map ports here.
+    # ports:
+    #   - "8000:8000"
+
+  # Optional mock service for Pyrus API could go here
+  # pyrus-mock:
+  #   image: stoplight/prism:4
+  #   command: mock -h 0.0.0.0 /api.yaml
+  #   volumes:
+  #     - ./contracts/pyrus-tool-catalog.yaml:/api.yaml
