@@ -1111,7 +1111,7 @@ tasks:
     deps:
       - MCP-071
       - MCP-092
-    status: READY
+    status: DONE
   - id: REV-009
     phase: 9
     title: Phase 9 Parity Gate & Sign-off
@@ -1140,7 +1140,7 @@ tasks:
     deps:
       - MCP-075
       - MCP-092
-    status: READY
+    status: DONE
   - id: MCP-102
     phase: 10
     title: Research and implement explicit is_closed semantics
@@ -1151,7 +1151,7 @@ tasks:
     deps:
       - MCP-007
       - MCP-076
-    status: READY
+    status: DONE
   - id: MCP-103
     phase: 10
     title: Implement safe registry auto-pagination
@@ -1161,7 +1161,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-102
-    status: READY
+    status: DONE
   - id: MCP-104
     phase: 10
     title: Implement batch update task fields
@@ -1172,7 +1172,7 @@ tasks:
     deps:
       - MCP-083
       - MCP-087
-    status: READY
+    status: DONE
   - id: MCP-105
     phase: 10
     title: Implement batch close tasks with partial result model
@@ -1183,7 +1183,7 @@ tasks:
     deps:
       - MCP-085
       - MCP-087
-    status: READY
+    status: DONE
   - id: MCP-106
     phase: 10
     title: Implement webhook signature verification
@@ -1194,7 +1194,7 @@ tasks:
     deps:
       - MCP-008
       - MCP-024
-    status: READY
+    status: DONE
   - id: MCP-107
     phase: 10
     title: Implement webhook idempotent ingestion queue
@@ -1204,7 +1204,7 @@ tasks:
       - security-agent
     deps:
       - MCP-106
-    status: READY
+    status: DONE
   - id: MCP-108
     phase: 10
     title: Implement webhook retry/DLQ/event retrieval
@@ -1214,7 +1214,7 @@ tasks:
       - devops-lead
     deps:
       - MCP-107
-    status: READY
+    status: DONE
   - id: MCP-109
     phase: 10
     title: Run feature-specific integration and failure tests
@@ -1229,7 +1229,7 @@ tasks:
       - MCP-104
       - MCP-105
       - MCP-108
-    status: READY
+    status: DONE
   - id: MCP-110
     phase: 11
     title: Design PostgreSQL schema and migrations
@@ -1303,6 +1303,24 @@ tasks:
     deps:
       - MCP-034
     status: READY
+  - id: REV-011
+    phase: 11
+    title: Phase 11 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-110
+      - MCP-111
+      - MCP-112
+      - MCP-113
+      - MCP-114
+      - MCP-115
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-121
     phase: 12
     title: Implement metrics and latency/error dashboards

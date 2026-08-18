@@ -86,3 +86,61 @@ async def add_comment(arguments: dict) -> list[TextContent]:
     data = await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
     task = Task(**data.get("task", {}))
     return [TextContent(type="text", text=json.dumps(task.model_dump()))]
+
+@tool_registry.register(
+    name="batch_update_tasks",
+    description="Updates multiple tasks with the same fields at once.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "task_ids": {"type": "array", "items": {"type": "integer"}},
+            "fields": {"type": "array", "items": {"type": "object"}},
+            "comment_text": {"type": "string"}
+        },
+        "required": ["task_ids"]
+    }
+)
+async def batch_update_tasks(arguments: dict) -> list[TextContent]:
+    task_ids = arguments["task_ids"]
+    fields = arguments.get("fields", [])
+    comment_text = arguments.get("comment_text", "")
+    
+    results = {"success": [], "failed": []}
+    for task_id in task_ids:
+        payload = {}
+        if fields: payload["fields"] = fields
+        if comment_text: payload["text"] = comment_text
+        try:
+            await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
+            results["success"].append(task_id)
+        except Exception as e:
+            results["failed"].append({"task_id": task_id, "error": str(e)})
+            
+    return [TextContent(type="text", text=json.dumps(results))]
+
+@tool_registry.register(
+    name="batch_close_tasks",
+    description="Closes multiple tasks at once.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "task_ids": {"type": "array", "items": {"type": "integer"}},
+            "comment_text": {"type": "string", "description": "Optional closing comment"}
+        },
+        "required": ["task_ids"]
+    }
+)
+async def batch_close_tasks(arguments: dict) -> list[TextContent]:
+    task_ids = arguments["task_ids"]
+    comment_text = arguments.get("comment_text", "Closed automatically by MCP Agent")
+    
+    results = {"success": [], "failed": []}
+    for task_id in task_ids:
+        payload = {"action": "finished", "text": comment_text}
+        try:
+            await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
+            results["success"].append(task_id)
+        except Exception as e:
+            results["failed"].append({"task_id": task_id, "error": str(e)})
+            
+    return [TextContent(type="text", text=json.dumps(results))]

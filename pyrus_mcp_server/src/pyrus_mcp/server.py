@@ -4,6 +4,7 @@ from typing import Any
 from starlette.applications import Starlette
 from starlette.routing import Route
 from starlette.responses import JSONResponse
+from starlette.middleware import Middleware
 from mcp.server import Server
 from mcp.server.sse import SseServerTransport
 from mcp.types import InitializationOptions
@@ -15,6 +16,7 @@ from .context import correlation_id
 logger = structlog.get_logger()
 
 from .tools import register_tools
+from .webhooks import webhook_handler
 
 # MCP Server Definition
 # We use the low-level Server from the official MCP SDK to have full control over the Starlette app
@@ -65,11 +67,12 @@ app = Starlette(
         Route("/ready", ready_check, methods=["GET"]),
         Route("/mcp", handle_sse, methods=["GET"]),
         Route("/mcp/messages", handle_messages, methods=["POST"]),
+        Route("/webhook", webhook_handler, methods=["POST"]),
+    ],
+    middleware=[
+        Middleware(SecurityMiddleware)
     ]
 )
-
-# Apply Security Middleware
-app.add_middleware(SecurityMiddleware)
 
 def main() -> None:
     import uvicorn
