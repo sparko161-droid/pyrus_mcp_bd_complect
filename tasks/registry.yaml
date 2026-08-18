@@ -140,7 +140,7 @@ tasks:
     gate_owners:
       - chief-architect
     deps: []
-    status: READY
+    status: DONE
   - id: MCP-008
     phase: 0
     title: Research Pyrus webhook configuration and subscription capabilities
@@ -149,7 +149,7 @@ tasks:
     gate_owners:
       - chief-architect
     deps: []
-    status: READY
+    status: DONE
   - id: MCP-010
     phase: 1
     title: Define multi-user identity model
