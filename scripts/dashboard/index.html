@@ -385,6 +385,7 @@
     </select>
     <input id="search" type="search" placeholder="Поиск: ID или текст задачи…" aria-label="Поиск задач" />
     <div class="spacer"></div>
+    <button id="btn-rules" type="button" class="chip" style="background: var(--surface-2); font-weight:bold;">⚖️ Правила (Rules)</button>
     <span class="result-count" id="result-count"></span>
   </div>
 
@@ -537,14 +538,23 @@
       const list = REGISTRY.tasks.filter(t => t.phase === p);
       const doneish = list.filter(t => ["review", "done"].includes(bucketOf(t.status))).length;
       const ph = phasesInfo.get(p);
+      const revTask = list.find(t => t.id.startsWith("REV-"));
+      
+      let revBadge = "";
+      if (revTask) {
+        if (revTask.status === "DONE") revBadge = `<span style="margin-left:12px; font-size:11px; padding:2px 8px; border-radius:12px; background:var(--c-done-bg); color:var(--c-done-fg);">Sign-off: APPROVED</span>`;
+        else if (revTask.status === "PLANNED") revBadge = `<span style="margin-left:12px; font-size:11px; padding:2px 8px; border-radius:12px; background:var(--surface-2); color:var(--ink-soft);">Sign-off: PENDING</span>`;
+        else revBadge = `<span style="margin-left:12px; font-size:11px; padding:2px 8px; border-radius:12px; background:var(--c-review-bg); color:var(--c-review-fg);">Sign-off: ${revTask.status}</span>`;
+      }
+      
       const exitCriteria = ph && ph.exit ? `<div style="padding: 12px 14px; margin-bottom: 12px; background: var(--surface-2); border-radius: 6px; font-size: 13px; color: var(--ink-soft);"><strong>🎯 Exit Criteria:</strong> ${escapeHTML(ph.exit)}</div>` : "";
 
       return `
         <section class="phase-section${state.openPhases.has(p) ? " open" : ""}" data-phase="${p}">
           <div class="phase-head">
             <span class="chevron">▸</span>
-            <h2>P${p} · ${phaseName(p)}</h2>
-            <span class="ph-sub mono">${doneish}/${list.length}</span>
+            <h2 style="display:flex; align-items:center;">P${p} · ${phaseName(p)} ${revBadge}</h2>
+            <span class="ph-sub mono" style="margin-left:auto;">${doneish}/${list.length}</span>
           </div>
           <div class="phase-body">
             ${exitCriteria}
@@ -616,6 +626,33 @@
   }
 
   function openDetail(id) {
+    const detail = document.getElementById("detail");
+
+    if (id === "RULES") {
+      let rulesHTML = "";
+      if (REGISTRY.rules) {
+        rulesHTML = Object.entries(REGISTRY.rules).map(([k, v]) => `
+          <div style="margin-bottom:12px;">
+            <div style="font-family:'Martian Mono', monospace; font-size:11px; font-weight:bold; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">${k}</div>
+            <div style="font-size:13px;">${escapeHTML(v)}</div>
+          </div>
+        `).join("");
+      }
+      detail.innerHTML = `
+        <div class="detail-top">
+          <div>
+            <div class="detail-id">GOVERNANCE</div>
+            <h3>Правила разработки (Rules)</h3>
+          </div>
+          <button class="close-btn" id="detail-close" type="button" aria-label="Закрыть">✕</button>
+        </div>
+        <div style="margin-top:16px;">${rulesHTML || "Нет загруженных правил."}</div>
+      `;
+      detail.querySelector("#detail-close").addEventListener("click", closeDetail);
+      document.getElementById("veil").classList.add("show");
+      return;
+    }
+
     const t = tasksById.get(id);
     if (!t) return;
     const m = STATUS_META[t.status] || STATUS_META.PLANNED;
@@ -680,6 +717,9 @@
     renderBoard();
     renderLegend();
     applyFilters();
+    
+    const rulesBtn = document.getElementById("btn-rules");
+    if (rulesBtn) rulesBtn.onclick = () => openDetail("RULES");
   }
 
   async function loadRegistry() {
