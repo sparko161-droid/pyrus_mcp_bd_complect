@@ -1,23 +1,46 @@
-# AI Team Roles
+# AI Team Roles v2
 
-**Status:** Foundation
+**Status:** Normative
 **Owner:** AI CTO
-**Depends on:** IMPLEMENTATION_PLAN.md
+**Depends on:** `IMPLEMENTATION_PLAN.md`, `tasks/registry.yaml`, architecture and contract documents.
 
 ## Leadership
-- **Human Architect**: Final authority for product, architecture, security, and irreversible trade-offs (You).
-- **AI CTO**: Orchestrates agents and approves routine implementation within approved architecture (Me - Antigravity).
 
-## Delivery Roles
-- **Python Backend Lead**: Implementation strategy for FastMCP server, HTTP clients, and Pydantic models.
-- **Pyrus Expert Agent**: Responsible for domain contracts, reading Pyrus API specs, and matching MCP schemas to Pyrus realities (quirks, limits).
-- **QA / Test Agent**: Writing unit tests (`pytest`), integration tests, and mocking Pyrus responses (`respx`/`vcrpy`).
+- **Human Architect** — final authority for product scope, architecture, security, irreversible trade-offs and production release.
+- **AI CTO** — orchestration, dependency management, synthesis, escalation and release recommendation.
+- **Chief Architect** — system boundaries, ADRs, layer integrity and architecture gate.
 
-## Assurance
-- **Security Agent**: Ensuring `PYRUS_SECURITY_KEY` and tokens are not logged, and boundaries are respected.
-- **Code Quality Agent**: Running `ruff` and `mypy`, ensuring architecture layers (MCP tool -> Service -> Client) are strictly isolated.
+## Pyrus integration
 
-## Rules
-- Each role has a charter.
-- The Domain Lead (Pyrus Expert) owns the Pyrus contracts and guarantees 1:1 mapping with the old Railway MCP.
-- Never write to the production Pyrus account without explicit Human Architect approval.
+- **Pyrus Integrations Lead** — Pyrus API research, endpoint contracts, quirks, legacy compatibility and all Pyrus domain/tool implementations.
+
+## Identity/security
+
+- **Identity Security Lead** — MCP/OAuth-compatible auth, identity, token lifecycle, scopes, tenancy and authorization middleware.
+- **Security Agent** — threat model, abuse cases, secret handling, security testing and security gate.
+
+## Implementation/data
+
+- **Python Backend Lead** — FastMCP application, services, HTTP client integration, typed Python implementation and shared runtime patterns.
+- **Data Engineer** — PostgreSQL schema, migrations, repositories, durable audit/idempotency/webhook state, backup/recovery.
+
+## Knowledge MCP
+
+- **Knowledge Architecture Lead** — document/version/change-set/evidence/access/publication contracts and Knowledge MCP service architecture.
+- **Retrieval Engineer** — deterministic chunking, embeddings, vector/full-text/hybrid search, ranking and retrieval evaluation.
+
+## Quality/delivery
+
+- **QA Lead** — unit, fixture, integration, compatibility, load, failure and acceptance testing.
+- **Code Quality Agent** — lint/type/static policy and code-level architecture enforcement.
+- **Documentation Agent** — ADRs, contracts, runbooks and implementation evidence.
+- **DevOps Lead** — CI/CD, containers, staging, observability, infrastructure and deployment tooling.
+- **Release Manager** — release candidate integrity, staging acceptance, production rollout and rollback coordination.
+
+## Assignment rules
+
+Every task has one primary executor and one independent reviewer. Security-sensitive and production tasks may have multiple gate owners.
+
+The executor never becomes the sole acceptance authority.
+
+The Pyrus Integrations Lead owns Pyrus API compatibility; the Knowledge Architecture Lead owns Knowledge MCP semantics; the Human Architect remains the final authority over cross-product decisions.
