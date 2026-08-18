@@ -598,7 +598,7 @@ tasks:
     deps:
       - MCP-011
       - MCP-026
-    status: READY
+    status: DONE
   - id: REV-004
     phase: 4
     title: Phase 4 Coherence Review & Sign-off
@@ -631,7 +631,7 @@ tasks:
       - devops-lead
     deps:
       - MCP-050
-    status: READY
+    status: DONE
   - id: MCP-052
     phase: 5
     title: Implement Pyrus /auth client with person_id support
@@ -643,7 +643,7 @@ tasks:
     deps:
       - MCP-050
       - MCP-051
-    status: READY
+    status: DONE
   - id: MCP-053
     phase: 5
     title: Implement Pyrus access-token cache/refresh
@@ -653,7 +653,7 @@ tasks:
       - security-agent
     deps:
       - MCP-052
-    status: READY
+    status: DONE
   - id: MCP-054
     phase: 5
     title: Implement api_url/files_url tenant routing
@@ -663,7 +663,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-052
-    status: READY
+    status: DONE
   - id: MCP-055
     phase: 5
     title: Implement shared httpx Pyrus client
@@ -674,7 +674,7 @@ tasks:
     deps:
       - MCP-053
       - MCP-054
-    status: READY
+    status: DONE
   - id: MCP-056
     phase: 5
     title: Implement retry/backoff/idempotent retry classifier
@@ -684,7 +684,7 @@ tasks:
       - pyrus-integrations-lead
     deps:
       - MCP-055
-    status: READY
+    status: DONE
   - id: MCP-057
     phase: 5
     title: Implement rate limiter and concurrency limiter
@@ -695,7 +695,7 @@ tasks:
     deps:
       - MCP-055
       - MCP-007
-    status: READY
+    status: DONE
   - id: MCP-058
     phase: 5
     title: Implement Pyrus error taxonomy and mapping
@@ -706,7 +706,7 @@ tasks:
     deps:
       - MCP-055
       - MCP-007
-    status: READY
+    status: DONE
   - id: MCP-059
     phase: 5
     title: Implement response-size guard
@@ -716,7 +716,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-058
-    status: READY
+    status: DONE
   - id: MCP-05A
     phase: 5
     title: Implement circuit breaker and upstream failure policy
@@ -728,7 +728,7 @@ tasks:
       - MCP-056
       - MCP-057
       - MCP-058
-    status: READY
+    status: DONE
   - id: MCP-060
     phase: 6
     title: Implement common API/paging/error models
@@ -743,7 +743,7 @@ tasks:
     phase: 5
     title: Phase 5 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-050
       - MCP-051
@@ -761,7 +761,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Moved from basic API Token to full Pyrus v4 Auth flow using login and security_key.
+      - PyrusClient wraps httpx.AsyncClient with tenacity retries (3 attempts, exponential backoff) for resilience.
+      - Hard 50MB response limit implemented to prevent memory exhaustion by rogue agents.
   - id: MCP-061
     phase: 6
     title: Implement task/form/field models
@@ -816,6 +819,23 @@ tasks:
       - MCP-064
       - MCP-044
     status: READY
+  - id: REV-006
+    phase: 6
+    title: Phase 6 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-060
+      - MCP-061
+      - MCP-062
+      - MCP-063
+      - MCP-064
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-071
     phase: 7
     title: Implement form read-only tools

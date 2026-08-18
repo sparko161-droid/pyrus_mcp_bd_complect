@@ -2,8 +2,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Literal
 
 class Settings(BaseSettings):
-    # Pyrus Credentials (Phase 1 Proxy Mode)
-    pyrus_api_token: str = ""
+    # Pyrus Credentials (Phase 5: Auth v4)
+    pyrus_login: str = ""
+    pyrus_security_key: str = ""
     pyrus_api_url: str = "https://api.pyrus.com/v4"
     
     # Server configuration
