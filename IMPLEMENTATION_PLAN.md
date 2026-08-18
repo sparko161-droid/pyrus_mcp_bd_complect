@@ -1,427 +1,181 @@
-# План реализации собственного Pyrus MCP-сервера
+# Pyrus MCP — Implementation Plan v2
 
-Цель: (1) повторить 1:1 функционал текущего стороннего сервера (61 инструмент,
-см. [PYRUS_MCP_SPEC.md](PYRUS_MCP_SPEC.md) / [pyrus_mcp_tools_spec.json](pyrus_mcp_tools_spec.json)),
-(2) добавить 6 предложенных доработок. Ниже — полная последовательность фаз,
-что делать, чем делать и где брать информацию по каждому пункту.
+This file is the normative entry point for implementation. The previous plan mixed architecture, large epics and assumptions. The executable task graph is now `tasks/registry.yaml`; the architecture is `docs/architecture/system-architecture-v2.md`; contracts are `docs/architecture/contracts-v2.md`; the phase roadmap is `docs/planning/production-roadmap-v2.md`.
 
----
+## Current product scope
 
-## 0. Принятые по умолчанию решения
+This repository is responsible first for the **production Pyrus MCP infrastructure service**:
 
-Вопросы о стеке/хостинге я не смог уточнить в диалоге (ограничение виджета выбора),
-поэтому фиксирую дефолт сам — это обычные, легко обратимые технические решения:
-
-| Параметр | Решение по умолчанию | Почему |
-|---|---|---|
-| Язык/стек | **Python 3.11+ / FastMCP** | Официальный `mcp` SDK + обвязка FastMCP дают декларативную регистрацию тулов, Pydantic и так уже стандарт для схем — быстрее всего повторить текущий паттерн 1:1 |
-| Транспорт | **HTTP** (Streamable HTTP), с опцией **stdio** для локальной отладки в Claude Code | Совместимо с текущим `.mcp.json` (`"type": "http"`), не требует перенастройки клиента |
-| Деплой | **Docker-контейнер**, портируемый (Railway / VPS / любой Docker-хостинг) | Не привязывает к конкретному хостингу до момента реального деплоя |
-| Кэш/состояние (форм-кэш, вебхук-очередь) | **SQLite** на старте, с возможностью перейти на Postgres/Redis | Ноль внешних зависимостей для v1 |
-| Объём v1 | **Полный паритет + все 6 фич** сразу, не бэклог | Так прямо просили в задаче |
-
-Если что-то из этого не подходит — легко поменять, ничего необратимого на этом этапе не сделано.
-
----
-
-## Где брать информацию (сверяться на каждом шаге реализации)
-
-1. **Pyrus API v4, официальная документация** — https://pyrus.com/en/help/api
-   Разделы, которые понадобятся по ходу: Authentication (обмен login+security_key →
-   access_token, срок жизни токена), Tasks, Forms, Catalogs, Lists, Members, Roles,
-   Announcements, Calendar, Contacts, Files (upload/download), Forms register
-   (registry), лимиты запросов, коды ошибок, вебхуки/Bot API.
-2. **Pyrus Bot API / Webhooks** — раздел про регистрацию бота и приём
-   входящих вебхуков (нужно для фичи №3, см. Фазу 5). Проверить, доступна ли
-   подписка на вебхуки через сам API, или только через настройку в интерфейсе Pyrus.
-3. **Model Context Protocol spec** — https://modelcontextprotocol.io/
-   (транспорт Streamable HTTP, формат tool-схем на JSON Schema, формат ошибок,
-   `list_tools`/`call_tool`).
-4. **FastMCP** — https://gofastmcp.com (декоратор `@mcp.tool`, транспорты,
-   аутентификация на уровне сервера, `Context` для логирования/прогресса).
-5. **[pyrus_mcp_tools_spec.json](pyrus_mcp_tools_spec.json) и [PYRUS_MCP_SPEC.md](PYRUS_MCP_SPEC.md)**
-   — уже собранный источник истины по текущему поведению: имена, параметры,
-   дефолты и, главное, задокументированные особенности/грабли Pyrus API
-   (скрытые закрытые задачи в реестре, числовые id в `field_filters`, аддитивность
-   файловых полей, отсутствие offset-пагинации и т.д.) — их нужно **сохранить**,
-   иначе новый сервер будет хуже старого.
-6. **Живые вызовы к текущему серверу** через уже подключённый `mcp__pyrus__*` —
-   при портировании каждого инструмента можно дёрнуть эталонный вызов и сверить
-   форму ответа с тем, что построит новый клиент ("contract testing по образцу").
-7. **Тестовый/sandbox-аккаунт Pyrus** — обязателен для интеграционных тестов
-   (см. Фазу 0, п.3) — писать в боевой аккаунт при разработке нельзя.
-
----
-
-## Структура репозитория (целевая)
-
-```
-pyrus_mcp_server/
-  src/pyrus_mcp/
-    server.py            # FastMCP app + регистрация всех тулов
-    config.py            # Settings (pydantic-settings), .env
-    auth.py              # обмен login+security_key -> access_token, кэш/рефреш токена, per-call override
-    client.py            # низкоуровневый HTTP-клиент к Pyrus API v4 (httpx), rate limiter, ретраи
-    errors.py            # маппинг ошибок Pyrus -> ошибки MCP-тула
-    cache.py             # TTL-кэш (форм-метаданные)
-    pagination.py        # авто-обход реестра окнами по датам
-    rate_limit.py         # троттлинг под лимит Pyrus (запросов/10 мин)
-    models/               # Pydantic-модели домена: task.py, form.py, member.py, role.py, list.py, catalog.py, kb.py, announcement.py
-    tools/
-      tasks.py            # 17 тулов задач + get_registry
-      forms.py
-      lists.py
-      catalogs.py
-      members_roles.py
-      announcements.py
-      knowledge_base.py
-      files.py
-      misc.py             # profile/bots/contacts/meetings/inbox
-      batch.py            # НОВОЕ: батч-операции на запись
-      webhooks.py         # НОВОЕ: приём/выдача вебхуков (+ HTTP-роут вне MCP-тулов)
-  tests/
-    unit/                 # мокнутые ответы Pyrus
-    integration/           # против sandbox-аккаунта
-    fixtures/              # записанные ответы API (VCR-кассеты)
-  docs/
-  Dockerfile
-  docker-compose.yml
-  pyproject.toml
-  .env.example
-  README.md
+```text
+AI host / employee
+    -> external Pyrus MCP
+    -> authenticated tenant context
+    -> Pyrus API / Pyrus Datacenter
 ```
 
----
-
-## Фаза 0 — Подготовка
-
-**Цель:** всё для старта разработки готово: доступы, репозиторий, границы задачи зафиксированы.
-
-Задачи:
-1. Завести git-репозиторий (`git init`), `.gitignore` (venv, `.env`, `__pycache__`, кэш SQLite).
-2. Получить/подтвердить тестовые креды Pyrus: логин + security key от **тестового**
-   аккаунта или тестового отдела в существующем — писать в проде нельзя.
-3. Прочитать целиком раздел Authentication в Pyrus API v4 docs — понять точный
-   формат обмена `login + security_key → access_token`, срок жизни токена, что
-   возвращает `api_url` (у Pyrus он у каждого аккаунта может отличаться —
-   уже видно в текущем `.mcp.json`, что `access_token`/`api_url` передаются
-   индивидуально на каждый вызов).
-4. Зафиксировать зону ответственности: что переносим 1:1 (61 тул), что добавляем
-   (6 фич) — этот документ фиксирует то и другое ниже, п. "Функциональная спецификация".
-5. Завести issue-трекер/чеклист (можно прямо в репозитории, `TASKS.md`, или в
-   таск-менеджере — не принципиально на этом этапе).
-
-Чем делать: `git`, доступ к личному кабинету Pyrus (для получения security key
-разработчика), браузер + доки Pyrus.
-
-Критерий выхода: есть репозиторий, есть рабочие тестовые креды, проверенные
-одним ручным `curl`-запросом к Pyrus API (например, `GET /forms`).
-
----
-
-## Фаза 1 — Настройка окружения и инфраструктуры
-
-**Цель:** скелет проекта поднимается локально, линтится, тестируется, собирается в Docker.
-
-Задачи:
-1. Инициализировать проект: `uv init` (или `poetry`), `pyproject.toml`.
-2. Зависимости: `mcp` (официальный SDK) или `fastmcp`, `httpx` (async HTTP-клиент),
-   `pydantic` + `pydantic-settings`, `python-dotenv`, `tenacity` (ретраи/бэкофф),
-   `sqlite`/`aiosqlite` (кэш и очередь вебхуков), dev: `pytest`, `pytest-asyncio`,
-   `respx` или `vcrpy` (мок HTTP для тестов), `ruff` (линт+формат), `mypy`.
-3. `config.py`: `Settings` через `pydantic-settings`, читает `.env`
-   (`PYRUS_LOGIN`, `PYRUS_SECURITY_KEY`, `PYRUS_API_URL`, `SERVER_AUTH_TOKEN`,
-   `FORM_CACHE_TTL_SECONDS`, `RATE_LIMIT_PER_10MIN`, и т.д.). `.env.example` в репо
-   без реальных секретов.
-4. Заготовка `server.py`: пустой FastMCP-инстанс, health-check роут, поднимается
-   локально по HTTP на порту (как у текущего сервера).
-5. CI (GitHub Actions или аналог): `ruff check`, `mypy`, `pytest` на пуш/PR.
-6. `Dockerfile` + `docker-compose.yml` для локального прогона.
-7. Pre-commit хуки (опционально, но дёшево): ruff + mypy перед коммитом.
-
-Чем делать: `uv`/`poetry`, Docker, GitHub Actions (или GitLab CI — зависит, где
-хостится репозиторий).
-
-Где брать информацию: доки `fastmcp`/`mcp` про инициализацию сервера и транспорты;
-доки `httpx` про async-клиент с connection pooling и таймаутами.
-
-Критерий выхода: `docker compose up` поднимает сервер, отвечает на MCP `list_tools`
-(даже с пустым списком тулов), CI зелёный.
-
----
-
-## Фаза 2 — Проектирование
-
-**Цель:** до того как писать 61+ тул, продумать общие слои, чтобы не переписывать
-их посреди реализации.
-
-### 2.1 Архитектура (слои)
-
-```
-MCP tool layer      — схемы параметров (Pydantic), тонкие обёртки, только валидация и вызов сервиса
-Service layer        — бизнес-логика, обработка граблей Pyrus (пагинация, is_closed, батчинг, кэш)
-Pyrus API client     — HTTP, аутентификация, rate limiting, ретраи, маппинг ошибок
-```
-
-Обоснование: в текущем сервере вся хитрая логика (отказ `get_registry` при
-переполнении, аддитивность файловых полей, батчинг с частичными ошибками) явно
-живёт в описании тула — то есть в сервис-слое, а не размазана по HTTP-клиенту.
-Повторяем этот же разрез.
-
-### 2.2 Сквозные механизмы (написать один раз, использовать везде)
-
-- **auth.py** — обмен `login+security_key → access_token` с кэшированием и
-  автоматическим рефрешем по истечении; поддержка per-call override
-  (`access_token`/`api_url` в параметрах тула — как сейчас) для мультиарендности.
-- **rate_limit.py** — троттлер под лимит Pyrus (в описании текущего `get_tasks`
-  упомянут лимит 5000 запросов/10 минут — **проверить точную цифру и окно по
-  официальной документации**, не считать её окончательной без сверки).
-- **errors.py** — маппинг HTTP-ошибок и ошибок валидации Pyrus в понятные
-  сообщения тула (сейчас это тоже видно в текстах описаний: "An ID can only be
-  used once" и т.п. — такие частые ошибки Pyrus стоит перехватывать и
-  переформулировать по-человечески).
-- **pagination.py** — единая функция обхода реестра окнами по датам
-  (`created_after`/`created_before`), с защитой от бесконечного цикла и
-  агрегированным лимитом на итоговый размер.
-- **cache.py** — TTL-кэш в SQLite/памяти для метаданных форм.
-- Единый **response size guard** — как у текущего `get_registry`/`get_task`:
-  либо отказ с подсказкой сузить запрос, либо (для новых авто-фич) прозрачная
-  авто-пагинация с явным `truncated: bool` в ответе.
-
-### 2.3 Дизайн каждой из 6 доп. фич (сделать явные решения ДО кода)
-
-**1) Автопагинация реестра.**
-Расширить `get_registry` необязательными параметрами:
-`auto_paginate: bool = false` (обратная совместимость), `window_days: int = 30`,
-`max_items: int | null`, `max_bytes: int | null`. При `auto_paginate=true` сервис
-сам идёт окнами `created_after`/`created_before`, копит результат, останавливается
-по лимиту с `truncated: true` в ответе вместо жёсткого отказа.
-*Риск для research:* нужно на реальном аккаунте проверить, действительно ли
-единственный способ пагинации — по дате создания, или Pyrus v4 всё же
-поддерживает какой-то курсор в новых версиях API (сверить с доками перед стартом
-реализации).
-
-**2) Батч-операции на запись.**
-Новые тулы `batch_update_task_fields(updates: list[{task_id, fields}])` и
-`batch_close_tasks(task_ids: list[int], text?: str)`, по образцу уже существующего
-`get_tasks`: параллельно (с ограничением конкурентности под rate limit),
-частичные ошибки — в `errors`, а не падение всего вызова.
-
-**3) Вебхуки Pyrus.**
-Архитектурно отдельная история — MCP-тулы вызываются агентом (pull), а вебхук —
-это push от Pyrus. План:
-- Отдельный HTTP-роут на этом же сервере (`POST /webhooks/pyrus`), не MCP-тул,
-  принимает пейлоад, валидирует подпись/токен, кладёт нормализованное событие в
-  таблицу `webhook_events` (SQLite).
-- MCP-тулы: `register_webhook(url, form_id?, events?)`,
-  `unregister_webhook(subscription_id)`, `list_webhooks()`,
-  `get_webhook_events(since?, limit?)` — последний даёт агенту "вытягивающий"
-  доступ к очереди событий (аналог inbox).
-*Риск для research:* нужно заранее выяснить в Bot API Pyrus, можно ли подписаться
-на вебхук программно через API, или подписка настраивается только вручную в
-интерфейсе Pyrus при регистрации бота — это меняет, что вообще войдёт в
-`register_webhook`.
-
-**4) Явный статус закрытости в реестре.**
-Как только известно из research (см. фичу 1), есть ли у задачи в ответе реестра
-уже поле вроде `close_date`/`closed`: если есть — просто прокинуть его как
-`is_closed: bool` в модели. Если нет — вычислять: при `include_archived=true`
-делать доп. лёгкий запрос "только открытые" (или использовать существующее поле
-`current_step`/`is_approved` если оно достаточно для вывода) и помечать разницу
-множеств как `is_closed=true`.
-
-**5) Постраничное чтение комментариев задачи.**
-У Pyrus API нет постраничного получения комментариев отдельно от задачи, поэтому
-это реализуется на уровне сервиса, не проксированием: новый тул
-`get_task_comments(task_id, offset=0, limit=50)` — сервис один раз забирает
-полную задачу (с коротким TTL-кэшем в памяти, 30–60 сек, чтобы соседние страницы
-не били по Pyrus заново), затем отдаёт срез списка комментариев.
-
-**6) Кэш метаданных форм.**
-TTL-кэш на `get_form`/`get_forms` (ключ — `(form_id, flatten)`), настраиваемый
-через `FORM_CACHE_TTL_SECONDS`. Новый тул `invalidate_form_cache(form_id?)` —
-без аргумента чистит весь кэш, с аргументом — точечно (форма могла измениться
-у клиента, кэш не должен быть источником стухших id полей навсегда).
-
-### 2.4 Тест-стратегия
-
-- Юнит-тесты сервис-слоя на мокнутых ответах Pyrus (`respx`/`vcrpy`), включая
-  граничные случаи из описаний текущих тулов (просроченный лимит батча,
-  переполнение реестра, повторное использование guid и т.п.).
-- Контрактные тесты: гонять одинаковые read-only вызовы к **текущему** серверу
-  (`mcp__pyrus__*`, уже подключён) и к новому — сверять форму ответа.
-- Интеграционные тесты на sandbox-аккаунте — на write-операции (создание/закрытие
-  тестовой задачи и т.д.), запускаются отдельным CI-джобом, не на каждый PR.
-
-### 2.5 Наблюдаемость и безопасность
-
-- Структурное логирование (`structlog`/`logging` + JSON), с редактированием
-  секретов (`security_key`, `access_token`) из логов.
-- Метрики: число вызовов по тулу, латентность, попадания в rate limit.
-- Секреты только через env/секрет-хранилище, никогда не коммитятся
-  (`.env.example` без значений).
-
-Критерий выхода Фазы 2: короткий ADR-документ (`docs/architecture.md`) с
-зафиксированными решениями выше + отдельные research-заметки по открытым
-вопросам (лимиты API, поддержка вебхуков в API, наличие `close_date` в реестре).
-
----
-
-## Фаза 3 — Реализация ядра
-
-Порядок (каждый пункт — предпосылка для следующего):
-
-1. `client.py` — низкоуровневый HTTP-клиент (`httpx.AsyncClient`), базовый URL,
-   заголовок `Authorization: Bearer <token>`, единая обработка не-2xx.
-2. `auth.py` — обмен кредов на токен + кэш + рефреш + per-call override.
-3. `rate_limit.py` — троттлер (semaphore/token bucket) вокруг клиента.
-4. `errors.py` — типы ошибок тулов + маппинг из HTTP/бизнес-ошибок Pyrus.
-5. `models/` — Pydantic-модели ответов по каждому домену (сверяясь с реальными
-   ответами API, не только с документацией — в JSON от Pyrus нередко встречаются
-   недокументированные поля).
-6. `pagination.py`, `cache.py` — по дизайну из Фазы 2.
-7. Юнит-тесты на всё вышеперечисленное (это ядро, на нём держится всё остальное —
-   тестировать раньше, чем тулы).
-
-Критерий выхода: клиент умеет аутентифицироваться, делать один реальный вызов
-(например `get_profile`-эквивалент) к sandbox-аккаунту и получать валидный ответ.
-
----
-
-## Фаза 4 — Порт существующих 61 инструмента (1:1)
-
-Переносим группами, от простого к сложному — так есть на чём проверить сквозную
-цепочку (MCP-тул → сервис → клиент → Pyrus) до того, как упираться в самую
-сложную область (задачи).
-
-Для **каждого** тула: взять точное имя/описание/параметры из
-[pyrus_mcp_tools_spec.json](pyrus_mcp_tools_spec.json), сверить с официальной
-доков Pyrus по соответствующему эндпоинту, написать Pydantic-схему параметров,
-реализовать сервис-функцию, написать юнит-тест (мок) + при возможности
-контрактную сверку с живым `mcp__pyrus__*`.
-
-1. **Профиль/боты/контакты/встречи/инбокс** (7 тулов) — `get_profile`, `get_bots`,
-   `get_contacts`, `get_meetings`, `get_inbox`, `get_calendar_tasks`,
-   `get_file_download_url`, `get_upload_target` — самые простые read-only, чтобы
-   обкатать цепочку целиком.
-2. **Формы** (3) — `get_forms`, `get_form`, `get_form_permissions` — понадобятся
-   дальше для поиска id полей у задач.
-3. **Участники и роли** (9) — `create/get/get_all/update_member`,
-   `create/get/get_all/update/delete_role`.
-4. **Списки задач** (5) — `create/get/get_all/update/delete_list`.
-5. **Справочники** (4) — `create_catalog`, `get_catalog`, `sync_catalog`,
-   `update_catalog_items`.
-6. **Объявления** (4) — `create/get/get_all/comment_announcement`.
-7. **База знаний** (7) — CRUD + permissions.
-8. **Задачи** (17, самое большое и сложное — делать последним из "старого"
-   функционала) — `create_task`, `get_task`, `get_tasks` (батч),
-   `get_task_list`, `search_tasks`, `update_task_fields`, `close_task`,
-   `reopen_task`, `delete_task`, `assign_task`, `add_approvers`,
-   `add_subscribers`, `comment_task` (самый "жирный" по параметрам — делать в
-   несколько итераций, начиная с текста/статуса, потом approvals/channel/schedule),
-   `attach_files_to_field`, `attach_new_file_version`, `get_overdue_tasks`,
-   `get_tasks_due_soon`, `get_registry` — этот последним, он самый рискованный
-   (переполнение контекста, скрытые закрытые задачи).
-
-Критерий выхода Фазы 4: все 61 тул зарегистрированы в MCP-сервере, юнит-тесты
-зелёные, контрактная сверка read-only тулов с текущим сервером совпадает по форме.
-
----
-
-## Фаза 5 — Реализация новых фич
-
-Делать в порядке зависимостей:
-
-1. **Кэш метаданных форм** — не зависит ни от чего, кроме уже готовых `get_form`/`get_forms` (Фаза 4.2) → делать первой.
-2. **Постраничное чтение комментариев** — зависит от готового `get_task` (Фаза 4.8).
-3. **Явный `is_closed` в реестре** и **автопагинация реестра** — оба завязаны на
-   `get_registry`, делать вместе, так как автопагинация — это как раз то место,
-   где считается `is_closed` по разнице множеств.
-4. **Батч-операции на запись** — зависят от готовых `update_task_fields`/`close_task`.
-5. **Вебхуки** — самая независимая от остального, но и самая рискованная фича
-   (нужен research из Фазы 2.3, возможно доп. HTTP-роут вне MCP-протокола) —
-   делать последней, заложить время на то, что дизайн придётся скорректировать
-   по факту того, что реально поддерживает Pyrus Bot API.
-
-Каждая фича: дизайн уже есть в Фазе 2.3 → схема параметров → реализация →
-юнит-тесты → (для вебхуков — ручной end-to-end тест с реальным вебхуком от
-sandbox-аккаунта, направленным на туннель типа `ngrok` на этапе разработки).
-
----
-
-## Фаза 6 — Тестирование и приёмка
-
-1. Полный прогон юнит-тестов + контрактных тестов (новый сервер vs старый,
-   read-only тулы) — должны совпадать.
-2. Интеграционные тесты на sandbox-аккаунте — все write-операции хотя бы раз
-   каждая, с очисткой созданных тестовых сущностей после.
-3. Нагрузочная проверка троттлера — синтетическая пачка запросов, убедиться, что
-   rate limiter не даёт превысить лимит Pyrus и корректно отдаёт `errors` в
-   батч-тулах при частичных отказах.
-4. Ручная приёмка через MCP-инспектор (`mcp dev` / MCP Inspector) — пройтись по
-   каждому тулу глазами: имя, описание, схема параметров выглядят вменяемо для
-   агента, который увидит их впервые.
-5. Security-ревью: секреты не логируются, инъекции в текстовые поля (комментарии,
-   HTML в KB) экранируются как надо, права на write-операции не шире, чем нужно.
-
----
-
-## Фаза 7 — Документация
-
-- `README.md` — как поднять локально, переменные окружения, как задеплоить.
-- `docs/architecture.md` — фиксация решений из Фазы 2 (ADR-стиль).
-- Автогенерация справочника тулов из докстрингов/Pydantic-схем (например, скрипт,
-  который на выходе даёт файл, аналогичный текущему `pyrus_mcp_tools_spec.json`,
-  но для нового сервера — удобно для будущей сверки паритета).
-- `CHANGELOG.md`.
-- Мини-runbook: ротация `PYRUS_SECURITY_KEY`, что делать при 429 от Pyrus, как
-  почистить кэш форм вручную.
-
----
-
-## Фаза 8 — Деплой и переключение
-
-1. Собрать и задеплоить Docker-образ (хостинг — по решению из раздела 0, дефолт
-   портируемый Docker).
-2. Прогнать новый сервер **параллельно** со старым (`.mcp.json` можно временно
-   держать оба, под разными именами `pyrus` / `pyrus-new`) — сверить поведение
-   вживую на нескольких реальных сценариях.
-3. Переключить `.mcp.json` на новый URL, оставить старый как фолбэк на
-   переходный период.
-4. Мониторинг первых дней: логи ошибок, rate-limit хиты, задержки.
-5. После стабилизации — вывести старый сторонний сервер из `.mcp.json`.
-
----
-
-## Фаза 9 — Пострелизная поддержка
-
-- Собирать реальные проблемы использования агентом (какие тулы путают, какие
-  описания надо уточнить) — по аналогии с тем, как в текущем сервере описания
-  тулов явно писались "от боли" (см. все грабли, перечисленные в разделе
-  "Где брать информацию", п.5).
-- Поддерживать `pyrus_mcp_tools_spec.json`-аналог нового сервера в актуальном
-  состоянии при любом изменении схемы тула — это тот же файл, который сейчас
-  используется как источник истины для миграции.
-
----
-
-## Функциональная спецификация — сводная таблица
-
-| Блок | Тулы (перенос 1:1) | Новые тулы (доп. фичи) |
-|---|---|---|
-| Задачи | 17 (см. Фазу 4.8) | `batch_update_task_fields`, `batch_close_tasks`, `get_task_comments` |
-| Реестр | `get_registry` | `get_registry(auto_paginate=true)`, поле `is_closed` в ответе |
-| Формы | `get_form`, `get_forms`, `get_form_permissions` | `invalidate_form_cache` |
-| Объявления | 4 | — |
-| База знаний | 7 | — |
-| Списки | 5 | — |
-| Справочники | 4 | — |
-| Участники/роли | 9 | — |
-| Прочее | `get_contacts`, `get_file_download_url`, `get_upload_target`, `get_profile`, `get_bots`, `get_inbox`, `get_meetings` | `register_webhook`, `unregister_webhook`, `list_webhooks`, `get_webhook_events` |
-
-Итого: **61 существующих + 9 новых = 70 инструментов** в целевой версии v1.
-
-Точные параметры существующих 61 — в [pyrus_mcp_tools_spec.json](pyrus_mcp_tools_spec.json)
-(используется как ТЗ для порта). Параметры новых 9 зафиксированы в разделе 2.3
-выше и подлежат уточнению по итогам research-пунктов (лимиты API, поддержка
-вебхуков, наличие `close_date` в ответе реестра) до начала их реализации в Фазе 5.
+A future **Knowledge MCP** is also specified here because it grows from the same ecosystem, but it remains a separate service with its own datastore and lifecycle. PyrusBot is an eventual consumer/orchestrator, not a runtime dependency of Pyrus MCP.
+
+## Normative stack
+
+### Pyrus MCP
+
+- Python 3.11+ runtime policy, version pinned by repository policy;
+- `uv` for environment/dependencies;
+- FastMCP for MCP protocol layer;
+- Streamable HTTP for production;
+- stdio for local development only;
+- Pydantic for typed input/domain models;
+- httpx for outbound Pyrus API calls;
+- pytest for testing;
+- Ruff for lint/format;
+- MyPy or the repository-approved type checker;
+- PostgreSQL for production durable state;
+- SQLite only for local development;
+- Redis optional for shared cache/rate-limit/queue state when required;
+- Docker for packaging;
+- GitHub Actions for CI/CD;
+- external secret manager in production.
+
+### Knowledge MCP
+
+- Python + FastMCP;
+- PostgreSQL + pgvector as canonical structured/vector storage;
+- object storage for large/raw artifacts where required;
+- background worker for embedding/indexing;
+- embedding provider behind a versioned adapter;
+- Redis optional for asynchronous jobs/cache;
+- same deployment/security engineering discipline as Pyrus MCP.
+
+## Critical corrections from v1
+
+1. **The legacy contract is not currently fully versioned.** `IMPLEMENTATION_PLAN.md` previously referenced `pyrus_mcp_tools_spec.json` and `inventory.json`, but those artefacts are absent from the current repository. Phase 0 therefore explicitly recovers them before parity work.
+2. **The visible plan's stated "61 tools" is not independently reproducible from the grouped tool list in the document.** The recovery task must establish the exact number and names from authoritative legacy evidence.
+3. **`SERVER_AUTH_TOKEN` is not the production multi-user security model.** The production design requires authenticated users/clients, audience-bound bearer tokens, scopes, tenant binding, rotation/revocation and audit.
+4. **SQLite is not a production durable store for a horizontally replaceable public service.** PostgreSQL is the production system of record.
+5. **Webhooks are an HTTP integration boundary, not ordinary MCP tools.** Signature validation, idempotency, fast acknowledgement and asynchronous processing are required. Pyrus currently documents bot configuration by assigning a handler URL, so programmatic webhook registration is a research item rather than an assumed API method.
+6. **Every tool has four contracts:** MCP, service, Pyrus API, and security/authorization.
+7. **Production is a separate gate.** Local success, mock tests and tool parity do not equal production readiness.
+8. **Knowledge MCP is not allowed to use Pyrus Knowledge Base as its canonical store.** Pyrus KB is a downstream publication projection of an approved immutable knowledge version.
+
+## Phase sequence
+
+### Phase 0 — Contract recovery
+
+Recover the legacy tool catalogue, schemas, outputs, errors, quirks, endpoint mappings and fixtures. Freeze a reproducible compatibility baseline.
+
+### Phase 1 — Product and threat model
+
+Approve identity, multi-tenancy, authorization, threat model, SLOs and retention.
+
+### Phase 2 — Delivery foundation
+
+Make build/test/container/CI/security scanning reproducible.
+
+### Phase 3 — MCP protocol shell
+
+Implement Streamable HTTP, lifecycle, protocol versioning, Origin validation, context, cancellation and health endpoints.
+
+### Phase 4 — Identity and tenancy
+
+Implement user/client identity, token issuance/validation, scopes, tenancy, revocation, audit and isolation tests.
+
+### Phase 5 — Pyrus client core
+
+Implement per-tenant credentials, Pyrus `/auth`, person_id support, access-token refresh, tenant-specific `api_url`/`files_url`, shared HTTP client, retries, limits, errors and circuit breaker.
+
+### Phase 6 — Domain models
+
+Typed Pyrus models and recorded API fixtures.
+
+### Phase 7 — Read-only compatibility tools
+
+Implement each recovered read-only tool group as independently testable work.
+
+### Phase 8 — Write compatibility tools
+
+Implement writes with explicit idempotency/partial-failure analysis and sandbox tests.
+
+### Phase 9 — Compatibility freeze
+
+Automated old-vs-new comparison and explicit ADRs for every accepted deviation.
+
+### Phase 10 — New features
+
+Form cache, comment pagination, registry status/pagination, batch writes, webhook ingestion/queue/retrieval.
+
+### Phase 11 — Production persistence
+
+PostgreSQL, migrations, durable audit/idempotency/webhook state, recovery and optional Redis adapters.
+
+### Phase 12 — Observability/SRE
+
+Structured logs, metrics, tracing, alerts, SLOs, dashboards and runbooks.
+
+### Phase 13 — Security hardening
+
+SAST/dependencies/image scans, auth fuzzing, tenant-isolation tests, SSRF/origin/payload tests, secret-leak regression.
+
+### Phase 14 — Staging acceptance
+
+Run the exact release candidate through protocol, compatibility, sandbox, load, failure-injection and rollback tests.
+
+### Phase 15 — Production
+
+Immutable artifact, controlled deployment, smoke/health gate, monitoring and rollback.
+
+### Phase 16 — Knowledge MCP contracts
+
+Freeze document/version/evidence/chunk/embedding/retrieval/approval/publication contracts.
+
+### Phase 17 — Knowledge MCP implementation
+
+Implement canonical versioned knowledge storage, embeddings and hybrid retrieval, provenance and Pyrus KB publication projection.
+
+### Phase 18 — PyrusBot integration
+
+PyrusBot uses Pyrus MCP for Pyrus actions/facts and Knowledge MCP for canonical context; approved documentation is published through Pyrus MCP.
+
+### Phase 19 — Future interface migration
+
+Move PyrusBot orchestration behind stable interfaces so it can later be exposed via chat, CLI, web or IDE adapters.
+
+## Task execution model
+
+All implementation work is governed by `tasks/registry.yaml`.
+
+Each task has:
+
+- one primary executor;
+- independent reviewer;
+- gate owner(s);
+- explicit dependencies;
+- status;
+- phase;
+- test/evidence expectation.
+
+A task is split whenever more than one independent implementation or acceptance outcome is hidden inside it.
+
+## Required gates
+
+- Architecture Gate — Chief Architect
+- Pyrus API Contract Gate — Pyrus Integrations Lead
+- Identity/Security Gate — Identity Security Lead + Security Agent
+- Quality Gate — QA Lead
+- Code Quality Gate — Code Quality Agent
+- Data/Migration Gate — Data Engineer
+- Delivery/SRE Gate — DevOps Lead
+- Documentation Gate — Documentation Agent
+- Release Gate — Release Manager
+- Product/Security/Production Final Approval — Human Architect
+
+The executor cannot be the sole reviewer or final gate owner.
+
+## External sources used for normative constraints
+
+Pyrus `/auth` returns an access token plus `api_url`/`files_url` and requires re-authorization when tokens expire or are revoked. citeturn142115search0turn142115search4
+
+Pyrus webhooks use HTTPS POST, `X-Pyrus-Sig`, and retry behavior; handlers must acknowledge within 60 seconds. citeturn142115search1turn142115search2
+
+MCP Streamable HTTP requires the standardized HTTP transport/lifecycle, Origin validation and proper authorization; bearer tokens are validated as OAuth resource-server credentials with audience and scope enforcement. citeturn755532search1turn755532search0turn755532search7
+
+FastMCP provides request context/dependency injection and server lifespans that fit the required separation of transport, authorization and application services. citeturn504311search1turn504311search0
