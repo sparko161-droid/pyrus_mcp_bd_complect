@@ -15,7 +15,7 @@ waves:
       - 1
       - 2
     status: IN_PROGRESS
-    gate_status: PENDING
+    gate_status: APPROVED
   - id: W2
     name: Core Protocol & Parity
     phases:
@@ -221,7 +221,7 @@ tasks:
       - human-architect
     deps:
       - MCP-006
-    status: READY
+    status: DONE
   - id: MCP-011
     phase: 1
     title: Define tenant/account binding model
@@ -231,7 +231,7 @@ tasks:
       - security-agent
     deps:
       - MCP-010
-    status: READY
+    status: DONE
   - id: MCP-012
     phase: 1
     title: Define OAuth/MCP token strategy and discovery metadata
@@ -242,7 +242,7 @@ tasks:
       - human-architect
     deps:
       - MCP-010
-    status: READY
+    status: DONE
   - id: MCP-013
     phase: 1
     title: Define scopes and per-tool authorization matrix
@@ -252,7 +252,7 @@ tasks:
       - security-agent
     deps:
       - MCP-012
-    status: READY
+    status: DONE
   - id: MCP-014
     phase: 1
     title: Write threat model and abuse cases
@@ -265,7 +265,7 @@ tasks:
       - MCP-011
       - MCP-012
       - MCP-013
-    status: READY
+    status: DONE
   - id: MCP-015
     phase: 1
     title: Define SLO/SLA, quotas and retention targets
@@ -275,7 +275,7 @@ tasks:
       - human-architect
     deps:
       - MCP-014
-    status: READY
+    status: DONE
   - id: MCP-016
     phase: 1
     title: Create ADR set 001–012
@@ -287,7 +287,7 @@ tasks:
       - MCP-012
       - MCP-014
       - MCP-015
-    status: READY
+    status: DONE
   - id: MCP-020
     phase: 2
     title: Pin Python runtime and dependency policy
@@ -302,7 +302,7 @@ tasks:
     phase: 1
     title: Phase 1 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-010
       - MCP-011
@@ -316,7 +316,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Service Account Proxy architecture approved for multi-tenant isolation.
+      - Strict scopes (read/write) mapped to legacy Phase 0 contracts.
+      - Threat model abuse cases (infinite loops) mitigated by internal MCP rate limiter.
   - id: MCP-021
     phase: 2
     title: Configure uv/pyproject/Ruff/typing/Pytest
