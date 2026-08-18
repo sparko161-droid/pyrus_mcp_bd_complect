@@ -1,7 +1,10 @@
-version: 2
+version: 3
 roles:
   - id: human-architect
     can_merge: true
+    can_approve_product: true
+    can_approve_security: true
+    can_approve_production: true
     primary_gate: product-and-security-approval
   - id: ai-cto
     reports_to: human-architect
@@ -10,23 +13,52 @@ roles:
   - id: chief-architect
     reports_to: ai-cto
     can_approve_architecture: true
-  - id: python-backend-lead
-    reports_to: ai-cto
+    primary_gate: architecture
   - id: pyrus-integrations-lead
     reports_to: chief-architect
+    primary_gate: pyrus-api-contract
+  - id: identity-security-lead
+    reports_to: ai-cto
+    primary_gate: identity-security
+  - id: python-backend-lead
+    reports_to: ai-cto
+    primary_gate: implementation-quality
+  - id: knowledge-architecture-lead
+    reports_to: chief-architect
+    primary_gate: knowledge-contract
+  - id: retrieval-engineer
+    reports_to: knowledge-architecture-lead
+    primary_gate: retrieval-quality
+  - id: data-engineer
+    reports_to: chief-architect
+    primary_gate: persistence-migrations
   - id: qa-lead
     reports_to: ai-cto
+    primary_gate: qa
   - id: security-agent
     reports_to: ai-cto
+    primary_gate: security
   - id: code-quality-agent
     reports_to: chief-architect
+    primary_gate: code-quality
   - id: documentation-agent
     reports_to: chief-architect
+    primary_gate: documentation
   - id: devops-lead
     reports_to: ai-cto
+    primary_gate: delivery-sre
+  - id: release-manager
+    reports_to: human-architect
+    primary_gate: release-readiness
 
-## Assignment rules
-- Every task has one primary executor and at least one independent reviewer.
-- The Pyrus Integrations Lead owns the Pyrus API contracts and guarantees 1:1 mapping with the old Railway MCP.
-- The AI CTO owns orchestration, not product decisions reserved for the Human Architect.
-- Agents use Antigravity tools; role and gate are strictly enforced through handoffs.
+assignment_rules:
+  - "Every implementation task has exactly one primary executor."
+  - "Every task has an independent reviewer."
+  - "Security-sensitive tasks require identity-security-lead or security-agent as gate owner."
+  - "Pyrus API contracts are owned by pyrus-integrations-lead."
+  - "Knowledge MCP domain contracts are owned by knowledge-architecture-lead."
+  - "Persistence/migration work is reviewed by data-engineer."
+  - "Production changes require devops-lead plus release-manager, and human-architect approval for release."
+  - "The executor cannot be the sole reviewer or final gate owner."
+  - "AI CTO orchestrates and synthesizes; product decisions remain with Human Architect."
+  - "Discovered work must create a new linked task instead of silently expanding scope."
