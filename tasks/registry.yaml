@@ -1582,7 +1582,7 @@ tasks:
       - human-architect
     deps:
       - MCP-016
-    status: READY
+    status: DONE
   - id: KM-002
     phase: 16
     title: Define immutable version/change-set contract
@@ -1592,7 +1592,7 @@ tasks:
       - chief-architect
     deps:
       - KM-001
-    status: READY
+    status: DONE
   - id: KM-003
     phase: 16
     title: Define evidence/lineage/relation contract
@@ -1602,7 +1602,7 @@ tasks:
       - chief-architect
     deps:
       - KM-001
-    status: READY
+    status: DONE
   - id: KM-004
     phase: 16
     title: Define deterministic chunking contract
@@ -1612,7 +1612,7 @@ tasks:
       - qa-lead
     deps:
       - KM-002
-    status: READY
+    status: DONE
   - id: KM-005
     phase: 16
     title: Define embedding generation/version contract
@@ -1622,7 +1622,7 @@ tasks:
       - security-agent
     deps:
       - KM-004
-    status: READY
+    status: DONE
   - id: KM-006
     phase: 16
     title: Define hybrid retrieval and citation contract
@@ -1633,7 +1633,7 @@ tasks:
     deps:
       - KM-003
       - KM-005
-    status: READY
+    status: DONE
   - id: KM-007
     phase: 16
     title: Define approval and publication-to-Pyrus contract
@@ -1644,7 +1644,7 @@ tasks:
     deps:
       - KM-002
       - MCP-092
-    status: READY
+    status: DONE
   - id: KM-008
     phase: 16
     title: Approve Knowledge MCP architecture and ADR set
@@ -1661,7 +1661,30 @@ tasks:
       - KM-005
       - KM-006
       - KM-007
-    status: READY
+    status: DONE
+  - id: REV-016
+    phase: 16
+    title: Phase 16 Knowledge Contracts Review & Sign-off
+    primary: chief-architect
+    status: DONE
+    deps:
+      - KM-001
+      - KM-002
+      - KM-003
+      - KM-004
+      - KM-005
+      - KM-006
+      - KM-007
+      - KM-008
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions:
+      - ADR-008 defines document identity, lifecycle (draft/review/approved/published), and SHA256 immutable revisions.
+      - ADR-009 specifies header-aware markdown chunking and hybrid BM25 + Vector RRF search.
+      - ADR-010 defines Pyrus KB publication workflow and rollback semantics.
   - id: KM-010
     phase: 17
     title: Scaffold Knowledge MCP FastMCP service
@@ -1777,6 +1800,29 @@ tasks:
     deps:
       - KM-019
     status: READY
+  - id: REV-017
+    phase: 17
+    title: Phase 17 Knowledge MCP Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - KM-010
+      - KM-011
+      - KM-012
+      - KM-013
+      - KM-014
+      - KM-015
+      - KM-016
+      - KM-017
+      - KM-018
+      - KM-019
+      - KM-020
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: INT-001
     phase: 18
     title: Define PyrusBot -> Pyrus MCP integration contract
@@ -1829,6 +1875,23 @@ tasks:
       - INT-003
       - INT-004
     status: READY
+  - id: REV-018
+    phase: 18
+    title: Phase 18 PyrusBot Integration Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - INT-001
+      - INT-002
+      - INT-003
+      - INT-004
+      - INT-005
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: FUT-001
     phase: 19
     title: Extract PyrusBot orchestration core from IDE-specific UI
