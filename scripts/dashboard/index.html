@@ -424,6 +424,7 @@
   let REGISTRY = { version: 0, tasks: [] };
   let tasksById = new Map();
   let phases = [];
+  let phasesInfo = new Map();
   let roles = [];
 
   const state = {
@@ -440,6 +441,10 @@
     tasksById = new Map(REGISTRY.tasks.map(t => [t.id, t]));
     phases = [...new Set(REGISTRY.tasks.map(t => t.phase))].sort((a, b) => a - b);
     roles = [...new Set(REGISTRY.tasks.map(t => t.primary))].sort();
+    phasesInfo = new Map();
+    if (REGISTRY.phases) {
+      REGISTRY.phases.forEach(ph => phasesInfo.set(ph.id, ph));
+    }
   }
 
   function renderMeta() {
@@ -460,11 +465,8 @@
   }
 
   function phaseName(p) {
-    return {
-      0: "Project Setup", 1: "Architecture", 2: "Core Client",
-      3: "API Porting", 4: "New Features", 5: "QA & Sandbox",
-      6: "Deploy",
-    }[p] || `Фаза ${p}`;
+    const ph = phasesInfo.get(p);
+    return ph ? ph.name : `Фаза ${p}`;
   }
 
   function renderPhaseOverview() {
@@ -534,6 +536,9 @@
     board.innerHTML = phases.map(p => {
       const list = REGISTRY.tasks.filter(t => t.phase === p);
       const doneish = list.filter(t => ["review", "done"].includes(bucketOf(t.status))).length;
+      const ph = phasesInfo.get(p);
+      const exitCriteria = ph && ph.exit ? `<div style="padding: 12px 14px; margin-bottom: 12px; background: var(--surface-2); border-radius: 6px; font-size: 13px; color: var(--ink-soft);"><strong>🎯 Exit Criteria:</strong> ${escapeHTML(ph.exit)}</div>` : "";
+
       return `
         <section class="phase-section${state.openPhases.has(p) ? " open" : ""}" data-phase="${p}">
           <div class="phase-head">
@@ -542,6 +547,7 @@
             <span class="ph-sub mono">${doneish}/${list.length}</span>
           </div>
           <div class="phase-body">
+            ${exitCriteria}
             <div class="task-grid">
               ${list.map(taskCardHTML).join("")}
             </div>
