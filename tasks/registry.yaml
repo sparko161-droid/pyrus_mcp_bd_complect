@@ -1055,7 +1055,7 @@ tasks:
     deps:
       - MCP-077
       - MCP-088
-    status: READY
+    status: DONE
   - id: REV-008
     phase: 8
     title: Phase 8 Coherence Review & Sign-off
@@ -1089,7 +1089,7 @@ tasks:
       - human-architect
     deps:
       - MCP-090
-    status: READY
+    status: DONE
   - id: MCP-092
     phase: 9
     title: Freeze 1:1 parity contract version 1
@@ -1100,7 +1100,7 @@ tasks:
       - security-agent
     deps:
       - MCP-091
-    status: READY
+    status: DONE
   - id: MCP-100
     phase: 10
     title: Implement form metadata cache with invalidation
@@ -1116,7 +1116,7 @@ tasks:
     phase: 9
     title: Phase 9 Parity Gate & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-090
       - MCP-091
@@ -1126,7 +1126,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Parity report confirmed 1:1 functional match with legacy pyrusBot.
+      - ADR-007 formally drops legacy static token auth in favor of Pyrus v4 dynamic /auth flow.
+      - Wave 2 (Core Protocol & Parity) is officially completed and frozen.
   - id: MCP-101
     phase: 10
     title: Implement service-level task comments pagination
