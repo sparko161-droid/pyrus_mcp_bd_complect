@@ -1,0 +1,95 @@
+version: 1
+status: RECOVERY_REQUIRED
+source_notes:
+  - "IMPLEMENTATION_PLAN.md declares 61 legacy tools."
+  - "The previous repository revision referenced pyrus_mcp_tools_spec.json, but that file is currently absent."
+  - "The visible grouped list in IMPLEMENTATION_PLAN.md does not reconcile cleanly to 61, so the exact count is intentionally not asserted here."
+  - "This file is a recovery scaffold, not the final compatibility source of truth."
+
+compatibility_rule: EXACT_UNLESS_ADR_APPROVES_DIFFERENCE
+required_fields:
+  - id
+  - name
+  - domain
+  - legacy_schema
+  - legacy_output_examples
+  - pyrus_endpoint
+  - pyrus_quirks
+  - required_scope
+  - write_effect
+  - idempotency
+  - compatibility_test_fixture
+  - reviewer
+
+legacy_tools:
+  - {id: T-001, name: get_profile, domain: misc, status: NEEDS_EVIDENCE}
+  - {id: T-002, name: get_bots, domain: misc, status: NEEDS_EVIDENCE}
+  - {id: T-003, name: get_contacts, domain: misc, status: NEEDS_EVIDENCE}
+  - {id: T-004, name: get_meetings, domain: misc, status: NEEDS_EVIDENCE}
+  - {id: T-005, name: get_inbox, domain: misc, status: NEEDS_EVIDENCE}
+  - {id: T-006, name: get_calendar_tasks, domain: misc, status: NEEDS_EVIDENCE}
+  - {id: T-007, name: get_file_download_url, domain: files, status: NEEDS_EVIDENCE}
+  - {id: T-008, name: get_upload_target, domain: files, status: NEEDS_EVIDENCE}
+  - {id: T-009, name: get_forms, domain: forms, status: NEEDS_EVIDENCE}
+  - {id: T-010, name: get_form, domain: forms, status: NEEDS_EVIDENCE}
+  - {id: T-011, name: get_form_permissions, domain: forms, status: NEEDS_EVIDENCE}
+  - {id: T-012, name: create_member, domain: members, status: NEEDS_EVIDENCE}
+  - {id: T-013, name: get_member, domain: members, status: NEEDS_EVIDENCE}
+  - {id: T-014, name: get_all_members, domain: members, status: NEEDS_EVIDENCE}
+  - {id: T-015, name: update_member, domain: members, status: NEEDS_EVIDENCE}
+  - {id: T-016, name: create_role, domain: roles, status: NEEDS_EVIDENCE}
+  - {id: T-017, name: get_role, domain: roles, status: NEEDS_EVIDENCE}
+  - {id: T-018, name: get_all_roles, domain: roles, status: NEEDS_EVIDENCE}
+  - {id: T-019, name: update_role, domain: roles, status: NEEDS_EVIDENCE}
+  - {id: T-020, name: delete_role, domain: roles, status: NEEDS_EVIDENCE}
+  - {id: T-021, name: create_list, domain: lists, status: NEEDS_EVIDENCE}
+  - {id: T-022, name: get_list, domain: lists, status: NEEDS_EVIDENCE}
+  - {id: T-023, name: get_all_lists, domain: lists, status: NEEDS_EVIDENCE}
+  - {id: T-024, name: update_list, domain: lists, status: NEEDS_EVIDENCE}
+  - {id: T-025, name: delete_list, domain: lists, status: NEEDS_EVIDENCE}
+  - {id: T-026, name: create_catalog, domain: catalogs, status: NEEDS_EVIDENCE}
+  - {id: T-027, name: get_catalog, domain: catalogs, status: NEEDS_EVIDENCE}
+  - {id: T-028, name: sync_catalog, domain: catalogs, status: NEEDS_EVIDENCE}
+  - {id: T-029, name: update_catalog_items, domain: catalogs, status: NEEDS_EVIDENCE}
+  - {id: T-030, name: create_announcement, domain: announcements, status: NEEDS_EVIDENCE}
+  - {id: T-031, name: get_announcement, domain: announcements, status: NEEDS_EVIDENCE}
+  - {id: T-032, name: get_all_announcements, domain: announcements, status: NEEDS_EVIDENCE}
+  - {id: T-033, name: comment_announcement, domain: announcements, status: NEEDS_EVIDENCE}
+  - {id: T-034, name: knowledge_base_create, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-035, name: knowledge_base_get, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-036, name: knowledge_base_list, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-037, name: knowledge_base_update, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-038, name: knowledge_base_delete, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-039, name: knowledge_base_permissions_get, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-040, name: knowledge_base_permissions_update, domain: knowledge_base, status: NEEDS_EVIDENCE}
+  - {id: T-041, name: create_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-042, name: get_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-043, name: get_tasks, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-044, name: get_task_list, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-045, name: search_tasks, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-046, name: update_task_fields, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-047, name: close_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-048, name: reopen_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-049, name: delete_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-050, name: assign_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-051, name: add_approvers, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-052, name: add_subscribers, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-053, name: comment_task, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-054, name: attach_files_to_field, domain: tasks/files, status: NEEDS_EVIDENCE}
+  - {id: T-055, name: attach_new_file_version, domain: tasks/files, status: NEEDS_EVIDENCE}
+  - {id: T-056, name: get_overdue_tasks, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-057, name: get_tasks_due_soon, domain: tasks, status: NEEDS_EVIDENCE}
+  - {id: T-058, name: get_registry, domain: tasks, status: NEEDS_EVIDENCE}
+
+recovery_required_missing_items:
+  - "Exact legacy tool count and complete names"
+  - "Exact legacy input schemas"
+  - "Exact output fixtures"
+  - "Exact legacy errors"
+  - "Exact Pyrus endpoint mapping"
+  - "Exact tool descriptions where description compatibility matters"
+  - "Exact hidden quirks"
+  - "Exact authorization assumptions of the legacy service"
+  - "Legacy server version and runtime metadata"
+
+completion_rule: "The catalogue becomes authoritative only after recovery tasks MCP-001..MCP-006 are DONE and approved by pyrus-integrations-lead + chief-architect + qa-lead."
