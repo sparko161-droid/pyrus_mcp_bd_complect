@@ -6,6 +6,7 @@ rules:
   discovery: New findings create linked tasks; silent scope expansion is forbidden.
   evidence: DONE requires code/docs/tests/evidence links appropriate to the task.
   phase_exit: A phase closes only when its exit criteria are green and no unaccepted P0/P1 blocker remains.
+  phase_review: Every phase must conclude with a comprehensive review of all deliverables for ecosystem coherence and structure.
 phases:
   - id: 0
     name: contract-recovery
@@ -150,6 +151,27 @@ tasks:
       - chief-architect
     deps: []
     status: DONE
+  - id: REV-000
+    phase: 0
+    title: Phase 0 Coherence Review & Sign-off
+    primary: chief-architect
+    status: DONE
+    deps:
+      - MCP-001
+      - MCP-002
+      - MCP-003
+      - MCP-004
+      - MCP-005
+      - MCP-006
+      - MCP-007
+      - MCP-008
+    reviewer: human-architect
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions:
+      - Phase 0 structural coherence verified.
   - id: MCP-010
     phase: 1
     title: Define multi-user identity model
@@ -236,6 +258,25 @@ tasks:
     deps:
       - MCP-016
     status: READY
+  - id: REV-001
+    phase: 1
+    title: Phase 1 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-010
+      - MCP-011
+      - MCP-012
+      - MCP-013
+      - MCP-014
+      - MCP-015
+      - MCP-016
+    reviewer: human-architect
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-021
     phase: 2
     title: Configure uv/pyproject/Ruff/typing/Pytest

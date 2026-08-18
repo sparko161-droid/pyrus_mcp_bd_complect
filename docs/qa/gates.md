@@ -240,3 +240,16 @@ Checks:
 **Owner:** AI CTO
 
 The AI CTO collects all gate results, checks dependency readiness and may stop the release for unresolved cross-cutting risk. Irreversible product/security/production decisions belong to the Human Architect.
+## Phase Sign-Off Gate
+
+**Owner:** Chief Architect & Human Architect
+
+**Trigger:** Executed automatically at the conclusion of every Phase (when all tasks within the phase reach DONE).
+
+**Checks:**
+- **Structural Coherence:** Do all deliverables of this phase fit seamlessly into the overall ecosystem architecture?
+- **Integration Readiness:** Are there any logical gaps, loose ends, or missing interfaces between the newly completed components and the existing system?
+- **Documentation Parity:** Are all ADRs, schemas, and diagrams fully aligned with the actual code output of the phase?
+- **Phase Exit Criteria:** Have the explicit exit criteria defined in \egistry.yaml\ been unambiguously met?
+
+If any check fails, new tasks MUST be spawned in the backlog, blocking the start of the next phase until structural integrity is restored.
