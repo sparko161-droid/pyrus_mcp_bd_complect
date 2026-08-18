@@ -14,18 +14,14 @@ from .context import correlation_id
 
 logger = structlog.get_logger()
 
+from .tools import register_readonly_tools
+
 # MCP Server Definition
 # We use the low-level Server from the official MCP SDK to have full control over the Starlette app
 server = Server("pyrus-mcp-server")
 
-@server.list_tools()
-async def list_tools() -> list[Any]:
-    # Placeholder for Phase 4 where we actually define the tools
-    return []
-
-@server.call_tool()
-async def call_tool(name: str, arguments: dict) -> list[Any]:
-    raise ValueError(f"Tool {name} not found")
+# Register Phase 7 Read-Only Tools
+register_readonly_tools(server)
 
 # SSE Transport Endpoint
 sse_transport: SseServerTransport | None = None

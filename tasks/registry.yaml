@@ -818,7 +818,7 @@ tasks:
     deps:
       - MCP-064
       - MCP-044
-    status: READY
+    status: DONE
   - id: REV-006
     phase: 6
     title: Phase 6 Coherence Review & Sign-off
@@ -849,7 +849,7 @@ tasks:
     deps:
       - MCP-061
       - MCP-064
-    status: READY
+    status: DONE
   - id: MCP-072
     phase: 7
     title: Implement member/role read-only tools
@@ -860,7 +860,7 @@ tasks:
     deps:
       - MCP-062
       - MCP-064
-    status: READY
+    status: DONE
   - id: MCP-073
     phase: 7
     title: Implement list/catalog read-only tools
@@ -871,7 +871,7 @@ tasks:
     deps:
       - MCP-062
       - MCP-064
-    status: READY
+    status: DONE
   - id: MCP-074
     phase: 7
     title: Implement announcement/KB read-only tools
@@ -882,7 +882,7 @@ tasks:
     deps:
       - MCP-063
       - MCP-064
-    status: READY
+    status: DONE
   - id: MCP-075
     phase: 7
     title: Implement basic task read tools
@@ -893,7 +893,7 @@ tasks:
     deps:
       - MCP-061
       - MCP-064
-    status: READY
+    status: DONE
   - id: MCP-076
     phase: 7
     title: Implement registry/search/overdue task read tools
@@ -904,7 +904,7 @@ tasks:
     deps:
       - MCP-075
       - MCP-007
-    status: READY
+    status: DONE
   - id: MCP-077
     phase: 7
     title: Run read-only compatibility tests against recovered fixtures
@@ -920,7 +920,7 @@ tasks:
       - MCP-074
       - MCP-075
       - MCP-076
-    status: READY
+    status: DONE
   - id: MCP-080
     phase: 8
     title: Implement member and role write tools
@@ -936,7 +936,7 @@ tasks:
     phase: 7
     title: Phase 7 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-070
       - MCP-071
@@ -951,7 +951,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Tools are modularized by domain instead of a single giant server.py file.
+      - ToolRegistry decorator implemented for clean registration of standard async python functions as MCP tools.
+      - JSON serialization pushes raw Pydantic output back to the AI context.
   - id: MCP-081
     phase: 8
     title: Implement list and catalog write tools
@@ -1053,6 +1056,27 @@ tasks:
       - MCP-077
       - MCP-088
     status: READY
+  - id: REV-008
+    phase: 8
+    title: Phase 8 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-080
+      - MCP-081
+      - MCP-082
+      - MCP-083
+      - MCP-084
+      - MCP-085
+      - MCP-086
+      - MCP-087
+      - MCP-088
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-091
     phase: 9
     title: Resolve compatibility breaks or create ADR exceptions
