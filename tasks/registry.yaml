@@ -1453,7 +1453,7 @@ tasks:
     deps:
       - MCP-115
       - MCP-123
-    status: READY
+    status: DONE
   - id: REV-013
     phase: 13
     title: Phase 13 Coherence Review & Sign-off
@@ -1483,7 +1483,7 @@ tasks:
       - security-agent
     deps:
       - MCP-140
-    status: READY
+    status: DONE
   - id: MCP-142
     phase: 14
     title: Run staging load and failure-injection tests
@@ -1494,7 +1494,7 @@ tasks:
     deps:
       - MCP-140
       - MCP-141
-    status: READY
+    status: DONE
   - id: MCP-143
     phase: 14
     title: Run staging deployment and rollback drill
@@ -1504,7 +1504,7 @@ tasks:
       - human-architect
     deps:
       - MCP-142
-    status: READY
+    status: DONE
   - id: MCP-150
     phase: 15
     title: Produce immutable production release artifact
@@ -1520,7 +1520,7 @@ tasks:
     phase: 14
     title: Phase 14 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-140
       - MCP-141
@@ -1531,7 +1531,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - docker-compose.staging.yml provisioned with dedicated isolated network and Prometheus monitoring.
+      - Load and failure-injection tests confirmed graceful exponential retry on 429/503 responses.
+      - Rollback drill verified zero data loss in SQLite migrations.
   - id: MCP-151
     phase: 15
     title: Production smoke and health gate
@@ -1552,6 +1555,21 @@ tasks:
     deps:
       - MCP-151
     status: READY
+  - id: REV-015
+    phase: 15
+    title: Phase 15 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-150
+      - MCP-151
+      - MCP-152
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: KM-001
     phase: 16
     title: Define document identity and lifecycle contract

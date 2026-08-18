@@ -1,0 +1,48 @@
+services:
+  pyrus-mcp-server:
+    build:
+      context: ./pyrus_mcp_server
+      dockerfile: Dockerfile
+    container_name: pyrus-mcp-staging
+    restart: unless-stopped
+    ports:
+      - "8080:8000"
+    environment:
+      - PYRUS_LOGIN=${PYRUS_LOGIN:-staging_bot@domain.com}
+      - PYRUS_SECURITY_KEY=${PYRUS_SECURITY_KEY:-staging_security_key}
+      - PYRUS_WEBHOOK_SECRET=${PYRUS_WEBHOOK_SECRET:-staging_webhook_secret}
+      - PYRUS_API_URL=${PYRUS_API_URL:-https://api.pyrus.com/v4}
+      - MCP_TRANSPORT=sse
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=INFO
+      - ENABLE_TENANT_ISOLATION=true
+    volumes:
+      - staging_data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - pyrus-staging-net
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: pyrus-prometheus-staging
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docs/sre/alerts.yaml:/etc/prometheus/alerts.yaml:ro
+      - ./docs/sre/prometheus-staging.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - pyrus-staging-net
+
+volumes:
+  staging_data:
+
+networks:
+  pyrus-staging-net:
+    driver: bridge
