@@ -11,7 +11,7 @@ from .config import settings
 logger = structlog.get_logger()
 
 # Routes that use their own auth mechanism and must bypass Bearer check
-WEBHOOK_BYPASS_PATHS = {"/webhook"}
+WEBHOOK_BYPASS_PATHS = {"/webhook", "/metrics"}
 
 
 class SecurityMiddleware(BaseHTTPMiddleware):

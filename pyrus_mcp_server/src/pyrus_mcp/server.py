@@ -17,9 +17,14 @@ logger = structlog.get_logger()
 
 from contextlib import asynccontextmanager
 
+from .logging_config import configure_logging
 from .tools import register_tools
 from .webhooks import webhook_handler
+from .metrics import metrics_endpoint
 from . import db
+
+# Configure logging globally at import time (JSON in production)
+configure_logging(json_logs=True)
 
 
 @asynccontextmanager
@@ -83,6 +88,7 @@ app = Starlette(
         Route("/mcp", handle_sse, methods=["GET"]),
         Route("/mcp/messages", handle_messages, methods=["POST"]),
         Route("/webhook", webhook_handler, methods=["POST"]),
+        Route("/metrics", metrics_endpoint, methods=["GET"]),
     ],
     middleware=[
         Middleware(SecurityMiddleware)

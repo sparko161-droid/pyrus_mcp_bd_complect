@@ -1,0 +1,57 @@
+groups:
+  - name: pyrus_mcp_slo
+    rules:
+      # ── Alert 1: High Error Rate ───────────────────────────────────────────
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(pyrus_mcp_requests_total{status_code=~"5.."}[5m]))
+            /
+            sum(rate(pyrus_mcp_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate on Pyrus MCP Server"
+          description: "More than 5% of requests are returning 5xx errors. Current rate: {{ $value | humanizePercentage }}"
+          runbook: "https://github.com/sparko161-droid/pyrus_mcp_bd_complect/blob/main/docs/sre/runbooks/high-error-rate.md"
+
+      # ── Alert 2: Pyrus API Down ────────────────────────────────────────────
+      - alert: PyrusAPIDown
+        expr: |
+          (
+            sum(rate(pyrus_mcp_pyrus_api_calls_total{status_code=~"5.."}[2m]))
+            /
+            sum(rate(pyrus_mcp_pyrus_api_calls_total[2m]))
+          ) == 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pyrus API is completely unavailable"
+          description: "100% of calls to Pyrus API are failing for the last 2 minutes."
+          runbook: "https://github.com/sparko161-droid/pyrus_mcp_bd_complect/blob/main/docs/sre/runbooks/pyrus-api-down.md"
+
+      # ── Alert 3: Webhook Signature Spike ──────────────────────────────────
+      - alert: WebhookSignatureFailureSpike
+        expr: |
+          sum(rate(pyrus_mcp_webhook_events_total{status="rejected"}[5m])) > 10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Spike of invalid webhook signatures detected"
+          description: "More than 10 webhook signature failures per second — possible spoofing attack."
+          runbook: "https://github.com/sparko161-droid/pyrus_mcp_bd_complect/blob/main/docs/sre/runbooks/webhook-signature-spike.md"
+
+      # ── Alert 4: High Request Latency ─────────────────────────────────────
+      - alert: HighRequestLatency
+        expr: |
+          histogram_quantile(0.95, sum(rate(pyrus_mcp_request_duration_seconds_bucket[5m])) by (le, path)) > 2.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "p95 latency exceeded 2 seconds"
+          description: "The 95th percentile response time on {{ $labels.path }} is above 2s."

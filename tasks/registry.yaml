@@ -1302,7 +1302,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-034
-    status: READY
+    status: DONE
   - id: REV-011
     phase: 11
     title: Phase 11 Coherence Review & Sign-off
@@ -1334,7 +1334,7 @@ tasks:
       - ai-cto
     deps:
       - MCP-120
-    status: READY
+    status: DONE
   - id: MCP-122
     phase: 12
     title: Implement alerting and SLO burn-rate rules
@@ -1344,7 +1344,7 @@ tasks:
       - human-architect
     deps:
       - MCP-121
-    status: READY
+    status: DONE
   - id: MCP-123
     phase: 12
     title: Write incident/degradation/recovery runbooks
@@ -1354,7 +1354,7 @@ tasks:
       - release-manager
     deps:
       - MCP-122
-    status: READY
+    status: DONE
   - id: MCP-130
     phase: 13
     title: Run SAST/dependency/container/security scans
@@ -1370,7 +1370,7 @@ tasks:
     phase: 12
     title: Phase 12 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-120
       - MCP-121
@@ -1381,7 +1381,11 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - structlog configured globally in JSON mode with secret redaction processor and contextvars injection.
+      - prometheus-client added; /metrics endpoint is open (no Bearer auth) and excluded from SecurityMiddleware bypass.
+      - 'Four Prometheus alert rules defined: HighErrorRate, PyrusAPIDown, WebhookSignatureSpike, HighLatency.'
+      - Three runbooks written in docs/sre/runbooks/ for on-call engineers covering diagnosis and escalation.
   - id: MCP-131
     phase: 13
     title: Run auth and tenant-isolation fuzz tests
@@ -1425,6 +1429,22 @@ tasks:
       - MCP-115
       - MCP-123
     status: READY
+  - id: REV-013
+    phase: 13
+    title: Phase 13 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-130
+      - MCP-131
+      - MCP-132
+      - MCP-133
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-141
     phase: 14
     title: Run full protocol + compatibility + sandbox integration suite
