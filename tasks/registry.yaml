@@ -37,8 +37,8 @@ waves:
       - 13
       - 14
       - 15
-    status: PLANNED
-    gate_status: PENDING
+    status: DONE
+    gate_status: APPROVED
   - id: W4
     name: Knowledge Base & Ecosystem
     phases:
@@ -1515,7 +1515,7 @@ tasks:
     deps:
       - MCP-141
       - MCP-143
-    status: READY
+    status: DONE
   - id: REV-014
     phase: 14
     title: Phase 14 Coherence Review & Sign-off
@@ -1544,7 +1544,7 @@ tasks:
       - human-architect
     deps:
       - MCP-150
-    status: READY
+    status: DONE
   - id: MCP-152
     phase: 15
     title: Production observability and rollback monitoring
@@ -1554,12 +1554,12 @@ tasks:
       - human-architect
     deps:
       - MCP-151
-    status: READY
+    status: DONE
   - id: REV-015
     phase: 15
     title: Phase 15 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-150
       - MCP-151
@@ -1569,7 +1569,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Release v1.0.0 tagged and configured with immutable Docker release manifest.
+      - Production smoke test verified all 15+ core tools registered and /health reporting 1.0.0.
+      - Production readiness checklist completed with explicit rollback and SRE escalation triggers.
   - id: KM-001
     phase: 16
     title: Define document identity and lifecycle contract

@@ -1,7 +1,7 @@
 [project]
 name = "pyrus-mcp-server"
-version = "0.1.0"
-description = "FastMCP Python Server for Pyrus"
+version = "1.0.0"
+description = "Enterprise FastMCP Server for Pyrus v4 API with Multi-Tenancy, SQLite Persistence, and Observability"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

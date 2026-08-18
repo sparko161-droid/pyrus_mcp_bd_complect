@@ -72,7 +72,7 @@ async def handle_messages(request):
 async def health_check(request):
     return JSONResponse({
         "status": "up",
-        "version": "0.1.0",
+        "version": "1.0.0",
         "correlation_id": correlation_id.get()
     })
 

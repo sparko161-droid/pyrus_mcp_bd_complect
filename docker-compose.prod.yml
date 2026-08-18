@@ -1,0 +1,60 @@
+services:
+  pyrus-mcp-server:
+    build:
+      context: ./pyrus_mcp_server
+      dockerfile: Dockerfile
+    image: pyrus-mcp-server:1.0.0
+    container_name: pyrus-mcp-production
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - PYRUS_LOGIN=${PYRUS_LOGIN}
+      - PYRUS_SECURITY_KEY=${PYRUS_SECURITY_KEY}
+      - PYRUS_WEBHOOK_SECRET=${PYRUS_WEBHOOK_SECRET}
+      - PYRUS_API_URL=${PYRUS_API_URL:-https://api.pyrus.com/v4}
+      - REDIS_URL=${REDIS_URL:-}
+      - MCP_TRANSPORT=sse
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=INFO
+      - ENABLE_TENANT_ISOLATION=true
+    volumes:
+      - prod_data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    networks:
+      - pyrus-prod-net
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: pyrus-prometheus-prod
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docs/sre/alerts.yaml:/etc/prometheus/alerts.yaml:ro
+      - ./docs/sre/prometheus-staging.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - pyrus-prod-net
+
+volumes:
+  prod_data:
+  prometheus_data:
+
+networks:
+  pyrus-prod-net:
+    driver: bridge
