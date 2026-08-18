@@ -564,8 +564,10 @@
 
   function taskCardHTML(t) {
     const m = STATUS_META[t.status] || STATUS_META.PLANNED;
-    const depBadge = t.deps.length ? `<span class="badge" title="Зависимости">deps ${t.deps.length}</span>` : "";
-    const discBadge = t.discovery_links.length ? `<span class="badge warn" title="Discovery">disc ${t.discovery_links.length}</span>` : "";
+    const deps = t.deps || [];
+    const discLinks = t.discovery_links || [];
+    const depBadge = deps.length ? `<span class="badge" title="Зависимости">deps ${deps.length}</span>` : "";
+    const discBadge = discLinks.length ? `<span class="badge warn" title="Discovery">disc ${discLinks.length}</span>` : "";
     return `
       <button class="task" type="button" data-id="${t.id}" data-status="${t.status}" data-role="${t.primary}"
         data-search="${(t.id + " " + t.title).toLowerCase().replace(/"/g, "&quot;")}">
@@ -611,13 +613,15 @@
     const t = tasksById.get(id);
     if (!t) return;
     const m = STATUS_META[t.status] || STATUS_META.PLANNED;
-    const deps = t.deps.map(d => {
+    const t_deps = t.deps || [];
+    const deps = t_deps.map(d => {
       const dep = tasksById.get(d);
       const dm = dep ? (STATUS_META[dep.status] || STATUS_META.PLANNED) : null;
       return `<span class="dep-link" data-jump="${d}"><span class="mono">${d}</span>${dm ? ` · ${dm.label}` : ""}</span>`;
     }).join("") || "<span style=\"color:var(--ink-faint)\">нет</span>";
 
-    const discoveries = t.discovery_links.map(d => `
+    const t_discLinks = t.discovery_links || [];
+    const discoveries = t_discLinks.map(d => `
       <div class="discovery-box">
         <div class="d-head">${d.discovery_id} · ${d.type} · ${d.priority}${d.blocking ? " · BLOCKING" : ""}</div>
         <p><strong>Находка:</strong> ${escapeHTML(d.finding)}</p>
@@ -638,7 +642,7 @@
       <dl>
         <dt>Исполнитель</dt><dd>${t.primary}</dd>
         <dt>Ревьюер</dt><dd>${t.reviewer || "—"}</dd>
-        <dt>Gate owners</dt><dd>${t.gate_owners.length ? t.gate_owners.join(", ") : "—"}</dd>
+        <dt>Gate owners</dt><dd>${(t.gate_owners || []).length ? t.gate_owners.join(", ") : "—"}</dd>
         <dt>Зависит от</dt><dd>${deps}</dd>
         <dt>Blocked reason</dt><dd>${t.blocked_reason ? escapeHTML(t.blocked_reason) : "—"}</dd>
         ${t.discovered_from ? `<dt>Из discovery</dt><dd><span class="mono">${t.origin_discovery}</span> (${t.discovered_from})</dd>` : ""}
