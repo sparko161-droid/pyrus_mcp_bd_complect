@@ -1,0 +1,617 @@
+import {BotHookRequest, BotHookResponse, TaskWithComments, FormResponse, FormField, PyrusApiClient, TableRow, TaskComment,  FormRegisterRequest, TaskCommentRequest, ProfileResponse, Person} from "pyrus-api";   
+    
+export default async function(request: BotHookRequest): Promise<BotHookResponse> {  
+  const start_time = new Date();  
+  const bot = new ExtededClient(request.access_token); 
+  let full_task = await bot.fix_task(request.task);
+  if (!full_task?.form_id) return {text: "Бот не может отработать в этой задаче", approval_choice: "rejected"};
+  let last_comment = full_task.comments[full_task.comments.length -1];
+  if (!last_comment.approval_choice && !last_comment.action && !last_comment.approval_step && !last_comment.approvals_added && !last_comment.approvals_removed && !last_comment.approvals_rerequested && !last_comment.changed_step && !last_comment.field_updates) return null;
+  const settings = JSON.parse(request.bot_settings);
+  let result = await apply_rules(bot, full_task, settings, request.user_id);  
+   
+  //console.log(result);
+  const res = await bot.tasks.addComment(full_task.id, result);
+  let approval_list = prepare_approval_list(full_task);
+  full_task = await bot.fix_task(res.task);
+  await fill_tables(bot, full_task, settings, approval_list, request.user_id);
+  if (!full_task.close_date){
+    
+    let new_step_info = approval_list[full_task.current_step] ?? {};
+    let bot_on_step = true;
+    let no_waiting = true;
+    for (let person_id in new_step_info){
+            if (Number(person_id) == request.user_id) bot_on_step = true;
+            else if (new_step_info[person_id] == 'waiting') no_waiting = false;
+          }
+    if (no_waiting && bot_on_step){
+        await bot.tasks.addComment(full_task.id, {approval_choice: "approved"});
+        result = {approval_choice: "approved"};
+      }
+    }
+  result = result.approval_choice ? {subscribers_rerequested: [{id: request.user_id}]} : null;
+  console.log("working", get_time_seconds(start_time, new Date())); 
+  return result;  
+}  
+
+  
+async function apply_rules(bot: ExtededClient, task: ExtededTask, settings, bot_id: number): Promise<TaskCommentRequest>{ 
+    const approval_list = prepare_approval_list(task);
+    //console.log(approval_list);
+    let have_to_close = false;
+    let revision = false;
+    let field_updates = [];
+    let count = 0; 
+    let action = null;
+    let comment_text = "";
+    let approval_request: Record <number, number[]> = {};
+    let skip_notif = false;
+    let approval_choice = null;
+    for (let rule of settings.rules){
+        count += 1;
+        if (task.form_id != rule.form_id || rule.steps.indexOf(task.current_step) < 0) continue;
+        const this_step_info = approval_list[task.current_step];
+        let number_of_denys = 0;
+        let total_approvals = 0;
+        let number_of_waiting = 0;
+        let denied_people = [];
+        let revision_code = rule["revision_settings"]?.["field"] ?? "revision_checkmark";
+        for (let key in this_step_info){
+            if (Number(key) == bot_id) continue; 
+            const approval_choice = this_step_info[key];
+            total_approvals += 1;
+            if (approval_choice == 'rejected'){
+               number_of_denys +=1;
+               denied_people.push(Number(key));
+               }
+            else if (approval_choice ==  'waiting') number_of_waiting += 1;
+          }
+          if (number_of_waiting == 0) approval_choice = "approved";
+        if (rule["revision_settings"] && task.named_fields[revision_code]?.value == 'checked'){
+            revision = true;
+            task.named_fields[revision_code].value = "unchecked";
+            field_updates.push(task.named_fields[revision_code]);
+            comment_text = "Требуется доработка. "
+            if (rule.revision_settings["comment"] && task.named_fields[rule.revision_settings.comment]?.value){
+                comment_text += task.named_fields[rule.revision_settings.comment].value;
+                task.named_fields[rule.revision_settings.comment].value = null;
+                field_updates.push(task.named_fields[rule.revision_settings.comment])
+              }
+            if (rule.revision_settings["set_field"] && task.named_fields[rule.revision_settings.set_field]?.value){
+                task.named_fields[rule.revision_settings.set_field].value = "checked";
+                field_updates.push(task.named_fields[rule.revision_settings.set_field]);
+              }
+            if (rule.revision_settings["return_steps"]){
+                for (let return_step of rule.revision_settings.return_steps){
+                    for (const key in approval_list[return_step] ?? {}){
+                      if (!approval_request[return_step]) {
+                          approval_request[return_step] = [];
+                        }
+                        approval_request[return_step].push(Number(key));
+                      }
+                  }
+              }
+          }
+        if (!revision && rule["stop_settings"]){
+            const criteria = rule.stop_settings["criteria"] ?? 100;
+            let veto_players = rule.stop_settings["veto"] ?? [];
+            let wait_for_everyone = rule.stop_settings["wait_for_everyone"];
+            let found_veto_player = veto_players.length > 0 && denied_people.some(item => veto_players.includes(item));
+
+            if ((criteria > 0 && criteria <= number_of_denys*100/total_approvals)|| (criteria < 0 && number_of_denys >= criteria*-1) || found_veto_player) have_to_close = true;
+            if (have_to_close && (!wait_for_everyone || number_of_waiting == 0)){
+                if (rule.stop_settings["field"]){
+                    let task_field = task.named_fields[rule.stop_settings.field];
+                    if (task_field){
+                        if (task_field.type == 'checkmark'){
+                           task_field.value = "checked";
+                           field_updates.push(task_field);
+                           }
+                        else if (task_field.type == 'multiple_choice' && rule.stop_settings["field_value"]){
+                            const form = await bot.get_form(task.form_id);
+                            const form_field = form.named_fields[rule.stop_settings.field];
+                            let option = form_field.info.options.find(x=>x.choice_value == rule.stop_settings["field_value"] && !x.deleted);
+                            if (option){
+                                task_field.value = {choice_ids: [option.choice_id]};
+                                field_updates.push(task_field)
+                              }
+                          }
+                      }
+                  }
+                if (rule.stop_settings["close"]){
+                  action = "finished";
+                  approval_choice = null;
+                  }
+              }
+            else if (rule.stop_settings["waiting_status"] && rule.stop_settings["field"] && number_of_waiting > 0){
+              let task_field = task.named_fields[rule.stop_settings.field];
+              if (task_field.type == 'multiple_choice'){
+                const form = await bot.get_form(task.form_id);
+                const form_field = form.named_fields[rule.stop_settings.field];
+                let option = form_field.info.options.find(x=>x.choice_value == rule.stop_settings["waiting_status"] && !x.deleted);
+                if (option){
+                    task_field.value = {choice_ids: [option.choice_id]};
+                    field_updates.push(task_field)
+                  }
+                }
+                
+              }
+          }
+          break;
+      }
+    console.log("Применилось правило", count);
+    let approvals_rerequested = [];
+    for (let step_number = 0; step_number < task.approvals.length; step_number ++){
+        let collected = approval_request[step_number + 1];
+        let request_on_step = [];
+        if (collected?.length > 0){
+            for (let person_id of collected){
+              if (task.current_step == step_number +1 && person_id == bot_id) approval_choice = null;
+              request_on_step.push({id: person_id});
+              }
+          }
+        if (task.current_step <= step_number + 1){
+          let approvals_on_step = approval_list[step_number + 1];
+          if (approvals_on_step?.[bot_id] && approvals_on_step?.[bot_id] != 'waiting'){
+            //console.log("rerequest bot", step_number +1, task.current_step)
+             request_on_step.push({id: bot_id});
+             }
+          }
+        approvals_rerequested.push(request_on_step);
+      }
+    if (!comment_text && !approval_choice && field_updates.length == 0 && !action && approvals_rerequested.length == 0) skip_notif = true;
+    return {
+        text: comment_text,
+        approval_choice: approval_choice,
+        field_updates: field_updates,
+        action: action,
+        approvals_rerequested: approvals_rerequested,
+        skip_notification: skip_notif
+      }; 
+  } 
+
+async function fill_tables(bot: ExtededClient, task: ExtededTask, settings, approval_list: Record<number, Record<number, string>>, bot_id: number){
+    let tables: {code: string, date_code: string, user_code: string, fio_code: string, step_code: string, position_code:string, choice_code: string,
+       rows: {step: number, user_id: number, date: Date, approval_choice: string, initials: boolean}[]}[] = [];
+    let approval_history: Record<number, Record<number, {user_approved: number | null, date: Date | null, existing_choice: string}>> = get_approval_history(task, approval_list);
+    let base_rules = {
+      "approved": "Утверждено",
+      "acknowledged": "Просмотрено",
+      "rejected": "Против",
+      "waiting": "Ожидает решения"
+    }
+    if (settings.choices){
+        for (let choice in settings.choices){
+            base_rules[choice] = settings.choices[choice];
+          }
+      }
+    const timezone = settings["timezone"] === undefined ? 3 : settings["timezone"];
+    const initials = settings["initials"] === undefined ? true : settings["initials"];
+    const include_waiting =  settings["include_waiting"] ? false : settings["include_waiting"]; 
+    let user_ids = [];
+    for (let rule of settings.rules){
+        if (rule.form_id != task.form_id || !rule.registration_settings || !rule.registration_settings["table_code"]) continue;
+        let steps_info = {};
+        const rule_time_zone = rule.registration_settings["timezone"] ?? timezone;
+        const row_initials = rule.registration_settings["initials"] === undefined ? initials : rule.registration_settings["initials"];
+        const row_include_waiting = rule.registration_settings["include_waiting"] === undefined ? include_waiting : rule.registration_settings["include_waiting"]; 
+        for (let step of rule.steps ?? []){
+            steps_info[step] = approval_list[step] ?? {};
+          }
+        let needed_table = tables.find(x=>x.code == rule.registration_settings.table_code);
+                if (!needed_table){
+                    needed_table = {code: rule.registration_settings.table_code, date_code: rule.registration_settings.date_code, user_code: rule.registration_settings.user_code, fio_code: rule.registration_settings.fio_code, 
+                        step_code: rule.registration_settings.step_code, position_code: rule.registration_settings.position_code, choice_code: rule.registration_settings.choice_code, rows: []}
+                  }
+        for(let step in steps_info){
+            for (let person_id in steps_info[step]){
+              if (Number(person_id) == bot_id) continue;
+                let person_comment_history:{user_approved: number | null, date: Date | null, existing_choice: string} = approval_history[step][person_id]
+                if (person_comment_history.existing_choice == 'waiting' && !row_include_waiting) continue;
+                
+                for (let attribute of ["date_code", "user_code", "fio_code","step_code","position_code","choice_code"]){
+                    if (!needed_table[attribute] && rule.registration_settings[attribute]) needed_table[attribute] = rule.registration_settings[attribute];
+                  }
+                let choice = base_rules[person_comment_history.existing_choice];
+                if (rule.registration_settings["choices"] && rule.registration_settings.choices[person_comment_history.existing_choice]){
+                    choice = rule.registration_settings.choices[person_comment_history.existing_choice]
+                  }
+                user_ids.push(person_id);
+                user_ids.push(person_comment_history.user_approved);
+                let row_date = null;
+                if (person_comment_history.date){
+                   row_date = new Date(person_comment_history.date);
+                   row_date.setHours(row_date.getHours() + rule_time_zone);
+                   }
+                  
+                needed_table.rows.push({step: Number(step), user_id: person_comment_history.user_approved ?? Number(person_id), date: row_date, approval_choice: choice, initials: row_initials})
+              }
+            tables.push(needed_table);
+          }
+      }
+    //console.log(tables);
+    let found_row_ids: Record<string, number[]> = {};
+    user_ids = Array.from(new Set(user_ids.filter(x=>x != null)));
+    const users_info = await bot.get_info_by_id(user_ids);
+    const null_person: Person = {id: null, first_name: "", skype: null, last_name: "", email: null, type: "user", banned: true, position: null, phone: null};
+    for (let table of tables){
+        if (!task.named_fields[table.code]) continue;
+        if (!found_row_ids[table.code]) found_row_ids[table.code] = [];
+        if (!task.named_fields[table.step_code] || task.named_fields[table.step_code].parent_id != task.named_fields[table.code].id || task.named_fields[table.step_code].type != 'number') continue;
+        if (!task.named_fields[table.user_code] || task.named_fields[table.user_code].parent_id != task.named_fields[table.code].id || task.named_fields[table.user_code].type != 'person') continue;
+        let maxRowId = (() => {
+                const ids = (task.named_fields[table.code].value as ExtendedTableRow[])
+                  .map(x => x.row_id);
+                return ids.length > 0 ? Math.max(...ids) + 1 : 0;
+              })();
+        for (let row of table.rows){
+            let needed_row: ExtendedTableRow = null;
+            const user_info = users_info[row.user_id] ?? null_person;
+            for (let table_row of task.named_fields[table.code].value as ExtendedTableRow[]){
+              if (table_row.named_cells[table.step_code].value == row.step && table_row.named_cells[table.user_code].value.id == Number(row.user_id)){
+                  needed_row = table_row;
+                  break;
+                }
+            }
+            if (!needed_row) {
+              needed_row = await bot.add_row_to_table((task.named_fields[table.code].value as ExtendedTableRow[]), task.named_fields[table.code].id, task.form_id, maxRowId);
+              maxRowId += 1;
+              }
+            found_row_ids[table.code].push(needed_row.row_id);
+            needed_row.named_cells[table.user_code].value = {id: row.user_id};
+            needed_row.named_cells[table.step_code].value = row.step;
+            if (needed_row.named_cells[table.date_code]) {
+              if (row.date){
+                if (needed_row.named_cells[table.date_code].type == 'text') needed_row.named_cells[table.date_code].value = format_date(row.date);
+                else if (needed_row.named_cells[table.date_code].type == 'date') needed_row.named_cells[table.date_code].value = row.date.toISOString();
+              }
+              else needed_row.named_cells[table.date_code].value = null;
+            }
+             if (needed_row.named_cells[table.fio_code]){
+                 needed_row.named_cells[table.fio_code].value = user_info.last_name + " " + (row.initials ? get_initials(user_info.first_name) : user_info.first_name);
+              }
+            if (needed_row.named_cells[table.position_code]){
+                 needed_row.named_cells[table.position_code].value = user_info.position;
+              }
+            if (needed_row.named_cells[table.choice_code]){
+                 needed_row.named_cells[table.choice_code].value = row.approval_choice;
+              }
+          }
+      }
+    //console.log(found_row_ids);
+    let field_updates = [];
+    for (let table_code in found_row_ids){
+      field_updates.push(task.named_fields[table_code]);
+        if (!task.named_fields[table_code].value) continue;
+        let row_ids = found_row_ids[table_code];
+        for (let row of task.named_fields[table_code].value as ExtendedTableRow[]){
+              if (!row_ids.includes(row.row_id)) row.delete = true;
+            }
+      }
+    try{
+      //console.log("update", field_updates);
+      await bot.tasks.addComment(task.id, {field_updates: field_updates, skip_notification: true});
+
+      }
+    catch(error){
+        console.log(error);
+      }
+  }
+    
+  function format_date(date: Date): string{
+      return `${('0'+date.getDate()).slice(-2)}.${('0'+(date.getMonth()+1)).slice(-2)}.${date.getFullYear()} ${('0'+date.getHours()).slice(-2)}:${('0'+date.getMinutes()).slice(-2)}`;
+    }
+  
+  function get_initials(first_name: string): string{
+      let result = "";
+      if (!first_name || first_name == "") return result;
+      const io = first_name.split(" ");
+      result += io[0][0] + "."
+      if (io.length > 1){
+          result = result + " " + io[1][0] + "."
+        }
+      return result;
+    }
+  
+function prepare_approval_list(task: ExtededTask): Record<number, Record<number, string>>{
+    let result:Record<number, Record<number, string>> = {};
+    //console.log(task.steps);
+    for (let step_num = 0; step_num < task.approvals.length; step_num++){
+        for (let person of task.approvals[step_num]){
+          if (!result[step_num+1]) {
+                result[step_num+1] = {};
+              }
+            result[step_num+1][person.person.id] = person.approval_choice;
+          }
+      }
+    return result;
+  }
+
+function get_approval_history(task: ExtededTask, approval_list: Record<number, Record<number, string>>): Record<number, Record<number, {user_approved: number | null, date: Date | null, existing_choice: string}>>{
+    let result: Record<number, Record<number, {user_approved: number | null, date: Date | null, existing_choice: string}>> = {};
+    let current_step = 0;
+    for (let step_num in approval_list){
+        result[Number(step_num)] = {};
+        for (let approver in approval_list[step_num]){
+            result[Number(step_num)][Number(approver)] = {existing_choice: approval_list[step_num][approver], user_approved: null, date: null};
+          }
+      }
+    for (let comment of task.comments){
+        let existing_approvers = result[current_step] ?? {};
+        if (comment.approval_choice){
+            if (existing_approvers[comment.author.id] && comment.approval_choice == existing_approvers[comment.author.id].existing_choice){
+                existing_approvers[comment.author.id].date = comment.create_date;
+                existing_approvers[comment.author.id].user_approved = comment.author.id;
+              }
+            for (let role of comment.comment_as_roles ?? []){
+                if (existing_approvers[role.id] && comment.approval_choice == existing_approvers[role.id].existing_choice){
+                    existing_approvers[role.id].date = comment.create_date;
+                    existing_approvers[role.id].user_approved = comment.author.id;
+                  }
+              }
+          }
+        if (comment.changed_step) current_step = comment.changed_step;
+      }
+    return result;
+  }
+  
+function get_time_seconds(date1, date2){ 
+    return Math.floor((date2 - date1)/1000) 
+  } 
+  
+type ExtededForm = FormResponse & {   
+    named_fields: Record <string, FormField>,   
+    id_to_code: Record <number, string>,   
+    all_fields: FormField[]   
+  }   
+      
+      
+type ExtededTask = TaskWithComments & {   
+    named_fields: Record <string, FormField>,   
+    all_fields: FormField[]   
+  }   
+      
+type ExtendedTableRow = TableRow & {   
+    named_cells: Record <string, FormField> 
+  }   
+  
+type ExctendedTaskComment = TaskComment &{ 
+    named_fields_changes: Record <string, FormField> 
+  } 
+      
+class ExtededClient extends PyrusApiClient{   
+    templates: Record <number, ExtededForm>; 
+    profile_info: ProfileResponse;  
+    constructor (token){   
+        super(token);   
+        this.templates = {};  
+        this.profile_info = null; 
+      }   
+      
+    async get_form(id: number): Promise<ExtededForm>{   
+        if (this.templates[id]) return this.templates[id];   
+        try {   
+          const form = await this.forms.get({id});   
+          let new_form: ExtededForm = this.fix_form(form);   
+          this.templates[id] = new_form;   
+          return new_form;   
+        }   
+        catch (error){   
+            return null;   
+          }   
+      }   
+      
+      async get_profile(): Promise<ProfileResponse>{
+          if (this.profile_info) return this.profile_info;
+          const profile = await this.profile.get();
+          this.profile_info = profile;
+          return profile;
+        }
+      
+    async get_info_by_id(id: number | number[]): Promise<Record <number, Person>>{
+        if (!this.profile_info) await this.get_profile();
+        let ids = [];
+        if (typeof id == 'number') ids = [Number(id)];
+        else ids = id.map(x=>Number(x));
+        let result: Record <number, Person> = {};
+        let found_ids = [];
+        //console.log(ids);
+        for (const person of this.profile_info.organization.persons){
+            if (ids.includes(person.id)){
+                result[person.id] = person
+                found_ids.push(person.id)
+              }
+            if (found_ids.length == ids.length) break;
+          }
+        for (let role of this.profile_info.organization.roles){
+            if (ids.includes(role.id)){
+              //console.log(role);
+                result[role.id] = {
+                    id: role.id,
+                    last_name: role.name,
+                    position: role.name,
+                    first_name: "",
+                    banned: role.banned,
+                    email: "",
+                    type: "role",
+                    skype: null,
+                    phone: null
+                  }
+                  found_ids.push(role.id);
+              }
+            if (found_ids.length == ids.length) break;
+          }
+        return result;
+      } 
+      
+    private fix_form(form: FormResponse): ExtededForm{   
+        const all_fields = this.get_flat_fields(form.fields, true);   
+        let new_form: ExtededForm = {...form, named_fields: {}, id_to_code: {}, all_fields: all_fields};   
+        for (let field of all_fields){   
+          field.value = null;  
+            if (!field.info?.code) continue;   
+              let code = field.info.code;   
+              new_form.named_fields[code] = field;   
+              if (!new_form.id_to_code[field.id]) new_form.id_to_code[field.id] = code;   
+              if (field.type == "text"){   
+                  let analyzed_ids = [];   
+                  let next_field = all_fields.find(f => !analyzed_ids.includes(f.id) && f.name.includes(`(${field.name})`)) || null;   
+                  while (next_field) {   
+                    const shortName = next_field.name.replace(`(${field.name})`, "").replace(" ", "");   
+                    const subCode = `${code}*${shortName}`;   
+                    new_form.id_to_code[next_field.id] = subCode;   
+                    new_form.named_fields[subCode] = next_field;   
+                    analyzed_ids.push(next_field.id);   
+                    next_field = all_fields.find(f => !analyzed_ids.includes(f.id) && f.name.includes(`(${field.name})`)) || null;   
+                    }   
+                }   
+          }   
+        return new_form;   
+      }   
+          
+    private get_flat_fields(fields: FormField[], is_form: boolean = false){   
+        let result = [];   
+        for (let field of fields){   
+            result.push(field);   
+      
+            if (field.type == 'table' && field.info?.columns && is_form){   
+                result.push(...field.info.columns);   
+              }   
+            else if (field.type == 'title' && ((is_form && field.info?.fields) || (!is_form && field.value.fields))){   
+              //console.log("In group", is_form ? field.info.fields : field.value);   
+              const field_array: FormField[] = is_form ? field.info.fields : field.value.fields;   
+                  //result.push(...field.info.fields);   
+                  for (let title_field of field_array){   
+                    //console.log("group_field")   
+                      result.push(title_field);   
+                      if (title_field.type == 'table' && title_field.info?.columns && is_form){   
+                          result.push(...title_field.info.columns);   
+                        }   
+                    }   
+              }   
+          }   
+        return result;   
+      }   
+          
+    async get_task(task_id: number): Promise<ExtededTask | string>{   
+        try{   
+            const task = await this.tasks.get({id: task_id});   
+            if (task.task){  
+              let fixed_task = await this.fix_task(task.task);  
+                return fixed_task;  
+              }      
+          }   
+        catch (error){   
+            return error;   
+          }   
+      }   
+    async get_registry_with_fix(form_id: number, form_req: FormRegisterRequest = null): Promise<ExtededTask[] | string>{   
+        try{   
+            const form_register = await this.forms.getTasks(form_id, form_req);  
+            let return_register: ExtededTask[] = [];  
+            if (form_register.tasks?.length > 0){  
+                for (let task of form_register.tasks){  
+                  task.form_id = form_id;  
+                    let fixed_task = await this.fix_task({...task, comments: []});  
+                    return_register.push(fixed_task);  
+                  }  
+              }  
+            return return_register;  
+          }   
+        catch (error){   
+            return error;   
+          }   
+      }   
+          
+        async fix_task(task: TaskWithComments): Promise<ExtededTask>{  
+        let full_task: ExtededTask = {...task, named_fields: {}, all_fields: []};  
+        if (!full_task.form_id) return full_task;  
+        const form = await this.get_form(full_task.form_id);  
+        if (!form) return null;  
+        full_task.all_fields = this.get_flat_fields(full_task.fields);  
+        full_task.named_fields = {...form.named_fields};  
+        for (let field of full_task.all_fields){  
+          let field_code = form.id_to_code[field.id];  
+          if (!field_code) continue;  
+          full_task.named_fields[field_code] = field;  
+          if (field.type == 'table' && field.value){  
+            for (let row of field.value){  
+              const extendedRow = row as ExtendedTableRow;  
+              extendedRow.named_cells = extendedRow.named_cells || {};  
+              let cell_ids: number[] = [];  
+              if (row.cells){  
+                for (let cell of row.cells) {  
+                    cell_ids.push(cell.id);  
+                    if (!cell.code) continue;  
+                    extendedRow.named_cells[cell.code] = cell;  
+                    }  
+                  }  
+                else row.cells = [];  
+              const list_of_missing_fields = form.all_fields.filter(x=> x.parent_id == field.id && !cell_ids.includes(x.id));  
+              for (let missing_cell of list_of_missing_fields){  
+                let new_cell = {...missing_cell};  
+                row.cells.push(new_cell);  
+                  if (missing_cell.info?.code) {  
+                        
+                    extendedRow.named_cells[missing_cell.info.code] = new_cell;  
+                    }  
+                }  
+            }        
+            }
+          else if (field.type == 'table') field.value = [];
+          }  
+        return full_task;  
+      } 
+
+    async add_row_to_table(table: ExtendedTableRow[], table_id: number, form_id: number, max_row_id: number): Promise<ExtendedTableRow>{
+        const form = await this.get_form(form_id);
+        let new_cells = [];
+        let named_cells = {};
+        for (let field of form.all_fields){
+            let new_field = {...field};
+            field.value = null;
+            if (table_id != field.parent_id) continue;
+            if (field.info?.code){
+                named_cells[field.info?.code] = new_field;
+              }
+            new_cells.push(new_field)
+          }
+        let new_row = {row_id: max_row_id + 1, cells: new_cells, named_cells: named_cells}
+        table.push(new_row);
+        return new_row;
+      }
+
+    async fix_task_comments(task: TaskWithComments): Promise<ExctendedTaskComment[]>{  
+        let comments: ExctendedTaskComment[] = []; 
+        const form = await this.get_form(task.form_id); 
+        for (let comment of task.comments){ 
+            let new_comment: ExctendedTaskComment = {...comment, named_fields_changes: {}}; 
+            if (new_comment.field_updates && new_comment.field_updates.length != 0){ 
+                for (let field of new_comment.field_updates){ 
+                    if (!form.id_to_code[field.id]) continue; 
+                    const code = form.id_to_code[field.id]; 
+                    if (!field.value) field.value = field.type == 'table' ? [] : null; 
+                    if (field.type == 'table'){ 
+                        for (let row of field.value){ 
+                            const extendedRow = row as ExtendedTableRow;  
+                            extendedRow.named_cells = extendedRow.named_cells || {};  
+                            if (row.cells){  
+                              for (let cell of row.cells) {   
+                                  if (!cell?.code) continue;  
+                                  extendedRow.named_cells[cell.code] = cell;  
+                                  }  
+                                }  
+                            else row.cells = []; 
+                          } 
+                        
+                      } 
+                       
+                    new_comment.named_fields_changes[code] = field; 
+                     //console.log(new_comment.named_fields_changes[code].value); 
+                  } 
+              } 
+            comments.push(new_comment); 
+          } 
+        return comments; 
+      } 
+  }

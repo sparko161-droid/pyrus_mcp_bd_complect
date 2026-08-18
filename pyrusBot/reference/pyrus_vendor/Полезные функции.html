@@ -1,0 +1,1348 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+	<title>Полезные функции Type Script</title><style type="text/css">HTML, BODY {
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+    line-height: 1.5;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+BODY {
+    --color-error-250: hsl(355, 100%, 86%);
+    --color-pink-250: hsl(334, 81%, 81%);
+    --color-orange-250: hsl(19, 100%, 82%);
+    --color-warning-300: hsl(36, 91%, 74%);
+    --color-accent-secondary-250: hsl(50, 100%, 76%);
+    --color-success-250: hsl(143, 63%, 80%);
+    --color-accent-200: hsl(180, 54%, 81%);
+    --color-info-250: hsl(207, 100%, 84%);
+    --color-violet-250: hsl(249, 87%, 91%);
+    --color-purple-250: hsl(273, 100%, 89%);
+    --color-neutral-250: hsl(210, 8%, 85%);
+
+    --color-trix-text-red-background: var(--color-error-250);
+    --color-trix-text-pink-background: var(--color-pink-250);
+    --color-trix-text-orange-background: var(--color-orange-250);
+    --color-trix-text-orange-yellow-background: var(--color-warning-300);
+    --color-trix-text-yellow-background: var(--color-accent-secondary-250);
+    --color-trix-text-green-background: var(--color-success-250);
+    --color-trix-text-green-blue-background: var(--color-accent-200);
+    --color-trix-text-blue-background: var(--color-info-250);
+    --color-trix-text-violet-background: var(--color-violet-250);
+    --color-trix-text-purple-background: var(--color-purple-250);
+    --color-trix-text-gray-background: var(--color-neutral-250);
+
+	word-wrap: break-word;
+}
+
+MAIN {
+	margin: 100px auto 200px;
+	padding: 0 20px;
+	width: 100%;
+	max-width: 800px;
+	box-sizing: border-box;
+}
+
+P {
+	margin: 0.9em 0 0;
+}
+
+A {
+	color: hsl(180, 100%, 27%);
+}
+
+A[type='video']::before {
+    display: inline;
+    content: attr(href);
+}
+
+H1, H2, H3, H4 {
+	font-weight: 700;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+H1 {
+	font-size: 32px;
+	line-height: 40px;
+	margin-top: 18px;
+	margin-bottom: 22px;
+}
+
+H2, H3, H4 {
+	font-size: 1.4em;
+	line-height: 1.4em;
+	margin: 1.4em 0 0.5em;
+}
+
+H3 {
+	font-size: 1.2em;
+}
+
+H4 {
+	margin: 1.5em 0 0;
+	font-size: 1em;
+}
+
+UL {
+	padding-inline-start: 2em;
+	list-style-type: disc;
+}
+
+UL > LI {
+	padding: 0;
+	max-width: calc(100% - 1em);
+}
+
+OL {
+	padding-inline-start: 2em;
+	counter-reset: item;
+}
+
+OL > LI {
+	word-break: break-word;
+	max-width: calc(100% - 1em);
+	counter-increment: item;
+}
+
+OL > LI::marker {
+	content: counters(item, ".") ". ";
+	padding-inline-end: 0.4em;
+}
+
+LI > P {
+	margin-top: 0;
+}
+
+MARK {
+    background-color: var(--color-trix-text-yellow-background);
+    color: inherit;
+}
+
+IMG {
+	display: block;
+	margin: 0.9em;
+	max-width: calc(100% - 40px);
+	height: fit-content;
+	background-color: hsl(210, 9%, 93%);
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+IMG.left {
+	margin-right: auto;
+}
+
+IMG.right {
+	margin-left: auto;
+}
+
+IMG.center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+IMG.leftText {
+	float: left;
+	margin-right: 20px;
+}
+
+IMG.rightText {
+	float: right;
+	margin-left: 20px;
+}
+
+CODE, PRE {
+	background-color: hsl(210, 10%, 96%);
+	font-family: Courier New, Courier, monospace;
+	font-size: 85%;
+}
+
+CODE {
+	margin: 0;
+	padding: 0.2em 0.4em;
+	border-radius: 6px;
+}
+
+PRE {
+	white-space: pre-wrap;
+	margin: 1em 0;
+	padding: 1.2em;
+	border-radius: 4px;
+	tab-size: 4;
+}
+
+DIV[data-theme],
+BLOCKQUOTE {
+	margin: 0.9em 0 0.5em;
+	padding-inline-start: 1em;
+	border-inline-start: 3px solid rgba(0, 0, 0, 75%);
+}
+
+DIV[data-theme="red"] {
+    border-color: #E66773;
+    background-color: #FBE8EA;
+}
+
+DIV[data-theme="pink"] {
+    border-color: #ED6AA2;
+    background-color: #FCEBF3;
+}
+
+DIV[data-theme="orange"] {
+    border-color: #FF8E56;
+    background-color: #FEEEE6;
+}
+
+DIV[data-theme="orangeYellow"] {
+    border-color: #F7B859;
+    background-color: #FEF4E6;
+}
+
+DIV[data-theme="yellow"] {
+    border-color: #FCD640;
+    background-color: #FEF7C5;
+}
+
+DIV[data-theme="green"] {
+    border-color: #5AC180;
+    background-color: #DCF8E6;
+}
+
+DIV[data-theme="greenBlue"] {
+    border-color: #00B2B2;
+    background-color: #D1F6F6;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #6ABCFF;
+    background-color: #E8F5FF;
+}
+
+DIV[data-theme="violet"] {
+    border-color: #B4A9FA;
+    background-color: #F0EEFE;
+}
+
+DIV[data-theme="purple"] {
+    border-color: #CC92FF;
+    background-color: #F5E9FF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB2B9;
+    background-color: #ECEDEF;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #42A1FFFF;
+    background-color: #D9EBFFFF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB3B9FF;
+    background-color: #ECEDEFFF;
+}
+
+TABLE {
+	width: 100%;
+	table-layout: fixed;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+TABLE P {
+	margin: 0;
+}
+
+TD {
+	min-width: 35px;
+	padding: 4px 12px;
+	box-sizing: border-box;
+	border: 1px solid hsl(210, 8%, 85%);
+	background-clip: padding-box;
+	vertical-align: top;
+}
+
+TD[data-format='table-cell-highlight-red'] {
+	background-color: #ffebee;
+}
+
+TD[data-format='table-cell-highlight-yellow'] {
+	background-color: #fcf3d9;
+}
+
+TD[data-format='table-cell-highlight-green'] {
+	background-color: #ebfaeb;
+}
+
+TD[data-format='table-cell-highlight-blue'] {
+	background-color: #ebf4ff;
+}
+
+.attachment__block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 8px;
+    margin: 0.9em 0;
+}
+
+.attachment__item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.attachment__item:hover {
+    background-color: #f5f5f5;
+}
+
+.attachment__item::before {
+    content: "";
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 24px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 24"><path fill="%23C7CCD1" d="M0 1.8C0 .8.8 0 1.8 0h9.4c.4 0 .9.2 1.2.5l7 6.3c.4.4.6.9.6 1.4v14c0 1-.8 1.8-1.8 1.8H1.8c-1 0-1.8-.8-1.8-1.8V1.8Z"/><path fill="%23fff" d="m18.4 6.8-5.9-5.2c-.3-.4-1 0-1 .4v4c0 1 .8 1.9 1.8 1.9H18c.6 0 .9-.7.4-1Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.attachment__fileName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment__fileSize {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #999;
+}
+
+.knowledgeBaseEditorflatList {
+    --size-gap: 4ch;
+    position: relative;
+    display: list-item;
+    margin-left: var(--size-gap);
+}
+.knowledgeBaseEditorflatList[aria-level="2"] {
+    margin-left: calc(var(--size-gap) * 2);
+}
+.knowledgeBaseEditorflatList[aria-level="3"] {
+    margin-left: calc(var(--size-gap) * 3);
+}
+.knowledgeBaseEditorflatList[aria-level="4"] {
+    margin-left: calc(var(--size-gap) * 4);
+}
+.knowledgeBaseEditorflatList[aria-level="5"] {
+    margin-left: calc(var(--size-gap) * 5);
+}
+.knowledgeBaseEditorflatList[aria-level="6"] {
+    margin-left: calc(var(--size-gap) * 6);
+}
+.knowledgeBaseEditorflatList[aria-level="7"] {
+    margin-left: calc(var(--size-gap) * 7);
+}
+.knowledgeBaseEditorflatList[aria-level="8"] {
+    margin-left: calc(var(--size-gap) * 8);
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="2"] {
+    list-style-type: circle;
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="3"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="4"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="5"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="6"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="7"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="8"] {
+    list-style-type: square;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"],
+.knowledgeBaseEditorflatList[data-kind="check"] {
+    display: block;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"]::before {
+    content: attr(data-ancestors) "." attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"]::before {
+    /* Empty checkbox */
+    content: "\2610";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"][aria-checked="true"]::before {
+    /* Marked checkbox */
+    content: "\2611";
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"][aria-level="1"]::before {
+    content: attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList > P, .knowledgeBaseEditor__flatList > SPAN > P {
+    margin: 0;
+
+}
+IMG[data-type='inline'] {
+    display: inline-flex;
+    height: 1.3em;
+    width: auto;
+    margin: 0.1em;
+    vertical-align: top;
+}
+</style></head>
+	<body>
+		<main>
+		<article><div><div></div></div><h1><span>Полезные функции Type Script</span></h1><p><span>В этой статье описаны некоторые полезные функции, которые могут пригодиться при разработке серверных скриптов для клиентов</span></p><p><span>Некоторые из функций используют объект bot класса ExtendedClient. Это шаблонный бот, код которого можно найти </span><span><a href="https://pyrus.com/t#id273013065" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь</a></span><span>, а документацию </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь</a></span><span>.</span></p><p><span>Часть функций использует другие функции из списка. Это указано в описании. </span></p><h2 level="2"><span>Настоящее копирования</span></h2><p><span>В языке TS копирование объектов и массивов, с которыми мы работаем при обработке полей формы, справочников и тд., по умолчанию происходит по ссылке: </span></p><pre><span>let object = {value: 1, type: "number", info: {code: "field_code"}};
+let copy_object = object; //копирование по ссылке
+object.value = 5
+console.log(copy_object.value) //будет отражено 5</span></pre><p><span>Иногда можно наткнуться на такой метод копирования (так называемая </span><span><em>Поверхностная копия</em></span><span>):</span></p><p><span><code>copy_object = {...object}</code></span></p><p><span>Но этот способ копирует по значению только первый уровень объектов, а второй копируется по ссылке:</span></p><pre><span>let object = {value: 1, type: "number", info: {code: "field_code"}};
+let copy_object = object;
+object.value = 5; //меняем только value первого объекта, изначальный не меняется
+object.info.code = 'field_code2'; //так как второй уровень копируется по ссылке, то значение изменится у обоих объектов 
+console.log(copy_object.value); //будет отражено 1, так как первый уровень копируется по значению
+console.log(copy_object.info.code); // будет отражено field_code2, потому что второй скопировался по ссылке</span></pre><p><span>Чтобы точно всегда создавать новый объект рекомендуется все поля и значения, если нам не нужна связь далее, копировать через эту функцию </span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Глубокое копирование значения (включая Date и вложенные структуры).
+ * Возвращает новое значение, не связанное с исходным по ссылке.
+ *
+ * @param {any} value
+ * @returns {any}
+ */
+function copy_by_value(value: any): any{
+    if (value === null || value === undefined) return null;
+    else if (typeof value != 'object') return value;
+    else if (value instanceof Date) return new Date(value.getTime());
+    else if (Array.isArray(value)){
+        let result = [];
+        for (let item of value){
+            result.push(copy_by_value(item));
+          }
+        return result;
+      }
+    else {
+        const result = Object.create(Object.getPrototypeOf(value));
+        for (const key of Object.keys(value)) {
+          result[key] = copy_by_value((value as any)[key]);
+        }
+        return result;
+      }
+  }</span></pre></div></details><h2 level="2"><span>Формирование фильтра для запроса реестра</span></h2><p><span>Эта функция формирует фильтр равенства для всех типов полей. Удобна в использовании, если есть необходимость найти задачи, в которых значение поля совпадает со значением в задаче вызова</span></p><details><summary><span>Код функции</span></summary><div><pre><span>/**
+ * Формирует объект фильтра для поиска задач в реестре по значению поля.
+ *
+ * @param {FormField} field Поле формы, из которого берётся значение фильтра.
+ * @param {number} target_id ID целевого поля в форме, по которому будет фильтрация.
+ *
+ * @returns {FormFilter|null} Объект фильтра или null, если поле пустое или тип не поддерживается.
+ */
+function get_filter(field: FormField, target_id: number): FormFilter | null {
+  switch (field.type) {
+    case "text":
+      return {
+        field_id: target_id,
+        operator_id: OperatorId.Equals,
+        values: [`eq.${field.value}`]
+      };
+    case "email":
+    case "phone":
+    case "checkmark":
+    case "number":
+    case "money":
+      return {
+        field_id: target_id,
+        operator_id: OperatorId.Equals,
+        values: [String(field.value)]
+      };
+
+    case "multiple_choice":
+      if (field.value?.choice_ids?.length) {
+        return {
+          field_id: target_id,
+          operator_id: OperatorId.IsIn,
+          values: field.value.choice_ids.map(String)
+        };
+      }
+      return null;
+
+    case "catalog":
+      if (field.value?.item_ids?.length) {
+        return {
+          field_id: target_id,
+          operator_id: OperatorId.IsIn,
+          values: field.value.item_ids.map(String)
+        };
+      }
+      return null;
+
+    case "person":
+      if (field.value?.id !== undefined) {
+        return {
+          field_id: target_id,
+          operator_id: OperatorId.Equals,
+          values: [String(field.value.id)]
+        };
+      }
+      return null;
+
+    case "form_link":
+      if (field.value?.task_id !== undefined) {
+        return {
+          field_id: target_id,
+          operator_id: OperatorId.Equals,
+          values: [String(field.value.task_id)]
+        };
+      }
+      return null;
+
+    case "date":
+    case 'due_date_time':
+    case 'due_date':
+    case 'creation_date':
+      if (field.value) {
+        let dateStr: string;
+        if (field.value instanceof Date) {
+          dateStr = field.value.toISOString().slice(0, 10);
+        } else {
+          return null;
+        }
+        return {
+          field_id: target_id,
+          operator_id: OperatorId.Equals,
+          values: [dateStr]
+        };
+      }
+      return null;
+
+    default:
+      return null;
+  }
+}</span></pre></div></details><h2 level="2"><span>Получение кода таблицы-родителя</span></h2><p><span>При передаче поля и id формы, на шаблоне которой находится поле, функция вернёт:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1" aria-checked="False"><p><span>Ничего - значит это внетабличное поле</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2" aria-checked="False"><p><span>Строку без пробелов - код табличного поля</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3" aria-checked="False"><p><span>Строку с пробелом - сообщение о том, что у таблицы-родителя нет кода.</span></p></div><p><span>Обязательна передача объекта класса ExtendedClient, через него производится запрос к форме для получения полей</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Получает код родительской таблицы для указанного поля формы.
+ * 
+ * @param {ExtendedClient} bot Экземпляр клиента для работы с API.
+ * @param {FormField} field Поле формы, для которого ищем родительскую таблицу.
+ * @param {number} form_id ID формы, в которой находится поле.
+ * @returns {Promise<string |="" null="">} Код родительской таблицы или сообщение об ошибке/`null`, если таблица не найдена.
+ */
+async function get_parent_table_code(bot: ExtendedClient, field: FormField, form_id: number): Promise<string> {
+    // Если у поля нет родителя — возвращаем null, так как это точно нетабличное поле
+    if (!field.parent_id) return null;
+    let parent_id = field.parent_id;
+    let task_form = await bot.get_form(form_id);
+    // Пробуем найти код родительского поля по ID через словарь
+    let parent_code = task_form.id_to_code[parent_id];
+
+    if (!parent_code) {
+        // Если код не найден — ищем объект поля в общем списке, чтобы удостовериться, что это не таблица
+        let parent_field = task_form.all_fields.find(x =&gt; x.id == parent_id);
+        // Если поле-родитель таблица — возвращаем сообщение об отсутствии кода, иначе это точно внетабличное поле
+        return parent_field.type == 'table' ? `У таблицы ${parent_field.name} нет кода` : null;
+    } else {
+        let parent_field = task_form.named_fields[parent_code];
+        // Возвращаем код, только если это таблица
+        return parent_field.type == 'table' ? parent_code : null;
+    }
+}
+</string></string></span></pre></div></details><h2 level="2"><span>Получение листа согласования</span></h2><p><span>Для более удобной обработки согласования этапов</span></p><details><summary><span>Код</span></summary><div><pre><span>
+/**
+ * Формирует список согласований задачи в удобном для поиска виде.
+ *
+ * @param {ExtendedTask} task Объект задачи
+ * @returns {Record<number, record<string,="" string="">&gt;}
+ *    Внешний ключ (number) — номер этапа (начиная с 1), нумерация с 1.
+ *    Внутренний ключ (string) — уникальный идентификатор участника в формате "тип_ID". Чтобы отличить пользователя от бота
+ *    Значение (string) — статус согласования этапа
+ */
+function prepare_approval_list(task: ExtendedTask): Record<number, record<string,="" string="">&gt; {
+    // Инициализируем пустой результат
+    let result: Record<number, record<number,="" string="">&gt; = {};
+
+    // Если в задаче нет согласований — возвращаем пустой объект
+    if (!task.approvals) return result;
+
+    // Перебираем шаги согласования
+    for (let step_num = 0; step_num &lt; task.approvals.length; step_num++) {
+        // Перебираем участников на текущем шаге
+        for (let person of task.approvals[step_num]) {
+            // Если в результате ещё нет этого шага — создаём пустой объект
+            //Нумерация этапов идёт с 1
+            if (!result[step_num + 1]) {
+                result[step_num + 1] = {};
+            }
+
+            // Формируем ключ участника: "&lt;тип&gt;_<id>"
+            // и сохраняем его выбор согласования
+            result[step_num + 1][`${person.person.type}_${person.person.id}`] = person.approval_choice;
+        }
+    }
+    // Возвращаем собранную структуру
+    return result;
+} </id></number,></number,></number,></span></pre></div></details><h2 level="2"><span>Получение значений для поля Справочник</span></h2><p><span>Ищет подходящие элементы справочника. В качестве аргументов принимает:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Объект класса ExtendedClient - для выполнения запроса к справочнику</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Значения - число, строка или массивы из них. Будет произведён поиск элементов справочника, у которых в указанной колонке есть одно из переданных значений (не строгое равенство)</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span> Инфо поля - в поле задачи нет информации о том, на какой справочник ссылается поле. Поэтому это должен быть атрибут info от поля, который приходит в ответ на запрос формы</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Индекс - необязательный параметр, по умолчанию ищется в первой колонке, но можно указать любую другую (порядковый номер с 0)</span></p></div><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Получает элементы Справочника по заданным значениям.
+ * 
+ * @param {ExtendedClient} bot Клиент для работы с API Pyrus.
+ * @param {string | number | string[] | number[]} values Значения для поиска в Справочнике (могут быть числовые или текстовые значения).
+ * @param {FormFieldInfo} field_info Информация о поле, содержащем данные о Справочнике (включая ID Справочника).
+ * @param {string} [index] Опциональный индекс колонки для поиска значений в Справочнике.
+ * @returns {Promise<catalog |="" null="">} Объект Справочника с найденными элементами или null, если элементы не найдены.
+ */
+async function get_values_for_catalog(
+    bot: ExtendedClient,
+    values: string | number | string[] | number[],
+    field_info: FormFieldInfo,
+    index?: string
+): Promise<catalog> {
+
+    // Загружаем весь Справочник по его ID
+    let catalog = await bot.get_catalog(field_info.catalog_id);
+    // Приводим входные значения к массиву строк
+    let values_to_find: string[] = [];
+    if (Array.isArray(values)) {
+        values_to_find = values.map(x =&gt; String(x));
+    } else {
+        values_to_find = [String(values)];
+    }
+
+    // Если Справочник вернулся как строка (ошибка) — выводим в консоль и выходим
+    if (typeof catalog == 'string') {
+        console.log(catalog);
+        return null;
+    }
+
+    // Если Справочник пустой — возвращаем null
+    if (!(catalog?.items.length &gt; 0)) return null;
+
+    // Определяем индекс колонки для поиска (по умолчанию 0)
+    const column_index = index &amp;&amp; !isNaN(Number(index)) ? Number(index) : 0;
+
+    // Здесь будут храниться найденные элементы
+    let desired_items = [];
+
+    // Ищем элементы по каждому значению
+    for (let value of values_to_find) {
+        let items_for_value = catalog.items.filter(x =&gt;
+            x.values[column_index].includes(value)
+        );
+        if (items_for_value.length &gt; 0) {
+            desired_items.push(...items_for_value);
+        }
+    }
+
+    // Убираем дубликаты по ID элемента
+    desired_items = Array.from(new Map(desired_items.map(item =&gt; [item.id, item])).values());
+
+    // Если ничего не найдено — возвращаем null
+    if (desired_items.length == 0) return null;
+
+    // Если найден 1 элемент или в поле доступен мультивыбор
+    if (desired_items.length == 1 || (desired_items.length &gt; 1 &amp;&amp; field_info.multiple_choice)) {
+        let result: Catalog = {
+            item_id: null,
+            item_ids: [],
+            item_names: [],
+            rows: [],
+            values: []
+        };
+
+        for (let item of desired_items) {
+            result.item_id = item.item_id;
+            result.item_ids.push(item.item_id);
+            result.item_names.push(item.values[0]);
+            result.rows.push(item.values);
+            result.values = item.values;
+        }
+
+        return result;
+    }
+
+    // Если найдено несколько элементов, но в поле недоступен мультивыбор
+    return null;
+}
+</catalog></catalog></span></pre></div></details><h2 level="2"><span>Проверка значения поля на условие</span></h2><p><span>Функция может использоваться, если в настройках передаётся список правил и некоторые правила должны выполняться по условию. </span></p><p><span>В качестве атрибутов функция получает:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Поле</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Условие - объект с атрибутами </span><span><code>value </code></span><span>(целевое значение, зависит от типа поля) и оператор сравнения </span><span><code>operator </code></span><span>(разным типам доступны разные методы сравнения)</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Индекс - дополнительный указатель. Необязателен, актуален только для справочников, указывается номер колонки (нумерация с 0)</span></p></div><p><span>Использует функции </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=14-normalizaciya-daty" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">нормализации</a></span><span>, </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=15-sravnenie-dat" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">сравнения </a></span><span>и </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=16-konvertaciya-iz-stroki-v-datu" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">конвертации</a></span><span> дат. </span></p><p><span>Возвращает или логическую переменную или сообщение с ошибкой (что при проверке if будет выдавать true, поэтому результат функции надо проверять следующим образом: </span><span><code>check_result === true</code></span><span>)</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Проверяет, соответствует ли значение поля заданному условию.
+ *
+ * @param {FormField} field Поле формы для проверки.
+ * @param {{value?: any, operator: "equal"|"not_equal"|"include"|"not_include"|"empty"|"not_empty"|"larger"|"less"}} condition Объект условия.
+ * @param {string|null} index Индекс (для таблиц/справочников), либо null.
+ * @returns {boolean|string} true/false или текст ошибки.
+ */
+function check_condition(
+  field: FormField,
+  condition: { value?: any, operator: "equal" | "not_equal" | "include" | "not_include" | "empty" | "not_empty" | "larger" | "less" },
+  index: string | null
+): boolean | string {
+  let field_value = field.value;
+  let aim_value = condition.value;
+  let operator = condition.operator;
+  let result = false;
+  let error: boolean | string = false;
+
+  if (!operator) return "Нет оператора для условия";
+  let special_empty_types = ['checkmark', "multiple_choice", "number", "text"];
+
+  if (operator == 'empty' &amp;&amp; !special_empty_types.includes(field.type)) {
+    return field_value ? false : true;
+  }
+  if (operator == 'not_empty' &amp;&amp; !special_empty_types.includes(field.type)) {
+    return field_value ? true : false;
+  }
+
+  switch (field.type) {
+    case 'text':
+      switch (operator) {
+        case 'equal': if (field.value == aim_value) result = true; break;
+        case 'not_equal': if (field.value != aim_value) result = true; break;
+        case 'include': if (field.value.includes(aim_value)) result = true; break;
+        case 'not_include': if (!field.value.includes(aim_value)) result = true; break;
+        case 'empty': if (!field.value || field.value == '') result = true; break;
+        case 'not_empty': if (field.value &amp;&amp; field.value != '') result = true; break;
+        default: error = true; break;
+      }
+      break;
+
+    case 'multiple_choice':
+      let options = field.value?.choice_names ?? [];
+      let aim_options = [];
+      if (Array.isArray(aim_value) &amp;&amp; !aim_value.find(x =&gt; typeof x != 'string')) {
+        aim_options = aim_value;
+      } else if (typeof aim_value == 'string') aim_options = [aim_value];
+      aim_options = aim_options.map(x =&gt; x.trim());
+      options = options.map(x =&gt; x.trim());
+
+      switch (operator) {
+        case 'equal':
+          if (options.length != aim_options.length) result = false;
+          else result = options.every(option =&gt; aim_options.includes(option));
+          break;
+        case 'not_equal':
+          if (options.length != aim_options.length) result = true;
+          else result = options.some(option =&gt; !aim_options.includes(option));
+          break;
+        case 'include':
+          result = options.some(option =&gt; aim_options.includes(option));
+          break;
+        case 'not_include':
+          result = !options.some(option =&gt; aim_options.includes(option));
+          break;
+        case 'empty':
+          if (options.length == 0 || options[0] == 'Не выбрано') result = true;
+          break;
+        case 'not_empty':
+          if (options.length &gt; 0 &amp;&amp; options[0] != 'Не выбрано') result = true;
+          break;
+        default: error = true; break;
+      }
+      break;
+
+    case 'checkmark':
+      let aim_check = aim_value == 'Да' || aim_value == 'checked' ? 'checked' : 'unchecked';
+      switch (operator) {
+        case 'equal': if (field.value == aim_check) result = true; break;
+        case 'not_equal': if (field.value != aim_check) result = true; break;
+        case 'empty': if (field.value == 'unchecked') result = true; break;
+        case 'not_empty': if (field.value == 'checked') result = true; break;
+        default: error = true; break;
+      }
+      break;
+
+    case 'catalog':
+      let column = index ? Number(index) : 0;
+      if (field.value &amp;&amp; column &gt;= field.value.rows[0].length) {
+        error = 'В справочнике меньше колонок чем указано в правиле';
+      } else {
+        let column_values = field.value &amp;&amp; column &lt; field.value.rows[0].length
+          ? field.value.rows.map(x =&gt; x[column])
+          : [];
+        let aim_options = Array.isArray(aim_value) &amp;&amp; !aim_value.find(x =&gt; typeof x != 'string')
+          ? aim_value
+          : typeof aim_value == 'string'
+            ? [aim_value]
+            : [];
+        switch (operator) {
+          case 'equal':
+            if (column_values.length != aim_options.length) result = false;
+            else result = column_values.every(option =&gt; aim_options.includes(option));
+            break;
+          case 'not_equal':
+            if (options.length != column_values.length) result = true;
+            else result = column_values.some(option =&gt; !aim_options.includes(option));
+            break;
+          case 'include':
+            result = column_values.some(option =&gt; aim_options.includes(option));
+            break;
+          case 'not_include':
+            result = !column_values.some(option =&gt; aim_options.includes(option));
+            break;
+          default: error = true; break;
+        }
+      }
+      break;
+
+    case 'form_link':
+      let task_id = field.value ? field.value.task_id : null;
+      let aim_task_ids = aim_value ? aim_value.split(",").map(x =&gt; Number(x)) : [];
+      switch (operator) {
+        case 'equal': if (aim_task_ids.includes(task_id)) result = true; break;
+        case 'not_equal': if (!aim_task_ids.includes(task_id)) result = true; break;
+        case 'empty': if (!task_id) result = true; break;
+        case 'not_empty': if (task_id) result = true; break;
+        default: error = true; break;
+      }
+      break;
+
+    case 'number':
+    case 'money':
+      let field_number = field.value ? Number(field.value) : 0;
+      let aim_number = aim_value ? Number(aim_value) : 0;
+      if (isNaN(aim_number)) error = 'Не удаётся преобразовать целевое значение в число';
+      else {
+        switch (operator) {
+          case 'equal': if (field_number == aim_number) result = true; break;
+          case 'not_equal': if (field_number != aim_number) result = true; break;
+          case 'larger': if (field_number &gt; aim_number) result = true; break;
+          case 'less': if (field_number &lt; aim_number) result = true; break;
+          case 'empty': if (!field.value &amp;&amp; field_value !== 0) result = true; break;
+          case 'not_empty': if (field_value != null) result = true; break;
+          default: error = true; break;
+        }
+      }
+      break;
+
+    case 'date':
+    case 'due_date_time':
+    case 'due_date':
+    case 'creation_date':
+      if (!index) {
+        let aim_date = aim_value ? parseDate(aim_value) : null;
+        if (aim_value &amp;&amp; !aim_date) error = 'Не удаётся преобразовать целевое значение в дату';
+        else {
+          switch (operator) {
+            case 'equal': if (isSameDate(field.value, aim_date)) result = true; break;
+            case 'not_equal': if (!isSameDate(field.value, aim_date)) result = true; break;
+            case 'larger': if (aim_date &amp;&amp; field.value &amp;&amp; normalizeDate(field.value) &gt; normalizeDate(aim_date)) result = true; break;
+            case 'less': if (aim_date &amp;&amp; field.value &amp;&amp; normalizeDate(field.value) &lt; normalizeDate(aim_date)) result = true; break;
+            default: error = true; break;
+          }
+        }
+        break;
+      }
+    default:
+      error = 'Тип поля не поддерживается';
+      break;
+  }
+
+  if (typeof error == 'string') return error;
+  else if (error) return `Для типа ${field.type} не поддерживается оператор ${operator}`;
+  else return result;
+}</span></pre></div></details><h3 level="3"><span>Операторы, доступные типам полей</span></h3><table><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Тип поля</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>equal</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>not_equal</span></p></td><td colspan="1" rowspan="1"><p><span>include</span></p></td><td colspan="1" rowspan="1"><p><span>not_include</span></p></td><td colspan="1" rowspan="1"><p><span>empty</span></p></td><td colspan="1" rowspan="1"><p><span>not_empty</span></p></td><td colspan="1" rowspan="1"><p><span>larger</span></p></td><td colspan="1" rowspan="1"><p><span>less</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Текст</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Выбор</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Галочка</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Справочник</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Форма</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Число/Деньги</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Дата/Срок/Дата создания</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>(прочие)</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>—</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr></table><h3 level="3"><span>Ожидаемые типы для передачи в качестве условия</span></h3><p><span>Если передаётся оператор </span><span><code>empty/not_empty</code></span><span>, параметр </span><span><code>value </code></span><span>игнорируется и может не передаваться.</span></p><table><tr><td colspan="1" rowspan="1"><p><span>Тип поля</span></p></td><td colspan="1" rowspan="1"><p><span>Что ожидать в </span><span><code>condition.value</code></span></p></td><td colspan="1" rowspan="1"><p><span>Пример(ы)</span></p></td><td colspan="1" rowspan="1"><p><span>Нормализация/заметки</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Текст</span></p></td><td colspan="1" rowspan="1"><p><span>Строка</span></p></td><td colspan="1" rowspan="1"><p><span><code>"ACME"</code></span><span>, </span><span><code>"foo"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Для </span><span><code>include/not_include</code></span><span> ищется </span><span><strong>подстрока</strong></span><span>. Пустота: </span><span><code>''</code></span><span> или </span><span><code>null/undefined</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Выбор</span></p></td><td colspan="1" rowspan="1"><p><span>Строка </span><span><strong>или</strong></span><span> массив строк (имена вариантов)</span></p></td><td colspan="1" rowspan="1"><p><span><code>"VIP"</code></span><span>, </span><span><code>["VIP"," New "]</code></span></p></td><td colspan="1" rowspan="1"><p><span>Имена </span><span><strong>триммятся</strong></span><span>; массив сравнивается как </span><span><strong>множество</strong></span><span> (порядок не важен). Пусто: </span><span><code>[]</code></span><span> или </span><span><code>["Не выбрано"]</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Галочка</span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span> | </span><span><code>'checked'</code></span><span> | </span><span><code>'unchecked'</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span>, </span><span><code>'checked'</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span> приводится к </span><span><code>'checked'</code></span><span>. Для </span><span><code>empty</code></span><span> истинно, если значение поля </span><span><code>'unchecked'</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Справочник</span></p></td><td colspan="1" rowspan="1"><p><span>Строка </span><span><strong>или</strong></span><span> массив строк (ожидаемые ячейки в колонке)</span></p></td><td colspan="1" rowspan="1"><p><span><code>"Москва"</code></span><span>, </span><span><code>["SPb","Москва"]</code></span></p></td><td colspan="1" rowspan="1"><p><span>Сравниваются </span><span><strong>строки ячеек</strong></span><span> выбранной колонки. Для </span><span><code>equal</code></span><span> — равенство </span><span><strong>множества значений</strong></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Форма</span></p></td><td colspan="1" rowspan="1"><p><span>Строка с id задач через запятую</span></p></td><td colspan="1" rowspan="1"><p><span><code>"123,456"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Парсится как список </span><span><code>task_id: number[]</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Число/Деньги</span></p></td><td colspan="1" rowspan="1"><p><span>Число </span><span><strong>или</strong></span><span> строка, приводимая к числу</span></p></td><td colspan="1" rowspan="1"><p><span><code>10</code></span><span>, </span><span><code>"7.5"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Приведение через </span><span><code>Number(...)</code></span><span>; при </span><span><code>NaN</code></span><span> — ошибка </span><span><code>"Не удаётся преобразовать целевое значение в число"</code></span><span>. </span><span><code>0</code></span><span> — </span><span><strong>НЕ</strong></span><span> пусто.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Дата/Срок/Дата создания</span></p></td><td colspan="1" rowspan="1"><p><span>Дата в формате, который понимает </span><span><code>parseDate</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>"2025-08-01"</code></span><span>, </span><span><code>"01.08.2025"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Если не удаётся преобразовать строку в дату — ошибка </span><span><code>"Не удаётся преобразовать целевое значение в дату"</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>(прочие)</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>Вернётся ошибка </span><span><code>"Тип поля не поддерживается"</code></span><span> для всех операторов кроме empty/not_empty.</span></p></td></tr></table><h2 level="2"><span>Сравнение значений полей</span></h2><p><span>Задачей функции является сравнение значений полей. Удобно, чтобы проверить, что в результате обработки поля действительно изменились и имеет смысл отправлять запрос. В таком случае старое состояние лучше всего заархивировать при помощи </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=1-nastoyashhee-kopirovaniya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">copy_by_value </a></span><span>перед началом обработки (в примере ниже используется named_fields из ExtendedClient)</span></p><pre><span>let old_fields = copy_by_value(new_task.named_fields);
+let updated_codes = await copy_fields(bot, task, new_task,rule, rule_index, row, rule.form_rules.fields_on_creation);
+let field_updates = [];
+for (let code of updated_codes){
+	let updated_code = code;
+    let field = new_task.named_fields[code]; 
+    if (old_fields[updated_code]){
+      if (same_value(old_fields[updated_code], field)) continue;
+     }
+    field_updates.push(field);
+    }</span></pre><p><span>Также в функции используется </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=3-proverka-znacheniya-polya-na-uslovie" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">check_condition</a></span><span>. Возвращает или логическую переменную, или сообщение об ошибке</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Сравнивает значения двух полей формы на идентичность.
+ *
+ * @param {FormField} old_field Поле с исходным значением.
+ * @param {FormField} new_field Поле с новым значением.
+ * @returns {boolean|string} true/false или текст ошибки, если сравнение невозможно.
+ */
+function same_value(old_field: FormField, new_field: FormField): boolean | string {
+  if (old_field.type != new_field.type) return "Сравнение разных типов не поддерживается";
+  if (old_field.type != 'checkmark' &amp;&amp; old_field.type != 'multiple_choice' &amp;&amp;
+      ((old_field.value === null &amp;&amp; new_field.value !== null) || (old_field.value !== null &amp;&amp; new_field.value === null))) return false;
+  if (old_field.type != 'checkmark' &amp;&amp; old_field.type != 'multiple_choice' &amp;&amp;
+      (old_field.value === null &amp;&amp; new_field.value === null)) return true;
+  switch (new_field.type) {
+    case 'text':
+    case 'number':
+    case 'money':
+    case 'phone':
+    case 'email':
+      return new_field.value === old_field.value;
+
+    case 'multiple_choice': //пустое значение может быть представлено как значением null, так и выбранным пустым значением
+      if (!old_field.value &amp;&amp; (!new_field.value || new_field.value.choice_ids.includes(0))) return true;
+      return check_condition(old_field, { value: new_field.value.choice_names, operator: "equal" }, null);
+
+    case 'catalog':
+      return check_condition(old_field, { value: new_field.value.rows.map(x =&gt; x[0]), operator: "equal" }, null);
+
+    case 'checkmark':
+      if (!old_field.value) old_field.value = 'unchecked';
+      if (!new_field.value) new_field.value = 'unchecked';
+      return check_condition(old_field, { value: new_field.value, operator: "equal" }, null);
+
+    case 'form_link':
+      return check_condition(old_field, { value: new_field.value.task_id.toString(), operator: "equal" }, null);
+
+    case 'date':
+    case 'due_date':
+    case 'due_date_time':
+      return check_condition(old_field, { value: new_field.value.toISOString().slice(0, 10), operator: "equal" }, null);
+
+    case 'time':
+      return new_field.value === old_field.value;
+
+    case 'person':
+      return old_field.value ? (old_field.value as Person).id == new_field.value.id : true;
+
+    case 'file':
+      const old_value = old_field.value as AttachedFile[];
+      if (new_field.value.length != old_value.length) return false;
+      if (new_field.value.find(x =&gt; x.id === null)) return false;
+
+    case 'table':
+      if ((old_field.value as ExtendedTableRow[]).length != new_field.value.length) return false;
+      let one_change = false;
+      for (let row of new_field.value as ExtendedTableRow[]) {
+        if (row.delete || row.added_now) return false;
+        let old_row = (old_field.value as ExtendedTableRow[]).find(x =&gt; x.row_id == row.row_id);
+        if (!old_row) return false;
+        for (let cell of row.cells ?? []) {
+          let old_cell = old_row.cells.find(x =&gt; x.id == cell.id);
+          if (!old_cell) return false;
+          let same_cell = same_value(old_cell, cell);
+          if (!same_cell) one_change = true;
+        }
+      }
+      return !one_change;
+
+    default:
+      console.log("used default", new_field); //если есть такой лог, значит, какой-то кейс не был учтён
+      return false;
+  }
+}</span></pre></div></details><h2 level="2"><span>Восстановление истории файла</span></h2><p><span>Передаётся файл из поля, характеристики поля и задача с комментариями. Возвращается массив предыдущих md5, которые представляют из себя предыдущие версии. md5 в отличие от id не меняются при переносе файла из задачи в задачу по ссылке, поэтому удобно для отслеживания предыдущих версий</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Собирает список md5 предыдущих версий файла по истории комментариев задачи.
+ * Нужен для понимания, является ли текущий файл новой версией уже существующего.
+ *
+ * @param {ExtendedClient} bot клиент Pyrus API
+ * @param {ExtendedTask} task задача источник. Важно наличие всех комментариев
+ * @param {number} root_id id первоначального файла
+ * @param {number} file_id Id искомого файла
+ * @param {string} field_code код поля, из которого ищем файл (или таблицы-родителя)
+ * @param {string} [column_code] код колонки, если поле-источник табличное
+ * @param {number} [row_id] Номер ряда. Если поле-источник табличное, обязательный параметр
+ * @returns {Promise<string[]>} список md5 предыдущих версий
+ */
+async function getPreviousMd5(
+        bot: ExtendedClient,
+        task: ExtendedTask, 
+        root_id: number, 
+        file_id: number, 
+        field_code: string, 
+        column_code?: string,
+        row_id?: number
+    ): Promise<string[]> {
+        const md5List: string[] = [];
+        if (!root_id) { // нет root_id - не будет предыдущих версий
+            return md5List;
+        }
+        // Prepare extended comments with field change data
+        const comments: ExtendedTaskComment[] = await bot.fix_task_comments(task);
+        for (let i = comments.length - 1; i &gt;= 0; i--) {
+            const comment = comments[i];
+            if (!comment.named_fields_changes[field_code]) {
+                continue;
+            }
+            const fieldChange = comment.named_fields_changes[field_code];
+            if (column_code) {
+                // Field is a table: iterate through each row of this field’s value in the comment
+                if (!fieldChange.value) continue;
+                for (const row of fieldChange.value as ExtendedTableRow[]) {
+                    if (row.row_id != row_id) continue;
+                    const cell = row.named_cells[column_code];
+                    if (!cell?.value) continue;
+                    for (const fileObj of cell.value as AttachedFile[]) {
+                        if ((fileObj.root_id === root_id || fileObj.id === root_id) 
+                            &amp;&amp; fileObj.id !== file_id) {
+                            md5List.push(fileObj.md5);
+                        }
+                    }
+                }
+            } else {
+                // Regular file field (not in a table)
+                if (!fieldChange.value) continue;
+                for (const fileObj of fieldChange.value as AttachedFile[]) {
+                    if ((fileObj.root_id === root_id || fileObj.id === root_id) 
+                        &amp;&amp; fileObj.id !== file_id) {
+                        md5List.push(fileObj.md5);
+                    }
+                }
+            }
+        }
+        return md5List;
+    }
+ </string[]></string[]></span></pre></div></details><h2 level="2"><span>Перенос файлов</span></h2><p><span>Копирует файл из задачи в задачу. Изменение значения целевого поля происходит прямо внутри функции. Если вернулся null, значит изменений не было. Если были изменения возвращает новое значение полностью. Функции обязательно нужен экземпляр класса ExtendedClient, использует функции </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=3-poluchenie-koda-tablicy-roditelya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">get_parent_table_code </a></span><span>и </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=10-vosstanovlenie-istorii-fajla" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">getPreviousMd5</a></span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Переносит/обновляет вложенные файлы из поля-источника в целевое поле.
+ * Учитывает md5 предыдущих версий, чтобы повышать версию или пропускать дубликаты.
+ * Обновляет target_field сразу, а не просто готовит значение.
+ *
+ * @param {ExtendedClient} bot клиент Pyrus API
+ * @param {ExtendedTask} source_task задача источник. Важно наличие всех комментариев
+ * @param {FormField} target_field поле-цель
+ * @param {FormField} source_field поле источник
+ * @param {number} [source_row_id] если поле-источник является ячейкой таблицы
+ * @param {string} [column_code] код колонки таблицы, если поле-источник это ячейка или вся колонка таблицы
+ * @returns {Promise<attachedfile[]|null>} возвращается полное новое значение поля если были обновления. Если обновлений не было, всегда вернётся null.
+ */
+async function prepareFileField(
+        bot: ExtendedClient,
+        source_task: ExtendedTask, 
+        target_field: FormField, 
+        source_field: FormField, 
+        source_row_id?: number, 
+        column_code?: string
+    ): Promise<attachedfile[]> {
+        const filesToAdd: { file: AttachedFile; prev_md5: string[] }[] = [];
+        let source_form = await bot.get_form(source_task.form_id);
+        let source_code = source_form.id_to_code[source_field.id];
+
+        // Collect files from the source_field based on parameters
+        if (!column_code &amp;&amp; typeof source_row_id !== "number") {
+            // Source is a simple file field (not a table)
+            if (!source_field.value) {
+                return null;
+            }
+            for (const fileObj of source_field.value as any[]) {
+                const prevMd5List = await getPreviousMd5(bot,source_task, fileObj.root_id, fileObj.id, source_code);
+                filesToAdd.push({ file: fileObj, prev_md5: prevMd5List });
+            }
+        }
+        else if (typeof source_row_id === "number") {
+            // Источник — конкретная строка таблицы
+            let source_parent_code =  await get_parent_table_code(bot, source_field, source_task.form_id);
+            for (const fileObj of source_field.value as any[]) {
+                const prevMd5List = await getPreviousMd5(bot,source_task, fileObj.root_id, fileObj.id, source_parent_code, column_code, source_row_id);
+                filesToAdd.push({ file: fileObj, prev_md5: prevMd5List });
+            }
+        }
+        else {
+            // Источник вся колонка таблицы. В таком случае source_row_id = null | undefined, а column_code строка
+            if (!source_field.value) {
+                return null;
+            }
+            for (const row of source_field.value as ExtendedTableRow[]) {
+                const cell = row.named_cells[column_code];
+                if (!cell.value) continue;
+                for (const fileObj of cell.value as any[]) {
+                    const prevMd5List = await getPreviousMd5(bot, source_task, fileObj.root_id, fileObj.id, source_code, column_code, row.row_id);
+                    filesToAdd.push({ file: fileObj, prev_md5: prevMd5List });
+                }
+            }
+        }
+
+        if (filesToAdd.length === 0) {
+            // Поле-источник пустое
+            return null;
+        }
+
+        
+        if (!target_field.value) {
+            target_field.value = [];
+        }
+        let wereChanges = false;
+
+        // Проверка каждого файла
+        for (const fileEntry of filesToAdd) {
+            const fileObj = fileEntry.file;
+            const prevMd5List = fileEntry.prev_md5;
+            let newFile: AttachedFile = null;
+            let skipFile = false;
+
+            // Проверяем уже существующие файлы. Ищем совпадения по md5 (тогда не надо добавлять новый файл) и по предыдущим md5 (тогда наш файл является новой версией)
+            for (const existingFile of target_field.value as AttachedFile[]) {
+                if (existingFile.md5 === fileObj.md5) {
+                    // Такой файл уже есть в выборке, обновлять нет необходимости
+                    skipFile = true;
+                    break;
+                }
+                if (prevMd5List.includes(existingFile.md5)) { //новая версия уже приложенного файла
+                  newFile = {...existingFile, id: null, url: fileObj.url, version: existingFile.version + 1, root_id: existingFile.root_id ?? existingFile.id}
+                    }
+            } 
+
+            if (skipFile) {
+                continue; 
+            }
+            if (!newFile) { //не нашли ни такого файла, ни ранних версий
+                newFile = {...fileObj, id: null, root_id: null, version: 1 };
+            }
+            // Меняем изначальное поле
+            (target_field.value as AttachedFile[]).push(newFile);
+            wereChanges = true;
+        } // end for fileEntry
+
+        if (wereChanges) {
+            return target_field.value as AttachedFile[];
+        }
+        return null; //если не было изменений возвращаем Null, даже если изначально в целевом поле были значения
+    }
+</attachedfile[]></attachedfile[]|null></span></pre></div></details><h2 level="2"><span>Получение email пользователя или роли</span></h2><p><span>По id возвращает email пользователя или email всех участников роли через запятую</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Возвращает строку email-адресов по ID пользователя/роли.
+ * Если передан ID роли — собирает email всех участников этой роли.
+ *
+ * @param {ExtendedClient} bot клиент Pyrus API
+ * @param {number} id id пользователя или роли
+ * @returns {Promise<string>} почты. Если был передан id роли, вернутся все почты участников роли
+ */
+async function get_emails(bot: ExtendedClient, id: number): Promise<string> {
+  if (!id) return "";
+  const profile = await bot.get_profile();
+  const persons = profile.organization?.persons || [];
+  const roles = profile.organization?.roles || [];
+
+  // Пытаемся найти как person
+  const person = persons.find(p =&gt; p.id === id);
+  if (person) {
+    return person.email || "";
+  }
+
+  // Пытаемся найти как роль
+  const role = roles.find(r =&gt; r.id === id);
+  if (!role || !role.member_ids?.length) return "";
+
+  const memberEmails = persons
+    .filter(p =&gt; role.member_ids.includes(p.id))
+    .map(p =&gt; p.email)
+    .filter(Boolean);
+
+  return memberEmails.join(",");
+}</string></string></span></pre></div></details><h2 level="2"><span>Поиск пользователя</span></h2><p><span>Получает или email, или id и производит по ним поиск пользователя в организации. Если id соответствует роль, то она приводится к типу Person (пользователь)</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Возвращает объект Person по email или id.
+ * Если передан email со списком (через запятую) — возвращает null.
+ *
+ * @param {ExtendedClient} bot
+ * @param {{email?: string, id?: number}} должно быть передано или email пользователя, или его id
+ * @returns {Promise<person|null>}
+ */
+async function get_user(bot: ExtendedClient,{ email, id }: { email?: string; id?: number }): Promise<person |="" null=""> {
+  if (!email &amp;&amp; id == null) return null;
+
+  if (email) {
+    const profile = await bot.get_profile();
+    const persons = profile.organization?.persons ?? [];
+    if (email.includes(",")) return null; // если это список email — игнорируем
+    const person = persons.find(p =&gt; p.email?.toLowerCase() === email.toLowerCase());
+    return person ?? null;
+  }
+else if (id != null){
+    let search_result = await bot.get_info_by_id(id);
+    return search_result[id] ?? null;
+  }
+
+  return null;
+}
+</person></person|null></span></pre></div></details><h2 level="2"><span>Нормализация даты</span></h2><p><span>Убирает у даты временную метку, приводя её к 0 часам, 0 минутам, 0 секундам</span></p><details><summary><span>Код</span></summary><div><pre><span>function normalizeDate(d: Date): Date { 
+  if (!d) return null; 
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()); 
+} </span></pre></div></details><h2 level="2"><span>Сравнение дат</span></h2><p><span>Сравнивает даты без учёта их временных меток. Использует функцию </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=14-normalizaciya-daty" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">нормализации</a></span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Сравнивает две даты без учёта времени.
+ *
+ * @param {Date|null} a
+ * @param {Date|null} b
+ * @returns {boolean}
+ */
+function isSameDate(a: Date, b: Date): boolean { 
+  if ((!b &amp;&amp; a) || (a &amp;&amp; !b)) return false; 
+  if (!a &amp;&amp; !b) return true; 
+  return normalizeDate(a).getTime() == normalizeDate(b).getTime(); 
+} </span></pre></div></details><h2 level="2"><span>Конвертация из строки в дату</span></h2><p><span>Превращает строку вида dd.mm.yyyy или yyyy-mm-dd в объект Date</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Парсит строку в объект Date.
+ * Поддерживаемые форматы: "DD.MM.YYYY" и "YYYY-MM-DD".
+ *
+ * @param {string} input
+ * @returns {Date|null}
+ */
+function parseDate(input: string): Date | null {
+  if (/^\d{2}\.\d{2}\.\d{4}$/.test(input)) {
+    const [dd, mm, yyyy] = input.split(".");
+    return new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+    return new Date(input);
+  }
+  return null;
+}</span></pre></div></details><h2 level="2"><span>Конвертация поля в строку</span></h2><p><span>Записывает значения поля как строку</span></p><details><summary><span>Код</span></summary><div><pre><span>/**
+ * Преобразует значение поля формы в строку с учётом типа поля и (опционального) индекса.
+ * @param field  Поле формы 
+ * @param index  Доп.параметр, который в ряде типов влияет на формат вывода
+ * @returns      { text?: string, error?: string } Результат в переменной text или ошибку в переменной error
+ *
+ * Важно:
+ * - Для некоторых типов index интерпретируется как режим (напр. "name", "Y2"), а для multiple_choice — как разделитель.
+ */
+function turn_value_in_string(field: FormField, index: string): {text?: string, error?: string}{
+  // Нет значения — считаем пустой строкой
+  if (!field.value) return {text: ""};
+  let result: string = "";
+  switch (field.type){
+    case "text":
+      // Просто строковое значение
+      result = field.value;
+      break;
+    case "multiple_choice":
+      // Собираем текст выбранных опций. Если первая — "Не выбрано", возвращаем пусто.
+      // В этом кейсе index используется как РАЗДЕЛИТЕЛЬ между вариантами.
+      let choice_options = field.value.choice_names;
+      if (choice_options[0] == 'Не выбрано') result = "";
+      else result = choice_options.join((index ? index : ",")); // разделитель по умолчанию: запятая
+      break;
+    case "checkmark":
+      // Для чекбокса возможны режимы:
+      // - index == 'Да' или пусто → "Да"/"Нет"
+      // - index == 'name' → имя поля, если отмечен; иначе ""
+      // - любой другой строковый index → вернуть сам index, если отмечен; иначе ""
+      if (index == 'Да' || !index) result = field.value == 'checked' ? "Да" : "Нет";
+      else if (index == 'name') result = field.value == 'checked' ? field.name : "";
+      else result = field.value == 'checked' ? index : "";
+      break;
+    case "catalog":
+      // Для справочника index — это НОМЕР КОЛОНКИ (нумерация с нуля).
+      // Берём указанную колонку из каждой выбранной строки и объединяем через запятую.
+      console.log(index, field.value);
+      let column = index ? Number(index) : 0; // по умолчанию первая колонка
+      if (isNaN(column)) return {error: "Указан нечисловой индекс"};
+      else if (column &lt; 0) column = 0;
+      else if (field.value.values.length &lt;= column) return {error: "Количество колонок в справочнике меньше индекса"};
+      result = field.value.rows.map(x =&gt; x[column]).join(",");
+      break;
+    case "form_link":
+      // Ссылка на задачу/форму:
+      // - index == 'name' → текст без названия формы
+      // - иначе → task_id
+      if (index == 'name') result = field.value.subject.slice(field.value.subject.indexOf(':') + 1);
+      else result = field.value.task_id.toString();
+      break;
+    case "number":
+	case "money":
+      result = field.value.toString();
+      break;
+    case "date":
+	case "due_date_time":
+	case "due_date":
+	case "creation_date":
+      if (!index) index = 'Y2'; // режим по умолчанию — две последние цифры года
+      const day = field.value.getDate().toString().padStart(2, '0');
+      const month = (field.value.getMonth()+1).toString().padStart(2, '0');
+      const year = field.value.getFullYear().toString();
+      // Поддерживаемые режимы форматирования:
+      switch(index){
+        case "Y":
+          result = year;               // только год, напр. 2025
+          break;
+        case "Y2":
+          result = year.slice(-2);     // последние две цифры года, напр. 25
+          break;
+        case "MY":
+          result = `${month}-${year}`; // ММ-ГГГГ, напр. 08-2025
+          break;
+        case "MY2":
+          result = `${month}-${year.slice(-2)}`; // ММ-ГГ, напр. 08-25
+          break;
+        case "M":
+          result = (field.value.getMonth()+1).toString(); // номер месяца без ведущего нуля
+          break;
+        default:
+          // Полная дата без разделителей ДДММГГГГ
+          result = `${day}${month}${year}`;
+          break;
+      }
+      break;
+    case "person":
+      // Пользователь:
+      // - index == 'name' → "Имя Фамилия" (Фамилия может быть пустой)
+      // - иначе → id пользователя
+      if (index == 'name') result = `${field.value.first_name}${field.value.first_name ? " " : ""}${field.value.last_name}`;
+      else result = field.value.id.toString();
+      break;
+    default:
+      return {error: "Тип указанного поля не поддерживается"};
+  }
+  return {text: result};
+}</span></pre></div></details><table><tr><td colspan="1" rowspan="1"><p><span>Тип</span></p></td><td colspan="1" rowspan="1"><p><span>Допустимые значения </span><span><code>index</code></span></p></td><td colspan="1" rowspan="1"><p><span>Значение index по умолчанию</span></p></td><td colspan="1" rowspan="1"><p><span>Что возвращает</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>text</code></span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>Само значение строки</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>multiple_choice</code></span></p></td><td colspan="1" rowspan="1"><p><span>Любая строка-разделитель (например </span><span><code>", "</code></span><span>, </span><span><code>"; "</code></span><span>, </span><span><code>" / "</code></span><span>)</span></p></td><td colspan="1" rowspan="1"><p><span><code>","</code></span></p></td><td colspan="1" rowspan="1"><p><span>Список выбранных опций, соединённых указанным разделителем; если первая опция </span><span><code>'Не выбрано'</code></span><span> → пусто</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>checkmark</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span> или </span><span><code>""</code></span><span> → </span><span><code>"Да"/"Нет"</code></span><span>; </span><span><code>'name'</code></span><span> → имя поля, если отмечен; любой другой текст → вернуть этот текст, если отмечен</span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span> (т.е. режим </span><span><code>"Да/Нет"</code></span><span>)</span></p></td><td colspan="1" rowspan="1"><p><span>Вариант из описания слева</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>catalog</code></span></p></td><td colspan="1" rowspan="1"><p><span>Положительное целое (1-based): </span><span><code>1</code></span><span>, </span><span><code>2</code></span><span>, </span><span><code>3</code></span><span>…</span></p></td><td colspan="1" rowspan="1"><p><span><code>1</code></span></p></td><td colspan="1" rowspan="1"><p><span>Значения выбранных строк из указанной колонки, через запятую; ошибки при нечисловом/выходе за диапазон</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>form_link</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'name'</code></span><span> → часть </span><span><code>subject</code></span><span> после </span><span><code>:</code></span><span>; любое другое/пусто → </span><span><code>task_id</code></span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>См. слева</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>number</code></span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span><code>value.toString()</code></span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>money</code></span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span><code>value.toString()</code></span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>date</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Y'</code></span><span>, </span><span><code>'Y2'</code></span><span>, </span><span><code>'MY'</code></span><span>, </span><span><code>'MY2'</code></span><span>, </span><span><code>'M'</code></span><span>, любой другой → </span><span><code>ДДММГГГГ</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Y2'</code></span></p></td><td colspan="1" rowspan="1"><p><span>Отформатированная дата по режиму</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>due</code></span><span> / </span><span><code>due_date</code></span><span> / </span><span><code>creation_date</code></span></p></td><td colspan="1" rowspan="1"><p><span>те же, что для </span><span><code>date</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Y2'</code></span></p></td><td colspan="1" rowspan="1"><p><span>Аналогично </span><span><code>date</code></span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>person</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'name'</code></span><span> → «Имя Фамилия»; любое другое/пусто → </span><span><code>id</code></span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>См. слева</span></p></td></tr></table><h2 level="2"><span>Достать коды из строки</span></h2><p><span>Функция полезна, если надо заменить в шаблоне метки на значения полей. Лучше всего использовать вместе с </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=17-konvertaciya-polya-v-stroku" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">конвертацией полей</a></span><span>. Алгоритм следующий:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Достать при помощи этой функции коды полей, которые понадобятся</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>При помощи функции </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=17-konvertaciya-polya-v-stroku" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">конвертации</a></span><span> превратить в строки или получить сообщение об ошибке</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Заменить в целевой строке метки на значения при помощи регулярки:</span></p></div><pre><span>return template.replace(/\$\{([^}]+)\}/g, (_, key: string) =&gt; {
+      return field_values[key.split(":")[0]];});
+  }</span></pre><details><summary><span>Код функции</span></summary><div><pre><span>function get_codes_from_template(template: string): string[]{
+&nbsp;&nbsp;&nbsp;&nbsp;const matches: string[] = [...template.matchAll(/\$\{([^}]+)\}/g)].map(match =&gt; match[1]);
+&nbsp;&nbsp;&nbsp;&nbsp;return matches;
+&nbsp;&nbsp;}</span></pre><p></p></div></details><h2 level="2"><span>Проверка на изменение целевых полей</span></h2><p><span>Функция, которая проверяет, что в последнем комментарии были изменения в интересующих нас полях</span></p><details><summary><span>Код</span></summary><div><pre><span>function check_comments(comments: ExtendedTaskComment[], codes: string[]): boolean{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const last_comment = comments[comments.length - 1];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (Object.keys(last_comment.named_fields_changes).length == 0) return false;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (let code of codes){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (last_comment.named_fields_changes[code]) return true;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return false;
+&nbsp;&nbsp;&nbsp;&nbsp;}</span></pre></div></details><p></p></article></main>
+	
+</body></html>

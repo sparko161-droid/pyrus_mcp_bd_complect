@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "rootDir": "./",
+    "lib": ["ES2022"],
+    "types": ["node"]
+  },
+  "include": [
+    "solutions_bank/**/*.ts",
+    "clients/**/*.ts",
+    "src/**/*.ts",
+    "test_runner.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "reference"
+  ]
+}

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Конструктор CopyRule (RU)</title>
+<style>
+  :root{
+    --bg:#0f172a; --card:#111827; --muted:#1f2937; --accent:#334155;
+    --text:#e5e7eb; --text-dim:#cbd5e1; --brand:#60a5fa; --ok:#22c55e;
+    --warn:#f59e0b; --bad:#ef4444; --chip:#0b1228;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans","Liberation Sans",sans-serif}
+  h1{font-size:22px;margin:16px 0}
+  h2{font-size:16px;margin:0 0 10px 0;color:var(--text-dim);display:flex;align-items:center;justify-content:space-between}
+  .container{max-width:1200px;margin:0 auto;padding:16px}
+  .grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+    border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px}
+  label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px}
+  input[type="text"],input[type="number"],textarea,select{
+    width:100%;background:var(--card);border:1px solid var(--accent);color:var(--text);
+    border-radius:10px;padding:10px 12px;outline:none}
+  textarea{min-height:80px;resize:none;overflow:hidden}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .small{font-size:12px;color:var(--text-dim)}
+  .btnbar{display:flex;gap:8px;flex-wrap:wrap}
+  button{background:var(--brand);border:0;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
+  button.secondary{background:var(--accent);color:var(--text)}
+  button.ghost{background:transparent;border:1px solid var(--accent);color:var(--text-dim)}
+  button.ok{background:var(--ok)}
+  .iconbtn{background:transparent;border:1px solid var(--accent);color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer}
+  .iconbtn:hover{filter:brightness(1.1)}
+  .box,.kvs,.conditions,.agg,.sort{border:1px dashed var(--accent);border-radius:12px;padding:12px;background:rgba(255,255,255,.02);margin-bottom:10px}
+  .kvs-row,.cond-row,.sort-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px}
+  .chip{background:var(--chip);border:1px solid var(--accent);color:var(--text);padding:4px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--chip);padding:3px 6px;border-radius:6px}
+  details{border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 12px;background:rgba(255,255,255,.02);margin-top:10px}
+  summary{cursor:pointer;font-weight:600}
+  .req::after{content:" *";color:var(--bad)}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Конструктор правил копирования (CopyRule)</h1>
+  <div class="grid">
+    <!-- ЛЕВАЯ КОЛОНКА: ФОРМА -->
+    <div class="card">
+      <!-- Верхняя быстрая кнопка -->
+      <div class="btnbar" style="margin-bottom:8px;">
+        <button class="ok" id="btn_generate_top">Сформировать JSON</button>
+      </div>
+
+      <h2>Базовые поля</h2>
+      <div class="row">
+        <div>
+          <label for="comment">Комментарий (необязательно)</label>
+          <input id="comment" type="text" placeholder="Для читаемости и логирования" />
+        </div>
+        <div>
+          <label for="target" class="req">Целевая задача — код поля (target)</label>
+          <input id="target" type="text" placeholder="Напр.: target_task_field / $task_link / catalog:2" />
+        </div>
+      </div>
+
+      <div class="box">
+        <label>Разрешённые формы (permitted_forms: массив чисел)</label>
+        <div class="btnbar">
+          <input id="permitted_form_input" type="number" placeholder="ID формы" />
+          <button class="secondary" id="btn_add_permitted_form">+ Добавить</button>
+          <button class="ghost" id="btn_clear_permitted_form">Очистить</button>
+        </div>
+        <div id="permitted_forms_chips" class="chips"></div>
+        <div class="small">Если пусто — правило применяется ко всем формам.</div>
+      </div>
+
+      <details>
+        <summary>Условия задачи (conditions)</summary>
+        <div id="conditions_container" class="conditions"></div>
+        <div class="btnbar">
+          <input id="cond_field_code" type="text" placeholder="Код поля (внетабличного)" />
+          <button class="secondary" id="btn_add_cond_field">+ Поле условий</button>
+        </div>
+        <div class="small">Операторы: equal, not_equal, include, not_include, empty, not_empty, larger, less.</div>
+      </details>
+
+      <details open>
+        <summary>Соответствия полей (relations)</summary>
+        <div id="relations_container" class="kvs"></div>
+        <div class="btnbar">
+          <input id="rel_src" type="text" placeholder="Код поля-источника" />
+          <input id="rel_dst" type="text" placeholder="Код(ы) цели, через запятую" />
+          <button class="secondary" id="btn_add_rel">+ Добавить соответствие</button>
+        </div>
+        <div class="small">Для множественных целей укажите коды через запятую.</div>
+      </details>
+
+      <details>
+        <summary>Коды для работы с таблицами</summary>
+        <div class="two">
+          <div class="box">
+            <label>Коды колонок для ссылок на задачи (task_table_codes)</label>
+            <div class="btnbar">
+              <input id="ttc_input" type="text" placeholder="Код колонки" />
+              <button class="secondary" id="btn_add_ttc">+ Добавить</button>
+              <button class="ghost" id="btn_clear_ttc">Очистить</button>
+            </div>
+            <div id="ttc_chips" class="chips"></div>
+          </div>
+          <div class="box">
+            <label>Коды колонок для row_id (codes_for_tables)</label>
+            <div class="btnbar">
+              <input id="cft_input" type="text" placeholder="Код колонки" />
+              <button class="secondary" id="btn_add_cft">+ Добавить</button>
+              <button class="ghost" id="btn_clear_cft">Очистить</button>
+            </div>
+            <div id="cft_chips" class="chips"></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Условия для рядов таблиц (table_conditions)</summary>
+        <div id="table_conditions_container" class="conditions"></div>
+        <div class="btnbar">
+          <input id="tcond_field_code" type="text" placeholder="Код колонки (источник)" />
+          <button class="secondary" id="btn_add_tcond_field">+ Колонка условий</button>
+        </div>
+      </details>
+
+      <details>
+        <summary>Агрегация в таблицы (agregate_tables)</summary>
+        <div id="agg_container" class="agg"></div>
+        <button class="secondary" id="btn_add_agg">+ Добавить правило агрегации</button>
+        <div class="small">Каждый элемент содержит два словаря: <span class="code">unique_columns</span> и <span class="code">values</span>.</div>
+      </details>
+
+      <details>
+        <summary>Сортировка таблиц (sorting_rules)</summary>
+        <div id="sorting_container" class="sort"></div>
+        <div class="btnbar">
+          <input id="sort_table_code" type="text" placeholder="Код табличного поля (куда применять сортировку)" />
+          <button class="secondary" id="btn_add_sort_table">+ Таблица для сортировки</button>
+        </div>
+        <div class="small">Для каждой таблицы укажите **порядок полей**, по которым сортировать. Значения — массив кодов колонок. Напр.: <span class="code">["colA","colB"]</span>.</div>
+      </details>
+
+      <details>
+        <summary>Флаги</summary>
+        <div class="three">
+          <label class="inline"><input id="reverse" type="checkbox" /> Обратный перенос (reverse)</label>
+          <label class="inline"><input id="need_to_approve" type="checkbox" /> Утвердить после (need_to_approve)</label>
+          <label class="inline"><input id="reopen_task" type="checkbox" /> Переоткрывать (reopen_task)</label>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <label class="inline"><input id="to_closed_task" type="checkbox" /> В закрытую без переоткрытия (to_closed_task)</label>
+          <label class="inline"><input id="skip_notification" type="checkbox" /> Бесшумно (skip_notification)</label>
+        </div>
+      </details>
+
+      <details>
+        <summary>Правила формы (form_rules) — НЕ обязательно</summary>
+        <div class="box">
+          <div class="row">
+            <div>
+              <label for="fr_id">ID формы (form_rules.id) — обязателен только если заполняете параметры ниже</label>
+              <input id="fr_id" type="number" placeholder="Число" />
+            </div>
+            <div>
+              <label for="fr_task_field_code_input">Поля со ссылкой на материнскую (task_field_code)</label>
+              <input id="fr_task_field_code_input" type="text" placeholder="Код поля, затем + Добавить" />
+              <div class="btnbar" style="margin-top:6px">
+                <button class="secondary" id="btn_add_fr_task_field_code">+ Добавить</button>
+                <button class="ghost" id="btn_clear_fr_task_field_code">Очистить</button>
+              </div>
+              <div id="fr_task_field_code_chips" class="chips"></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Фильтры при поиске (filter_fields)</summary>
+            <div id="fr_filter_fields" class="kvs"></div>
+            <div class="btnbar">
+              <input id="fr_ff_k" type="text" placeholder="Код поля ИСТОЧНИКА" />
+              <input id="fr_ff_v" type="text" placeholder="Код поля ЦЕЛИ" />
+              <button class="secondary" id="btn_add_fr_ff">+ Добавить</button>
+            </div>
+          </details>
+
+          <details>
+            <summary>Поля при создании (fields_on_creation)</summary>
+            <div id="fr_foc" class="kvs"></div>
+            <div class="btnbar">
+              <input id="fr_foc_k" type="text" placeholder="Код поля источника" />
+              <input id="fr_foc_v" type="text" placeholder="Код(ы) цели (через запятую — массив)" />
+              <button class="secondary" id="btn_add_fr_foc">+ Добавить</button>
+            </div>
+          </details>
+
+          <div class="three" style="margin-top:10px">
+            <label class="inline"><input id="fr_only_existing" type="checkbox" /> Только существующие (only_existing)</label>
+            <label class="inline"><input id="fr_include_archived" type="checkbox" /> Учитывать закрытые (include_archived)</label>
+            <label class="inline"><input id="fr_take_last" type="checkbox" /> Брать последнюю (take_last)</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="inline"><input id="fr_ignore_limit" type="checkbox" /> Игнорировать лимит (ignore_limit)</label>
+            <div></div>
+          </div>
+          <div class="small">Если заполнен любой параметр в этом блоке — необходимо указать <span class="code">form_rules.id</span>.</div>
+        </div>
+      </details>
+
+      <div class="btnbar" style="margin-top:16px">
+        <button class="ok" id="btn_generate">Сформировать JSON</button>
+        <button class="secondary" id="btn_copy" disabled>Скопировать JSON</button>
+        <button class="ghost" id="btn_clear_all">Очистить форму</button>
+      </div>
+      <div class="small" style="margin-top:6px">
+        Обязательные поля: <span class="code">target</span>.  
+        Блок <span class="code">form_rules</span> — опционален; если используете, требуется <span class="code">form_rules.id</span>.
+      </div>
+    </div>
+
+    <!-- ПРАВАЯ КОЛОНКА: ВЫВОД -->
+    <div class="card">
+      <h2>
+        Итоговый JSON
+        <button class="iconbtn" id="btn_copy_inline" title="Скопировать JSON (иконка)" disabled>📋</button>
+      </h2>
+      <textarea id="out" readonly placeholder="Нажмите «Сформировать JSON»"></textarea>
+      <div class="btnbar" style="margin-top:8px">
+        <button class="secondary" id="btn_pretty">Форматировать</button>
+        <button class="secondary" id="btn_minify">Минифицировать</button>
+        <button class="ghost" id="btn_load_from_json">Загрузить из JSON</button>
+      </div>
+      <p class="small">Подсказка: можно вставить существующее правило через «Загрузить из JSON» и отредактировать визуально.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==== Утилиты ==== */
+const $ = (id)=>document.getElementById(id);
+const OPERATORS = ["equal","not_equal","include","not_include","empty","not_empty","larger","less"];
+function parseCommaList(s){ if(!s) return []; return s.split(",").map(x=>x.trim()).filter(Boolean); }
+function isNumericLike(v){ return typeof v==="number" || (typeof v==="string" && v!=="" && !Number.isNaN(Number(v))); }
+function asNumberOrString(v){ if (v === "" || v === null || v === undefined) return undefined; if (isNumericLike(v)) return Number(v); return v; }
+function isPlainObject(v){ return v && typeof v==="object" && !Array.isArray(v); }
+function clean(obj){
+  if (Array.isArray(obj)){
+    const arr = obj.map(clean).filter(v=>v!==undefined && !(Array.isArray(v)&&v.length===0) && !(isPlainObject(v)&&Object.keys(v).length===0));
+    return arr.length?arr:undefined;
+  } else if (isPlainObject(obj)){
+    const out={};
+    for (const k of Object.keys(obj)){
+      const v = clean(obj[k]);
+      if (v!==undefined && !(Array.isArray(v)&&v.length===0) && !(isPlainObject(v)&&Object.keys(v).length===0)){ out[k]=v; }
+    }
+    return Object.keys(out).length?out:undefined;
+  }
+  return obj;
+}
+function copyToClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(text); }
+  const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+  return Promise.resolve();
+}
+
+/* ==== Авторазмер textarea ==== */
+function autosize(el){ if(!el) return; el.style.height='auto'; el.style.height=(el.scrollHeight)+'px'; }
+window.addEventListener('resize', ()=> autosize($('out')));
+function setOutput(jsonStr){
+  const out = $('out');
+  out.value = jsonStr || '';
+  autosize(out);
+  const enabled = !!jsonStr;
+  $('btn_copy').disabled = !enabled;
+  $('btn_copy_inline').disabled = !enabled;
+}
+
+/* ==== Массив-«чипсы» ==== */
+function setupChipArray(inputId, addBtnId, clearBtnId, chipsId, cast=v=>v){
+  const input=$(inputId), addBtn=$(addBtnId), clearBtn=$(clearBtnId), chips=$(chipsId);
+  const state=[];
+  function render(){
+    chips.innerHTML="";
+    state.forEach((val,i)=>{
+      const s=document.createElement("span"); s.className="chip";
+      s.innerHTML=`<span class="code">${val}</span> <button data-i="${i}" class="ghost" style="border:0;background:transparent;color:#9aa">✕</button>`;
+      chips.appendChild(s);
+    });
+    chips.querySelectorAll("button").forEach(b=> b.onclick=()=>{ state.splice(Number(b.dataset.i),1); render(); });
+  }
+  addBtn.onclick=()=>{
+    const raw=input.value.trim(); if(!raw) return;
+    parseCommaList(raw).forEach(x=>{ const v=cast(x); if(v!=="" && v!==null && v!==undefined) state.push(v);});
+    input.value=""; render();
+  };
+  clearBtn?.addEventListener("click", ()=>{ state.length=0; render(); });
+  return {get:()=>state.slice(), set:(arr)=>{ state.length=0; (arr||[]).forEach(v=>state.push(v)); render(); }};
+}
+
+/* ==== Таблица KVS (Record<string,string>) ==== */
+function setupKVS(containerId){
+  const container=$(containerId); const rows=[];
+  function addRow(k="",v=""){
+    const row=document.createElement("div"); row.className="kvs-row";
+    row.innerHTML=`<input type="text" placeholder="ключ" value="${k}"/>
+                   <input type="text" placeholder="значение" value="${Array.isArray(v)?v.join(","): (v ?? "")}"/>
+                   <button class="ghost">✕</button>`;
+    const [ki,vi,btn]=row.querySelectorAll("input,button");
+    btn.onclick=()=>{ container.removeChild(row); const idx=rows.findIndex(r=>r.rowEl===row); if(idx>=0) rows.splice(idx,1); };
+    container.appendChild(row); rows.push({kInput:ki, vInput:vi, rowEl:row});
+  }
+  function get(){ const out={}; rows.forEach(({kInput,vInput})=>{ const k=kInput.value.trim(); if(!k) return; out[k]=vInput.value; }); return out; }
+  function set(obj){ container.innerHTML=""; rows.length=0; if(obj&&typeof obj==="object") Object.entries(obj).forEach(([k,v])=> addRow(k,v)); }
+  return {addRow,get,set};
+}
+
+/* ==== Record<string, string|string[]> ==== */
+function setupKVS_Multi(containerId){
+  const container=$(containerId); const rows=[];
+  function addRow(k="",v=""){
+    const row=document.createElement("div"); row.className="kvs-row";
+    row.innerHTML=`<input type="text" placeholder="ключ" value="${k}"/>
+                   <input type="text" placeholder="строка или массив (через запятую)" value="${Array.isArray(v)?v.join(","):(v??"")}"/>
+                   <button class="ghost">✕</button>`;
+    const [ki,vi,btn]=row.querySelectorAll("input,button");
+    btn.onclick=()=>{ container.removeChild(row); const idx=rows.findIndex(r=>r.rowEl===row); if(idx>=0) rows.splice(idx,1); };
+    container.appendChild(row); rows.push({kInput:ki, vInput:vi, rowEl:row});
+  }
+  function get(){
+    const out={};
+    rows.forEach(({kInput,vInput})=>{
+      const k=kInput.value.trim(); if(!k) return;
+      const raw=vInput.value.trim();
+      out[k]= raw.includes(",") ? parseCommaList(raw) : raw;
+    });
+    return out;
+  }
+  function set(obj){ container.innerHTML=""; rows.length=0; if(obj&&typeof obj==="object") Object.entries(obj).forEach(([k,v])=> addRow(k,v)); }
+  return {addRow,get,set};
+}
+
+/* ==== Условия ==== */
+function setupConditions(containerId){
+  const container=$(containerId); const blocks=[];
+  function addFieldBlock(fieldCode){
+    const wrap=document.createElement("div"); wrap.className="box"; wrap.dataset.field=fieldCode;
+    wrap.innerHTML=`<div class="btnbar" style="justify-content:space-between;margin-bottom:8px">
+      <div><span class="code">${fieldCode}</span></div>
+      <div>
+        <button class="secondary btn-add-cond">+ Условие</button>
+        <button class="ghost btn-del-field">Удалить поле</button>
+      </div>
+    </div><div class="cond-list"></div>`;
+    const list=wrap.querySelector(".cond-list");
+    const block={field:fieldCode, rows:[], wrapEl:wrap, list};
+    container.appendChild(wrap); blocks.push(block);
+    wrap.querySelector(".btn-add-cond").onclick=()=> addCondRow(block,"equal","");
+    wrap.querySelector(".btn-del-field").onclick=()=>{ container.removeChild(wrap); const i=blocks.findIndex(b=>b===block); if(i>=0) blocks.splice(i,1); };
+    return block;
+  }
+  function addCondRow(block,op="equal",val=""){
+    const row=document.createElement("div"); row.className="cond-row";
+    row.innerHTML=`<select class="op"></select>
+                   <input class="val" type="text" placeholder="значение (необязательно)"/>
+                   <button class="ghost">✕</button>`;
+    const opSel=row.querySelector(".op"); OPERATORS.forEach(o=>{ const opt=document.createElement("option"); opt.value=o; opt.textContent=o; if(o===op) opt.selected=true; opSel.appendChild(opt); });
+    const valInput=row.querySelector(".val"); valInput.value = val ?? "";
+    function sync(){ const need=!["empty","not_empty"].includes(opSel.value); valInput.disabled=!need; if(!need) valInput.value=""; }
+    opSel.onchange=sync; sync();
+    row.querySelector("button").onclick=()=>{ block.list.removeChild(row); const i=block.rows.findIndex(r=>r.rowEl===row); if(i>=0) block.rows.splice(i,1); };
+    block.list.appendChild(row); block.rows.push({opSel,valInput,rowEl:row});
+  }
+  function get(){
+    const out={};
+    blocks.forEach(b=>{
+      const conds=[];
+      b.rows.forEach(({opSel,valInput})=>{
+        const op=opSel.value; const obj={operator:op};
+        if(!["empty","not_empty"].includes(op)){ const raw=valInput.value; if(raw!=="") obj.value=asNumberOrString(raw); }
+        conds.push(obj);
+      });
+      if(conds.length) out[b.field]=conds;
+    });
+    return out;
+  }
+  function set(obj){ container.innerHTML=""; blocks.length=0; if(obj&&typeof obj==="object"){ Object.entries(obj).forEach(([f,arr])=>{ const b=addFieldBlock(f); (arr||[]).forEach(c=> addCondRow(b, c.operator||"equal", c.value));}); } }
+  return {addFieldBlock,get,set};
+}
+
+/* ==== Агрегации ==== */
+function setupAggregations(containerId){
+  const container=$(containerId); const items=[];
+  function addAggItem(initial){
+    const wrap=document.createElement("div"); wrap.className="box";
+    const ucId=crypto.randomUUID(), vId=crypto.randomUUID();
+    wrap.innerHTML=`<div class="btnbar" style="justify-content:space-between"><strong>Агрегация</strong><button class="ghost btn-del-agg">Удалить</button></div>
+      <details open><summary>unique_columns</summary>
+        <div id="${ucId}" class="kvs"></div>
+        <div class="btnbar"><input class="uc-k" type="text" placeholder="ключ"/><input class="uc-v" type="text" placeholder="значение"/><button class="secondary btn-add-uc">+ Добавить</button></div>
+      </details>
+      <details open><summary>values</summary>
+        <div id="${vId}" class="kvs"></div>
+        <div class="btnbar"><input class="val-k" type="text" placeholder="ключ"/><input class="val-v" type="text" placeholder="значение"/><button class="secondary btn-add-val">+ Добавить</button></div>
+      </details>`;
+    const ucKVS=setupKVS(ucId), valKVS=setupKVS(vId);
+    wrap.querySelector(".btn-del-agg").onclick=()=>{ container.removeChild(wrap); const i=items.findIndex(it=>it.wrapEl===wrap); if(i>=0) items.splice(i,1); };
+    wrap.querySelector(".btn-add-uc").onclick=()=>{ const k=wrap.querySelector(".uc-k").value.trim(); const v=wrap.querySelector(".uc-v").value; if(!k) return; ucKVS.addRow(k,v); wrap.querySelector(".uc-k").value=""; wrap.querySelector(".uc-v").value=""; };
+    wrap.querySelector(".btn-add-val").onclick=()=>{ const k=wrap.querySelector(".val-k").value.trim(); const v=wrap.querySelector(".val-v").value; if(!k) return; valKVS.addRow(k,v); wrap.querySelector(".val-k").value=""; wrap.querySelector(".val-v").value=""; };
+    container.appendChild(wrap); items.push({wrapEl:wrap,ucKVS,valKVS});
+    if(initial){ ucKVS.set(initial.unique_columns||{}); valKVS.set(initial.values||{}); }
+  }
+  function get(){ return items.map(it=>({unique_columns:it.ucKVS.get(), values:it.valKVS.get()})); }
+  function set(arr){ container.innerHTML=""; items.length=0; (arr||[]).forEach(a=> addAggItem(a)); }
+  return {addAggItem,get,set};
+}
+
+/* ==== Сортировка таблиц ==== */
+function setupSorting(containerId){
+  const container=$(containerId);
+  const blocks=[]; // {tableCode, wrapEl, chipsState}
+
+  function makeChipArrayUI(rootEl){
+    const chips=document.createElement('div'); chips.className='chips';
+    const state=[];
+    function render(){
+      chips.innerHTML="";
+      state.forEach((val,i)=>{
+        const s=document.createElement('span'); s.className='chip';
+        s.innerHTML=`<span class="code">${val}</span> <button data-i="${i}" class="ghost" style="border:0;background:transparent;color:#9aa">✕</button>`;
+        chips.appendChild(s);
+      });
+      chips.querySelectorAll("button").forEach(b=> b.onclick=()=>{ state.splice(Number(b.dataset.i),1); render(); });
+    }
+    rootEl.appendChild(chips);
+    return {
+      get:()=>state.slice(),
+      set:(arr)=>{ state.length=0; (arr||[]).forEach(v=>state.push(v)); render(); },
+      push:(val)=>{ if(val) { state.push(val); render(); } },
+      clear:()=>{ state.length=0; render(); }
+    };
+  }
+
+  function addTableBlock(code, initArray){
+    const wrap=document.createElement('div'); wrap.className='box';
+    wrap.innerHTML=`
+      <div class="btnbar" style="justify-content:space-between;margin-bottom:6px">
+        <div>Таблица: <span class="code">${code}</span></div>
+        <div>
+          <button class="secondary btn-add-sortkey">+ Поле сортировки</button>
+          <button class="ghost btn-del-table">Удалить таблицу</button>
+        </div>
+      </div>
+      <div class="btnbar" style="margin-bottom:6px">
+        <input class="sortkey-input" type="text" placeholder="Код колонки (для добавления)" />
+      </div>
+    `;
+    const chipsApi = makeChipArrayUI(wrap);
+    const block={tableCode:code, wrapEl:wrap, chips:chipsApi};
+    container.appendChild(wrap);
+    blocks.push(block);
+
+    wrap.querySelector('.btn-add-sortkey').onclick=()=>{
+      const inp=wrap.querySelector('.sortkey-input');
+      const raw=inp.value.trim();
+      if(!raw) return;
+      parseCommaList(raw).forEach(v=> chipsApi.push(v));
+      inp.value="";
+    };
+    wrap.querySelector('.btn-del-table').onclick=()=>{
+      container.removeChild(wrap);
+      const i=blocks.findIndex(b=>b===block); if(i>=0) blocks.splice(i,1);
+    };
+    chipsApi.set(initArray||[]);
+    return block;
+  }
+
+  function get(){
+    const out={};
+    blocks.forEach(b=>{
+      const arr=b.chips.get();
+      if(arr.length) out[b.tableCode]=arr;
+    });
+    return out;
+  }
+  function set(obj){
+    container.innerHTML=""; blocks.length=0;
+    if(obj && typeof obj==="object"){
+      Object.entries(obj).forEach(([table, arr])=> addTableBlock(table, Array.isArray(arr)?arr:[]));
+    }
+  }
+  return { addTableBlock, get, set };
+}
+
+/* ==== Инициализация секций ==== */
+const permittedForms=setupChipArray("permitted_form_input","btn_add_permitted_form","btn_clear_permitted_form","permitted_forms_chips",x=>Number(x));
+const ttc=setupChipArray("ttc_input","btn_add_ttc","btn_clear_ttc","ttc_chips",x=>x);
+const cft=setupChipArray("cft_input","btn_add_cft","btn_clear_cft","cft_chips",x=>x);
+const relations=setupKVS_Multi("relations_container");
+const conditions=setupConditions("conditions_container");
+const tconditions=setupConditions("table_conditions_container");
+const agg=setupAggregations("agg_container");
+const sorting=setupSorting("sorting_container");
+const fr_task_codes=setupChipArray("fr_task_field_code_input","btn_add_fr_task_field_code","btn_clear_fr_task_field_code","fr_task_field_code_chips",x=>x);
+const fr_filter_fields=setupKVS("fr_filter_fields");
+const fr_foc=setupKVS_Multi("fr_foc");
+
+$("btn_add_cond_field").onclick=()=>{ const fc=$("cond_field_code").value.trim(); if(!fc) return; conditions.addFieldBlock(fc); $("cond_field_code").value=""; };
+$("btn_add_tcond_field").onclick=()=>{ const fc=$("tcond_field_code").value.trim(); if(!fc) return; tconditions.addFieldBlock(fc); $("tcond_field_code").value=""; };
+$("btn_add_rel").onclick=()=>{ const k=$("rel_src").value.trim(); const v=$("rel_dst").value.trim(); if(!k) return; relations.addRow(k,v); $("rel_src").value=""; $("rel_dst").value=""; };
+$("btn_add_fr_ff").onclick=()=>{ const k=$("fr_ff_k").value.trim(); const v=$("fr_ff_v").value; if(!k) return; fr_filter_fields.addRow(k,v); $("fr_ff_k").value=""; $("fr_ff_v").value=""; };
+$("btn_add_fr_foc").onclick=()=>{ const k=$("fr_foc_k").value.trim(); const v=$("fr_foc_v").value; if(!k) return; fr_foc.addRow(k,v); $("fr_foc_k").value=""; $("fr_foc_v").value=""; };
+$("btn_add_agg").onclick=()=> agg.addAggItem();
+$("btn_add_sort_table").onclick=()=>{ const code=$("sort_table_code").value.trim(); if(!code) return; sorting.addTableBlock(code, []); $("sort_table_code").value=""; };
+
+/* ==== Очистка ==== */
+$("btn_clear_all").onclick=()=>{
+  $("comment").value=""; $("target").value="";
+  permittedForms.set([]); ttc.set([]); cft.set([]);
+  relations.set({}); conditions.set({}); tconditions.set({}); agg.set([]); sorting.set({});
+  $("fr_id").value=""; fr_task_codes.set([]); fr_filter_fields.set({}); fr_foc.set({});
+  $("fr_only_existing").checked=false; $("fr_include_archived").checked=false; $("fr_take_last").checked=false; $("fr_ignore_limit").checked=false;
+  $("reverse").checked=false; $("need_to_approve").checked=false; $("reopen_task").checked=false; $("to_closed_task").checked=false; $("skip_notification").checked=false;
+  setOutput("");
+};
+
+/* ==== Генерация JSON ==== */
+function buildAndOutput(){
+  const target=$("target").value.trim();
+  if(!target){ alert("Требуется заполнить поле: target (код поля целевой задачи)."); return; }
+
+  const fr={
+    id: $("fr_id").value.trim(),
+    filter_fields: fr_filter_fields.get(),
+    task_field_code: fr_task_codes.get(),
+    fields_on_creation: fr_foc.get(),
+    only_existing: $("fr_only_existing").checked || undefined,
+    include_archived: $("fr_include_archived").checked || undefined,
+    take_last: $("fr_take_last").checked || undefined,
+    ignore_limit: $("fr_ignore_limit").checked || undefined
+  };
+  const frHasAnything =
+    (fr.id && fr.id!=="") ||
+    (fr.task_field_code && fr.task_field_code.length>0) ||
+    (fr.filter_fields && Object.keys(fr.filter_fields).length>0) ||
+    (fr.fields_on_creation && Object.keys(fr.fields_on_creation).length>0) ||
+    fr.only_existing !== undefined ||
+    fr.include_archived !== undefined ||
+    fr.take_last !== undefined ||
+    fr.ignore_limit !== undefined;
+  if (frHasAnything && !fr.id){
+    alert("Вы заполнили параметры в блоке form_rules — необходимо указать form_rules.id (ID формы).");
+    return;
+  }
+
+  const rule = {
+    comment: $("comment").value.trim() || undefined,
+    permitted_forms: permittedForms.get().map(Number),
+    target,
+    conditions: conditions.get(),
+    relations: relations.get(),
+    task_table_codes: ttc.get(),
+    codes_for_tables: cft.get(),
+    table_conditions: tconditions.get(),
+    agregate_tables: agg.get(),
+    sorting_rules: sorting.get(),
+    reverse: $("reverse").checked || undefined,
+    need_to_approve: $("need_to_approve").checked || undefined,
+    reopen_task: $("reopen_task").checked || undefined,
+    to_closed_task: $("to_closed_task").checked || undefined,
+    skip_notification: $("skip_notification").checked || undefined
+  };
+  if (frHasAnything){
+    rule.form_rules = {
+      id: Number(fr.id),
+      filter_fields: fr.filter_fields,
+      task_field_code: fr.task_field_code,
+      fields_on_creation: fr.fields_on_creation,
+      only_existing: fr.only_existing,
+      include_archived: fr.include_archived,
+      take_last: fr.take_last,
+      ignore_limit: fr.ignore_limit
+    };
+  }
+
+  const cleaned = clean(rule);
+  setOutput(JSON.stringify(cleaned, null, 2));
+}
+$("btn_generate").onclick = buildAndOutput;
+$("btn_generate_top").onclick = buildAndOutput;
+
+/* ==== Копирование и форматирование ==== */
+function doCopy(){
+  const txt=$("out").value.trim(); if(!txt){ alert("Сначала сформируйте JSON."); return; }
+  copyToClipboard(txt).then(()=>{
+    const old1=$("btn_copy").textContent;
+    $("btn_copy").textContent="Скопировано!";
+    setTimeout(()=>{$("btn_copy").textContent=old1;},900);
+  });
+}
+$("btn_copy").onclick=doCopy;
+$("btn_copy_inline").onclick=doCopy;
+
+$("btn_pretty").onclick=()=>{ const t=$("out").value.trim(); if(!t) return;
+  try{ setOutput(JSON.stringify(JSON.parse(t),null,2)); }catch(e){alert("В области вывода — некорректный JSON.");} };
+$("btn_minify").onclick=()=>{ const t=$("out").value.trim(); if(!t) return;
+  try{ setOutput(JSON.stringify(JSON.parse(t))); }catch(e){alert("В области вывода — некорректный JSON.");} };
+
+/* ==== Импорт из JSON ==== */
+$("btn_load_from_json").onclick=()=>{
+  const raw=prompt("Вставьте существующий JSON правила:");
+  if(!raw) return;
+  try{
+    const obj=JSON.parse(raw);
+
+    $("comment").value = obj.comment ?? "";
+    $("target").value = obj.target ?? "";
+
+    permittedForms.set(Array.isArray(obj.permitted_forms)?obj.permitted_forms:[]);
+    conditions.set(obj.conditions||{});
+    relations.set(obj.relations||{});
+    ttc.set(Array.isArray(obj.task_table_codes)?obj.task_table_codes:[]);
+    cft.set(Array.isArray(obj.codes_for_tables)?obj.codes_for_tables:[]);
+    tconditions.set(obj.table_conditions||{});
+    agg.set(Array.isArray(obj.agregate_tables)?obj.agregate_tables:[]);
+    sorting.set(obj.sorting_rules||{});
+
+    const fr = obj.form_rules || {};
+    $("fr_id").value = fr.id ?? "";
+    fr_task_codes.set(Array.isArray(fr.task_field_code)?fr.task_field_code:[]);
+    fr_filter_fields.set(fr.filter_fields||{});
+    fr_foc.set(fr.fields_on_creation||{});
+    $("fr_only_existing").checked=!!fr.only_existing;
+    $("fr_include_archived").checked=!!fr.include_archived;
+    $("fr_take_last").checked=!!fr.take_last;
+    $("fr_ignore_limit").checked=!!fr.ignore_limit;
+
+    $("reverse").checked=!!obj.reverse;
+    $("need_to_approve").checked=!!obj.need_to_approve;
+    $("reopen_task").checked=!!obj.reopen_task;
+    $("to_closed_task").checked=!!obj.to_closed_task;
+    $("skip_notification").checked=!!obj.skip_notification;
+
+    setOutput(JSON.stringify(clean(obj),null,2));
+    alert("Загружено.");
+  }catch(e){ alert("Не удалось разобрать JSON:\n"+e.message); }
+};
+
+/* Первичное автоизмерение (пустое) */
+autosize($('out'));
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "name": "pyrusbot",
+  "version": "1.0.0",
+  "description": "ИИ-ассистент инженера внедрения Pyrus: ТЗ, спецификации форм, серверные боты, формные скрипты и синхронизация документации с Базой знаний",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "tsx test_runner.ts",
+    "kb:dump": "tsx solutions_bank/scripts/kb_dump.ts",
+    "pyrus:dump": "tsx solutions_bank/scripts/pyrus_dump.ts",
+    "new:form": "tsx solutions_bank/scripts/new_form.ts",
+    "kb:sync": "tsx solutions_bank/scripts/kb_sync.ts",
+    "kb:sync:dry": "tsx solutions_bank/scripts/kb_sync.ts --dry-run",
+    "docs:agents": "tsx solutions_bank/scripts/generate_agent_docs.ts",
+    "agents:config": "tsx solutions_bank/scripts/generate_agent_configs.ts",
+    "lint:docs": "tsx solutions_bank/scripts/doc_lint.ts",
+    "map": "tsx solutions_bank/scripts/integration_map.ts",
+    "map:check": "tsx solutions_bank/scripts/integration_map.ts --check",
+    "mirror:scripts": "tsx solutions_bank/scripts/mirror_client_scripts.ts",
+    "mirror:scripts:check": "tsx solutions_bank/scripts/mirror_client_scripts.ts --check",
+    "env:check": "tsx solutions_bank/scripts/env_check.ts",
+    "check": "npm run typecheck && npm run test && npm run lint:docs && npm run map:check && npm run mirror:scripts:check && npm run env:check -- --record"
+  },
+  "keywords": [
+    "pyrus",
+    "automation",
+    "knowledge-base"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "pyrus-api": "^3.9.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

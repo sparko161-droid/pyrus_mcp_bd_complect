@@ -1,0 +1,709 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+	<title>Администрирование бота копирования TS</title><style type="text/css">HTML, BODY {
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+    line-height: 1.5;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+BODY {
+    --color-error-250: hsl(355, 100%, 86%);
+    --color-pink-250: hsl(334, 81%, 81%);
+    --color-orange-250: hsl(19, 100%, 82%);
+    --color-warning-300: hsl(36, 91%, 74%);
+    --color-accent-secondary-250: hsl(50, 100%, 76%);
+    --color-success-250: hsl(143, 63%, 80%);
+    --color-accent-200: hsl(180, 54%, 81%);
+    --color-info-250: hsl(207, 100%, 84%);
+    --color-violet-250: hsl(249, 87%, 91%);
+    --color-purple-250: hsl(273, 100%, 89%);
+    --color-neutral-250: hsl(210, 8%, 85%);
+
+    --color-trix-text-red-background: var(--color-error-250);
+    --color-trix-text-pink-background: var(--color-pink-250);
+    --color-trix-text-orange-background: var(--color-orange-250);
+    --color-trix-text-orange-yellow-background: var(--color-warning-300);
+    --color-trix-text-yellow-background: var(--color-accent-secondary-250);
+    --color-trix-text-green-background: var(--color-success-250);
+    --color-trix-text-green-blue-background: var(--color-accent-200);
+    --color-trix-text-blue-background: var(--color-info-250);
+    --color-trix-text-violet-background: var(--color-violet-250);
+    --color-trix-text-purple-background: var(--color-purple-250);
+    --color-trix-text-gray-background: var(--color-neutral-250);
+
+	word-wrap: break-word;
+}
+
+MAIN {
+	margin: 100px auto 200px;
+	padding: 0 20px;
+	width: 100%;
+	max-width: 800px;
+	box-sizing: border-box;
+}
+
+P {
+	margin: 0.9em 0 0;
+}
+
+A {
+	color: hsl(180, 100%, 27%);
+}
+
+A[type='video']::before {
+    display: inline;
+    content: attr(href);
+}
+
+H1, H2, H3, H4 {
+	font-weight: 700;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+H1 {
+	font-size: 32px;
+	line-height: 40px;
+	margin-top: 18px;
+	margin-bottom: 22px;
+}
+
+H2, H3, H4 {
+	font-size: 1.4em;
+	line-height: 1.4em;
+	margin: 1.4em 0 0.5em;
+}
+
+H3 {
+	font-size: 1.2em;
+}
+
+H4 {
+	margin: 1.5em 0 0;
+	font-size: 1em;
+}
+
+UL {
+	padding-inline-start: 2em;
+	list-style-type: disc;
+}
+
+UL > LI {
+	padding: 0;
+	max-width: calc(100% - 1em);
+}
+
+OL {
+	padding-inline-start: 2em;
+	counter-reset: item;
+}
+
+OL > LI {
+	word-break: break-word;
+	max-width: calc(100% - 1em);
+	counter-increment: item;
+}
+
+OL > LI::marker {
+	content: counters(item, ".") ". ";
+	padding-inline-end: 0.4em;
+}
+
+LI > P {
+	margin-top: 0;
+}
+
+MARK {
+    background-color: var(--color-trix-text-yellow-background);
+    color: inherit;
+}
+
+IMG {
+	display: block;
+	margin: 0.9em;
+	max-width: calc(100% - 40px);
+	height: fit-content;
+	background-color: hsl(210, 9%, 93%);
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+IMG.left {
+	margin-right: auto;
+}
+
+IMG.right {
+	margin-left: auto;
+}
+
+IMG.center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+IMG.leftText {
+	float: left;
+	margin-right: 20px;
+}
+
+IMG.rightText {
+	float: right;
+	margin-left: 20px;
+}
+
+CODE, PRE {
+	background-color: hsl(210, 10%, 96%);
+	font-family: Courier New, Courier, monospace;
+	font-size: 85%;
+}
+
+CODE {
+	margin: 0;
+	padding: 0.2em 0.4em;
+	border-radius: 6px;
+}
+
+PRE {
+	white-space: pre-wrap;
+	margin: 1em 0;
+	padding: 1.2em;
+	border-radius: 4px;
+	tab-size: 4;
+}
+
+DIV[data-theme],
+BLOCKQUOTE {
+	margin: 0.9em 0 0.5em;
+	padding-inline-start: 1em;
+	border-inline-start: 3px solid rgba(0, 0, 0, 75%);
+}
+
+DIV[data-theme="red"] {
+    border-color: #E66773;
+    background-color: #FBE8EA;
+}
+
+DIV[data-theme="pink"] {
+    border-color: #ED6AA2;
+    background-color: #FCEBF3;
+}
+
+DIV[data-theme="orange"] {
+    border-color: #FF8E56;
+    background-color: #FEEEE6;
+}
+
+DIV[data-theme="orangeYellow"] {
+    border-color: #F7B859;
+    background-color: #FEF4E6;
+}
+
+DIV[data-theme="yellow"] {
+    border-color: #FCD640;
+    background-color: #FEF7C5;
+}
+
+DIV[data-theme="green"] {
+    border-color: #5AC180;
+    background-color: #DCF8E6;
+}
+
+DIV[data-theme="greenBlue"] {
+    border-color: #00B2B2;
+    background-color: #D1F6F6;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #6ABCFF;
+    background-color: #E8F5FF;
+}
+
+DIV[data-theme="violet"] {
+    border-color: #B4A9FA;
+    background-color: #F0EEFE;
+}
+
+DIV[data-theme="purple"] {
+    border-color: #CC92FF;
+    background-color: #F5E9FF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB2B9;
+    background-color: #ECEDEF;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #42A1FFFF;
+    background-color: #D9EBFFFF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB3B9FF;
+    background-color: #ECEDEFFF;
+}
+
+TABLE {
+	width: 100%;
+	table-layout: fixed;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+TABLE P {
+	margin: 0;
+}
+
+TD {
+	min-width: 35px;
+	padding: 4px 12px;
+	box-sizing: border-box;
+	border: 1px solid hsl(210, 8%, 85%);
+	background-clip: padding-box;
+	vertical-align: top;
+}
+
+TD[data-format='table-cell-highlight-red'] {
+	background-color: #ffebee;
+}
+
+TD[data-format='table-cell-highlight-yellow'] {
+	background-color: #fcf3d9;
+}
+
+TD[data-format='table-cell-highlight-green'] {
+	background-color: #ebfaeb;
+}
+
+TD[data-format='table-cell-highlight-blue'] {
+	background-color: #ebf4ff;
+}
+
+.attachment__block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 8px;
+    margin: 0.9em 0;
+}
+
+.attachment__item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.attachment__item:hover {
+    background-color: #f5f5f5;
+}
+
+.attachment__item::before {
+    content: "";
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 24px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 24"><path fill="%23C7CCD1" d="M0 1.8C0 .8.8 0 1.8 0h9.4c.4 0 .9.2 1.2.5l7 6.3c.4.4.6.9.6 1.4v14c0 1-.8 1.8-1.8 1.8H1.8c-1 0-1.8-.8-1.8-1.8V1.8Z"/><path fill="%23fff" d="m18.4 6.8-5.9-5.2c-.3-.4-1 0-1 .4v4c0 1 .8 1.9 1.8 1.9H18c.6 0 .9-.7.4-1Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.attachment__fileName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment__fileSize {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #999;
+}
+
+.knowledgeBaseEditorflatList {
+    --size-gap: 4ch;
+    position: relative;
+    display: list-item;
+    margin-left: var(--size-gap);
+}
+.knowledgeBaseEditorflatList[aria-level="2"] {
+    margin-left: calc(var(--size-gap) * 2);
+}
+.knowledgeBaseEditorflatList[aria-level="3"] {
+    margin-left: calc(var(--size-gap) * 3);
+}
+.knowledgeBaseEditorflatList[aria-level="4"] {
+    margin-left: calc(var(--size-gap) * 4);
+}
+.knowledgeBaseEditorflatList[aria-level="5"] {
+    margin-left: calc(var(--size-gap) * 5);
+}
+.knowledgeBaseEditorflatList[aria-level="6"] {
+    margin-left: calc(var(--size-gap) * 6);
+}
+.knowledgeBaseEditorflatList[aria-level="7"] {
+    margin-left: calc(var(--size-gap) * 7);
+}
+.knowledgeBaseEditorflatList[aria-level="8"] {
+    margin-left: calc(var(--size-gap) * 8);
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="2"] {
+    list-style-type: circle;
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="3"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="4"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="5"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="6"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="7"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="8"] {
+    list-style-type: square;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"],
+.knowledgeBaseEditorflatList[data-kind="check"] {
+    display: block;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"]::before {
+    content: attr(data-ancestors) "." attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"]::before {
+    /* Empty checkbox */
+    content: "\2610";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"][aria-checked="true"]::before {
+    /* Marked checkbox */
+    content: "\2611";
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"][aria-level="1"]::before {
+    content: attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList > P, .knowledgeBaseEditor__flatList > SPAN > P {
+    margin: 0;
+
+}
+IMG[data-type='inline'] {
+    display: inline-flex;
+    height: 1.3em;
+    width: auto;
+    margin: 0.1em;
+    vertical-align: top;
+}
+</style></head>
+	<body>
+		<main>
+		<article><div><div></div></div><h1><span>Администрирование бота копирования TS</span></h1><h2 level="2"><span>Общее описание</span></h2><p><span>Бот копирования запускается в задаче, определяет применимые для неё </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=2-nastrojki" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">правила</a></span><span> и переносит данные в целевые задачи. Каждое правило применяется к паре задач в одном направлении не более одного раза - это исключает зацикливание. Все ошибки агрегируются по задаче‑источнику и отправляются одним комментарием. Если бот уже отправлял ошибку с таким текстом и другими пользователями написано менее 5 комментариев, бот не будет повторно отправлять сообщение. </span></p><p><span>Бот поддерживает перенос всех типов полей, в том числе системных. Допустимые соответствия полей описаны далее. Бот поддерживает следующие правила переноса:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Простое поле в простое</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Простое поле в табличное</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Табличное поле в табличное</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Табличное поле в простое (подробнее </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=18-perenos-kolonok-tablic-vo-vnetablichnye-polya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">далее</a></span><span>)</span></p></div><p><span>Перенос данных осуществляется по цепочке. То есть при вызове из задачи А бот после переноса в задачу Б, бот далее проверяет все правила для задачи Б. Такая проверка запускается только если изменилось хотя бы одно поле в задаче Б. В правиле можно прописать </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=19-ustanovka-uslovij" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">условия</a></span><span>, которым должна удовлетворять </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=3-k-kakim-zadacham-primenyaetsya-pravilo" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">задача </a></span><span>или строка (если перенос осуществляется из таблицы). Перенос </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=8-drugie-nastrojki" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">может</a></span><span> выполняться без уведомления пользователей.</span></p><p><span>Целевая задача указывается в </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=4-celevaya-zadacha-target" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">поле</a></span><span>. При этом оно может быть пустым, бот умеет искать задачи в реестрах и создавать отсутствующие, если это </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=7-sozdanie-i-poisk-zadach" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">прописано в правиле</a></span><span>. </span></p><p><span>Также в боте предусмотрена возможность </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=28-vozmozhnosti-kastomizacii" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">дорабатывать </a></span><span>его в процессе внедрения под конкретные случаи пользовательским кодом. </span></p><h2 level="2"><span>Настройки</span></h2><p><span>В настройках передаётся массив объектов rules.  Последовательность правил имеет значение, для каждой задачи проверяются все правила последовательно. Каждое правило состоит из следующих параметров.</span></p><details><summary><span>Тип настроек</span></summary><div><pre><span>/** 
+ * Правила копирования данных между задачами и таблицами.
+ */
+type CopyRule = {
+    /** Необязательно, для логирования ошибок и читаемости настроек */
+    comment?: string;
+    /** Массив из id форм, к которым будет применяться правило. Если не указан, правило применяется ко всем */
+    permitted_forms?: number[]; 
+    /** Код поля с целевой задачей */
+    target: string;
+    /** Условия переноса для задачи. Действует только для внетабличных полей */
+    conditions?: Record<string, {="" value?:="" any;="" operator:="" "equal"="" |="" "not_equal"="" "include"="" "not_include"="" "empty"="" "not_empty"="" "larger"="" "less";="" }[]="">;
+
+    /** Правила соответствия полей между собой. Ключ - поле-источник, значение - одно или несколько полей  целей */
+    relations: Record<string, string|string[]="">; // Соответствие кодов полей
+
+    /** Коды колонок для хранения ссылок на задачи */
+    task_table_codes?: string[]; 
+    /** Коды колонок для хранения указаний на ряды таблицы-источника */
+    codes_for_tables?: string[]; 
+
+    /** Условия для рядов */
+    table_conditions: Record<string, {="" value?:="" any;="" operator:="" "equal"="" |="" "not_equal"="" "include"="" "not_include"="" "empty"="" "not_empty"="" "larger"="" "less";="" }[]="">;
+
+    /** агрегация в таблицы */
+    agregate_tables?: {unique_columns:Record<string, string="">, values: Record<string, string="">}[],
+    
+    /** Если в задачу вызова надо подтянуть данные из целевой */
+    reverse?: boolean; // Копировать данные в обратном направлении
+    /** Правила создания и поиска задачи */
+    form_rules: {
+        id: number; // ID формы
+        filter_fields?: Record<string, string="">; // правила фильтрации для поиска по реестру
+        task_field_code?: string[]; // Коды полей, которые надо заполнить задачей вызова
+        fields_on_creation?: Record<string, string|string[]="">; // если в созданную задачу нужно перенести данные из задачи вызова при создании
+        only_existing?: boolean; // Не создавать новую, а искать существующие
+        include_archived?: boolean; // Учитывать закрытые задачи
+        take_last?: boolean; // Использовать последнюю созданную задачу
+        ignore_limit?: boolean; // Игнорировать лимиты на количество создаваемых в рамках одного вызова задач
+    };
+    /** Если после отработки всегда надо поставить утверждение */
+    need_to_approve?: boolean;
+    /** Если целевая задача закрыта, то надо переносить и переоткрывать */
+    reopen_task?: boolean; 
+    /** Если нужно отправлять данные в закрытую задачу без переоткрытия */
+    to_closed_task?:boolean;
+    /** Копировать данные бесшумно */
+    skip_notification?: boolean; 
+};
+</string,></string,></string,></string,></string,></string,></string,></span></pre></div></details><h3 level="3"><span>К каким задачам применяется правило</span></h3><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Разрешённые формы (</span><span><code>permitted_forms</code></span><span>) - массив чисел, id форм, по которым должна быть создана задача, чтобы к ней применилось правило. Опциональный параметр, если не указан - правило применяется ко всем задачам</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Условия задачи (</span><span><code>conditions</code></span><span>) - словарь правил на поля задачи, для которой применяется правило. Если хотя бы одна проверка не пройдена, правило не применяется. Ключом правила является код поля, для которого применяется правило. Поле должно быть внетабличным (для строк таблиц есть отдельный параметр). Каждое правило - массив объектов вида:</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="1"><p><span>Значение (</span><span><code>value</code></span><span>) - для каждого типа поля значение своё. Подробнее далее</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="2"><p><span>Оператор (</span><span><code>operator</code></span><span>) - строка, которая может принимать одно из следующих значений:</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="1"><p><span>equal - строгое равенство</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="2"><p><span>not_equal - строгое неравенство</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="3"><p><span>include - входит в список</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="4"><p><span>not_include - не входит в список</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="5"><p><span>empty - пустое значение</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="6"><p><span>not_empty - любое значение, кроме пустого</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="7"><p><span>larger - значение больше</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="3" data-ancestors="2.2" data-posinset="8"><p><span>less - значение меньше</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Условия для рядов (</span><span><code>table_conditions</code></span><span>) - словарь, аналогичный conditions. Если перенос осуществляется из строк таблицы, то есть возможность выставить условия для переноса. Если в рамках одного правила осуществляется перенос из нескольких таблиц, то это не будет проблемой. Если в ряду нет ячеек с кодом правила (который используется как ключ словаря), это условие считается выполненным. Значение словаря объект, аналогичный описанному ранее</span></p></div><h3 level="3"><span>Целевая задача (target)</span></h3><p><span>Код поля, где хранится номер целевой задачи. Поддерживаются поля типов Текст, Форма, Число и Справочник. Может быть табличным (перенос по строкам) или строкой со списком ID через запятую (перенос в несколько задач). Для справочников колонка указывается индексом, нумерация с 0, например: "catalog:2", по умолчанию используется первая колонка.</span></p><h3 level="3"><span>Соответствия полей (relations)</span></h3><p><span>Словарь соответствия кодов полей задачи-источника и кодов полей задачи-цели. В качестве ключа используется код поля задачи-источника. Если поле отсутствует в задаче, код пропускается без прерывания выполнения правила. В качестве значения может быть как одиночный код поля задачи, так и массив из кодов. Если код отсутствует в целевой задаче, он просто пропускается. Как в ключе, так и в значении, можно указать индекс через двоеточие от кода. Например, </span><span><code>catalog_field:1 </code></span><span> Индекс влияет на режим переноса. </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=14-pravila-sootvetstviya-polej" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">Подробнее</a></span><span> в разделе соответствия типов полей</span></p><p><span>Обратите внимание, что если </span><span><code>reverse = true</code></span><span> , коды задачи вызова должны выступать в качестве значений словаря.</span></p><h3 level="3"><span>Перенос в таблицы</span></h3><p><span>Бот умеет работать с таблицами. В relation можно указать табличное поле как в качестве источника, так и в качестве цели. В таком случае, у таблицы обязательно должен быть код, иначе бот сообщит ошибку и не будет переносить поля. Если целевое поле является табличным, боту нужны указатели для определения строки, в которую заносить значения. В их роли выступают параметры:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Коды колонок с указанием на задачу (</span><span><code>task_table_codes</code></span><span>) - всегда массив строк, коды колонок в целевой таблице, куда записывается ссылка на задачу‑источник. Могут быть полями типа Текст, Форма, Число или Справочник</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Коды колонок с указанием на номер ряда (</span><span><code>codes_for_tables</code></span><span>) - всегда массив строк, коды колонок для хранения номера строки источника (row_id) при переносе «таблица → таблица».</span></p></div><p><span>Если в одном правиле перенос осуществляется в несколько таблиц, бот сам определит для какой таблицы какой код надо использовать. Если в целевой таблице нет подходящего ряда, бот добавит его. При переносе из таблицы в таблицу, бот удаляет все строки в целевой таблице, в которых указан row_id, которых нет в таблице-источнике (например, после удаления строки пользователем). </span></p><h3 level="3"><span>Создание и поиск задач</span></h3><p><span>Если поле с кодом, указанным в параметре </span><span><code>target</code></span><span> правила, пустое, то бот может найти или создать задачу и перенести данные в неё. Процесс поиска и запускается, если в правиле есть параметр </span><span><code>form_rules</code></span><span>. Это объект который состоит из следующих атрибутов:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>ID целевой формы (</span><span><code>id</code></span><span>)- число, обязательный параметр, id формы, по которой надо искать/создавать задачу. У бота должен быть доступ к этой форме. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Фильтры (</span><span><code>filter_fields</code></span><span>) - словарь из кодов, в котором ключом является код задачи-источника (будет использовано значение из этого поля), а значением является код целевой формы. Этот параметр обязателен, если планируется поиск подходящих задач по реестру. Также необходимо, чтобы у бота был доступ на выгрузку реестра этой формы. Если хотя бы один фильтр не удалось составить, поиск прекращается, задача не создаётся. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Использовать закрытые (</span><span><code>include_archived</code></span><span>) - логическая переменная, если true, то поиск будет происходить и среди закрытых задач</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Поиск только среди существующих (</span><span><code>only_existing</code></span><span>) - логическая переменная, если в случае, когда поиск нашёл ноль задач, не нужно создавать задачу, поставьте </span><span><code>true</code></span><span>. По умолчанию, </span><span><code>false</code></span><span>, поэтому бот в таких случаях приступает к созданию задач</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>Использовать последнюю созданную (</span><span><code>take_last</code></span><span>) - логическая переменная. По умолчанию, если найдено несколько подходящих задач, бот напишет об этом сообщение в задачу и не выберет ни одну. Если этот параметр указан true, бот будет использовать последнюю созданную задачу. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="6"><p><span>Поля со ссылкой на материнскую задачу (</span><span><code>task_field_code</code></span><span>) - массив строк с кодами в целевой форме. В задаче, которая была найдена или создана, бот заполнит указанные поля значением задачи вызова</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="7"><p><span>Перенос при создании (</span><span><code>fields_on_creation</code></span><span>) - в некоторых случаях поля нужно перенести только при создании. В таком случае, указывайте словарь соответствия этих полей в этом параметре. Правила заполнения такие же как и параметра </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=5-sootvetstviya-polej-relations" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">relations</a></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="8"><p><span>Создание без ограничений (</span><span><code>ignore_limit</code></span><span>) - логическая переменная, по умолчанию, в рамках одного запуска бот не может создать более 10 задач по одной форме. Это сделано в целях защиты от результатов некорректных настроек пользователей. Установите этот параметр, если настройки бота хорошо оттестированы и у вас действительно есть случаи, в которых в рамках одного запуска может быть создано более 10 задач по одной форме. </span></p></div><h3 level="3"><span>Другие настройки</span></h3><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Комментарий к правилу (</span><span><code>comment</code></span><span>) - строка, необязательный параметр. Способ улучшить читаемость настроек, также участвует в некоторых сообщениях об ошибках от бота</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Агрегация таблиц (</span><span><code>agregate_tables</code></span><span>) - массив из объектов, необязательный параметр. Подробно описано </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=24-agregaciya-tablic" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">далее</a></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Сортировка таблиц (</span><span><code>sorting_rules</code></span><span>) - словарь, в котором ключом является код таблицы, значение - массив колонок, по которым нужно сортировать. Необязательный параметр. Подробно описано </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=27-sortirovka-tablic" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">далее</a></span><span>.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Режим загрузки (</span><span><code>reverse</code></span><span>) - логическая переменная. Укажите true, если надо не переносить в задачу из поля, а подтягивать из неё данные в задачу вызова. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>Утвердить после отработки (</span><span><code>need_to_approve</code></span><span>) - логическая переменная. Бот по умолчанию всегда ставит утверждение, если на этапе не осталось пользователей и к задаче подошло хотя бы одно правило. Если же бот стоит в наблюдателях и проставлен этот параметр, бот также поставит согласование, если подошло хотя бы одно правило (если не подошло по условиям, бот не поставит). Полезно использовать в сочетании с параметром reverse, если нам надо подгрузить данные из источника по нажатию кнопки. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="6"><p><span>Переоткрывать задачу (</span><span><code>reopen_task</code></span><span>) - по умолчанию, если задача из целевого поля закрыта, бот не осуществляет перенос. Если проставлен этот параметр бот перенесёт данные и переоткроет задачу. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="7"><p><span>Перенос в закрытую задачу (</span><span><code>to_closed_task</code></span><span>) - дополнение к предыдущему параметру. Если нужно перенести данные без переоткрытия задачи, используйте этот параметр. Если одновременно с ним проставлен reopen_task, бот переоткроет задачу, поэтому наличие этого параметра становится избыточным</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="8"><p><span>Бесшумный перенос (</span><span><code>skip_notification</code></span><span>) - логический параметр, если проставлено true, перенос будет осуществлён без уведомлений пользователей и ботов. Если часть данных надо переносить тихо, а о части уведомлять пользователей или ботов, сделайте два правила с разными </span><span><code>relations</code></span><span>. </span></p></div><h2 level="2"><span>Дополнительные поля</span></h2><p><span>При обработке задач бот добавляет следующие коды в свой словарь </span><span><code>named_fields </code></span><span>(а значит ими можно пользоваться при установке настроек)</span></p><h3 level="3"><span>Дочерние к комплексным подтипам текстовых полей Организация, Банк, Адрес</span></h3><p><span>Если у основного поля есть код, то у его дочерних полей будут коды, построенные по формуле </span><span><code>&lt;код основного поля&gt;*&lt;короткое название дочернего поля без пробелов&gt;</code></span><span>. Единственное, важно, чтобы у всех полей типа Организация, Банк и Адрес были разные названия (различающиеся хотя бы пробелом). Пример: есть поле Контрагент типа Организация с кодом </span><span><code>client</code></span><span>. Значит его дочерние поля будут иметь коды </span><span><code>client*ИНН</code></span><span>, </span><span><code>client*КПП</code></span><span>, </span><span><code>client*ПолноеНаименование</code></span><span>. </span></p><h3 level="3"><span>Поля с номером задачи разных типов</span></h3><p><span>Доступны поля типа: Число (код </span><span><code>$task_id</code></span><span>), Текст (код </span><span><code>$task_link</code></span><span>), Форма (код </span><span><code>$task_field</code></span><span>). Их можно использовать для указания в качестве целевой задачи задачу вызова. Например, когда надо конвертировать поле одного типа в другое. Пример: </span></p><pre><span>{
+            "comment": "Перенос id пользователя в отдельное поле для формирования ссылки в ИПР",
+            "permitted_forms": [2335766],
+            "target": "$task_link",
+            "relations":{
+                "emp": "emp_id"
+            }
+}</span></pre><h3 level="3"><span>Характеристики задачи </span></h3><p><span>Часть свойств задачи превращены в поля, чтобы их можно было переносить в другие задачи или использовать в условиях для правил. Менять эти поля не имеет смысла, изменения не будут применены, обновление завершится ошибкой API</span></p><table><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span>Код</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Свойство</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Тип поля</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Комментарий</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Заполнение</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$close_state</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Закрыта/Открыта</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Галочка.</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Проставлена, если закрыта. </span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Если заполнить в процессе запуска, то при комментировании задача закроется. Если снять, задача переоткроется</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$assignee</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Системный ответственный</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Контакт</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Можно изменить, пользователь будет назначен ответственным</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Если заполнить в процессе запуска, пользователь будет установлен ответственным</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$last_modified_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Последняя дата изменения</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$current_step</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Этап задачи</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Число</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Отсчёт с 1</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$close_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Дата закрытия</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$parent_task_id</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Номер задачи-родителя</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Число</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Если у задачи нет родителя, пустое. </span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$due</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Срок задачи со временем</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Обратите внимание, что не может быть одновременно и </span><span><code>$due</code></span><span>, и </span><span><code>$due_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Установится срок со временем. Если передана просто дата (например, из поля Дата), то будет указана полночь по нулевой таймзоне (то есть, в Москве будет отображаться срок в три часа ночи)</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$due_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Срок задачи</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Обратите внимание, что не может быть одновременно и </span><span><code>$due</code></span><span>, и </span><span><code>$due_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Установится срок без времени. Если передать в переменную дату со временем, время будет обрезано </span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$duration</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Длительность</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Число</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Продолжительность срока, если установлен срок с интервалом</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Если передать вместе с due или due_date, будет установлен срок с интервалом</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$due_end_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Конец интервала Срока</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Конец интервала срока</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>При передаче нового значения в задаче будет установлен срок с интервалом.</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$run_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Дата и время запуска</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>В качестве значения проставляется дата и время запуска бота. Полезна для сравнений</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr></table><h3 level="3"><span>Дополнительные колонки</span></h3><p><span>У каждого ряда каждой таблицы есть "фантомные ячейки": </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span><code>&lt;код таблицы&gt;_$task_id</code></span><span> - тип Число, значением является номер задачи</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span><code>&lt;код таблицы&gt;_$row_id</code></span><span> - тип Число, row_id строки</span></p></div><p><span>Может быть полезно, если надо конвертировать типы в рамках одной таблицы. Пример: есть колонка типа Дата в таблице c кодом </span><span><code>date_table</code></span><span>. Надо, чтобы в каждой строке отражался год, который выставлен в этой колонке. В таком случае правило будет следующее:</span></p><pre><span>{
+            "comment": "Перенос года в ту же строку",
+            "permitted_forms": [2335876],
+            "target": "$task_link",
+            "relations":{
+                    "date:Y": "year_of_date"
+                },
+            "task_table_codes":["date_table_$task_id"],
+			"codes_for_tables": ["date_table_$row_id"]
+            },</span></pre><h3 level="3"><span>Результаты согласования этапов</span></h3><p><span>Для каждого этапа добавляется 2 поля: согласующий пользователь и результат согласования. Количество этапов считается по настройкам маршрутизации. Нумерация этапов для формирования названий считается с 1. </span></p><p><span>Также добавляется таблица с историей согласований. </span></p><h4 level="4"><span>Поля с согласующими пользователями</span></h4><p><span>Для каждого этапа в словарь named_fields добавляется поле с кодом вида </span><span><code>$approver_step_${step}</code></span><span>, где </span><span><code>step </code></span><span>номер этапа с 1. Поле имеет тип Число. Если на этапе стоит только один пользователь/роль/бот, полю будет присвоено значение id этого пользователя. Если в форме выставлена настройка подключения пользователей с визой Против, то после её исполнения поле будет опустошаться, потому что на этапе, с точки зрения бота, стоит два пользователя. Если на этапе стоит Роль и виза не проставлена, поле будет иметь значение id роли. После простановки визы значение поля будет равно id поставившего визу пользователя. </span></p><img src="./PBlNToU54bc_files/PBlNToU54bc_e0f3bdb5-94e9-4edb-bd73-2fc2beb05a9a.png" alt="image.png" width="309" height="102" class="knowledgeBaseEditor__imageBlock rightText" haserror="False" size="7001"><p><span>Для корректной установки конкретного пользователя у бот должен быть доступ ко всем комментариям</span></p><h4 level="4"><span>Поля с результатами согласований</span></h4><p><span>Для каждого этапа в словарь named_fields добавляется поле с кодом вида </span><span><code>$approver_choice_step_${step_num}</code></span><span>, где </span><span><code>${step_num} </code></span><span>номер этапа с 1. Поле имеет тип Текст и может содержать 4 значения: </span><span><strong>approved, acknowledged, rejected </strong></span><span>или </span><span><strong>waiting</strong></span><span>. Если на этапе есть хоть один пользователь, не поставивший согласование, поле будет иметь значение </span><span><strong>waiting</strong></span><span>. Если на этапе есть хоть одна виза Против, поле будет иметь значение </span><span><strong>rejected</strong></span><span>. Если на этапе никого нет, поле будет пустым. Для корректной установки конкретного пользователя у бот должен быть доступ ко всем комментариям</span></p><h4 level="4"><span>Таблица согласований</span></h4><p><span>При обработке задачи в словарь named_fields добавляется таблица с кодом </span><span><code>$approver_table.</code></span><span> В отличие от остальных дополнительных полей, у этого поля </span><span><code>id</code></span><span> не </span><span><code>null</code></span><span>, а -1, а у всех его колонок </span><span><code>parent_id = -1</code></span><span>. Колонки таблицы:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Обычные дополнительные колонки, как у всех таблиц с кодами </span><span><code>$approver_table_$task_id</code></span><span> и </span><span><code>$approver_table_$row_id</code></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Номер этапа (</span><span><code>$approval_step</code></span><span>) - колонка типа Число</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Согласующий на этапе (</span><span><code>$approver</code></span><span>) - колонка типа Число, в ней хранится id пользователя/роли/бота, который стоит на маршруте</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Дата согласования (</span><span><code>$approving_date</code></span><span>) - поле типа Дата с датой последней простановки согласования. Если виза не проставлена - пустая</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>Решение (</span><span><code>$approval_choice</code></span><span>) - поле типа Текст. Может иметь значения </span><span><strong>approved, acknowledged, rejected </strong></span><span>или </span><span><strong>waiting. </strong></span><span>Никогда не </span><span><strong>null</strong></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="6"><p><span>Согласовавший пользователь (</span><span><code> $approval_user</code></span><span>) - колонка типа Число, в ней хранится id пользователя/бота, который поставил визу от лица согласующего (если это роль). Если согласования нет, ячейка пустая</span></p></div><p><span>Таблица заполняется по истории комментариев, поэтому важно, чтобы у бота был доступ ко всем комментариям. Таблица может пригодиться в следующих случаях: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Особые правила регистрации итогового решения. Если стандартное правило, описанное выше, не подходит, в кастомные </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=32-vozmozhnosti-kastomizacii" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">функции </a></span><span> можно будет дописать код, который заполнит специальные поля под каждый этап по нужному правилу</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Формирование листа согласования - иногда требуется сделать особый шаблон листа согласования. Тогда сделайте таблицу на форме и заполняйте её на основе автоматически формируемой. Можно заносить в эту таблицу только интересующие вас этапы, если в параметр </span><span><code>table_conditions</code></span><span> настроек добавить условия на колонку </span><span><code>$approval_step</code></span></p></div><h2 level="2"><span>Правила соответствия полей</span></h2><p><span>Чтобы значение поля было перенесено, поля необязательно должны быть одинакового типа. Также поддерживается перенос системных полей в поля пользовательских типов. Системное поле Статус далее считается полем типа Выбор с кодом Status</span></p><h3 level="3"><span>Правила заполнения поля типа Справочник</span></h3><p><span>Некоторые поля поддерживают заполнение поля типа Справочник. В целевом поле будут выбраны все значения, которые удастся найти по передаваемому значению. По умолчанию поиск осуществляется по первой колонке справочника, но в коде через двоеточие можно передать номер колонки (считается с нуля) или название колонки. Например, если нам нужно искать соответствие по 3 колонке поля с кодом </span><span><code>catalog</code></span><span>, то следует передать "catalog:2"</span></p><h3 level="3"><span>Таблица соответствия</span></h3><p><span>Все пользовательские типы полей можно копировать в поля этого же типа. Нижеприведённая таблица действительна для всех режимов переноса, кроме табличного во внетабличное</span></p><table><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span>Поле исходной задачи</span></p></td><td colspan="1" rowspan="1"><p><span>Поле целевой задачи</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Текст </strong></span><span>(в том числе дочерние, порядок установки кода выше)</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Справочник </strong></span><span>- поиск по полному соответствию в нужной колонке</span></p><p><span><strong>Форма </strong></span><span>- только одна задача. Формат записи любой, все нечисловые символы будут обрезаны</span></p><p><span><strong>Число</strong></span><span>, </span><span><strong>Деньги</strong></span></p><p><span><strong>Выбор </strong></span><span>- один выбор, поиск по полному соответствию</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Форма</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- будет записана ссылка на задачу</span></p><p><span><strong>Число</strong></span></p><p><span><strong>Справочник</strong></span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Форма </strong></span><span>в формате "&lt;код поля&gt;:name"</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- будет записан заголовок задачи</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Форма </strong></span><span>в формате "&lt;код поля&gt;:int"</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- будет записан номер задачи</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Справочник</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Справочник </strong></span><span>(справочники, на которые ссылаются поля должны совпадать)</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Справочник </strong></span><span>в формате "&lt;код поля&gt;:&lt;номер колонки&gt;"</span></p><p><span>Не во все поля поддерживается перенос из поля с мультвыбором. Об этом написано в пояснении к типу поля</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- если несколько значений в справочнике, значения в выбранной колонке будут записаны через запятую</span></p><p><span><strong>Форма </strong></span><span>- если единственное значение</span></p><p><span><strong>Выбор </strong></span><span>- поддерживается мультивыбор</span></p><p><span><strong>Галочка </strong></span><span>- если единственное значение. Поддерживаются пары значений 0/1;true/false;checked/unchecked</span></p><p><span><strong>Число </strong></span><span>и </span><span><strong>Деньги </strong></span><span>- если единственное значение</span></p><p><span><strong>Дата</strong></span><span> и </span><span><strong>Срок </strong></span><span>- если единственное значение. Срок с датой будет установлен на 0 часов</span></p><p><span>Допустимые форматы YYYY-MM-DD и DD.MM.YYYY</span></p><p><span><strong>Телефон </strong></span><span>- если единственное значение</span></p><p><span><strong>Email </strong></span><span>- поддерживается множественный выбор. В том числе поддерживается запись из колонки маршрутизации</span></p><p><span><strong>Контакт </strong></span><span>- в колонке может быть id или email пользователя (также поддерживается колонка маршрутизации). Если единственное значение</span></p><p></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Выбор</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Выбор </strong></span><span>- в том числе Мультивыбор. Будут занесены только совпадающие варианты</span></p><p><span><strong>Текст </strong></span><span>- если несколько вариантов, запись через запятую</span></p><p><span><strong>Справочник </strong></span><span>- поиск будет осуществляться для всех вариантов выбора</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Галочка</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- через двоеточие в коде передаваемого поля можно написать какая пара значений будет заноситься. Доступны пары "Да/Нет", "Yes/No", "1/0". Для выбора пары нужно передать первое слово пары. Например, "</span><span><code>checkmark:Да</code></span><span>". По умолчанию будет "checked/unchecked"</span></p><p><span><strong>Число </strong></span><span>- если галочка проставлена 1, если нет 0</span></p><p><span><strong>Выбор </strong></span><span>- поддерживается, если в поле Выбор есть варианты "Да" или "Yes" и "Нет" или "No". Также второго слова может не быть, тогда поле будет опустошаться </span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Деньги</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span></p><p><span><strong>Текст</strong></span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Число </strong></span><span>(для переноса во Время доступен индекс)</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Деньги</strong></span></p><p><span><strong>Текст</strong></span></p><p><span><strong>Контакт</strong></span></p><p><span><strong>Время </strong></span><span>(индекс представляет из себя поправку на таймзону, по умолчанию 0)</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Дата, Срок </strong></span><span>(все виды), </span><span><strong>Дата создания</strong></span></p><p></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст</strong></span><span> - запишется в формате YYYY-MM-DD</span></p><p><span><strong>Срок </strong></span><span>- все виды, но все типы со временем будут устанавливаться на 00:00, если только не идёт перенос из Срока со временем в Срок со временем</span></p><p><span><strong>Дата</strong></span></p><p><span><strong>Число </strong></span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Дата, Срок </strong></span><span>(все виды), </span><span><strong>Дата создания </strong></span><span>с индексами</span></p><p></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст и Число</strong></span><span>. Доступные индексы:</span></p><p><span><em>Y</em></span><span> - год, 4 знака</span></p><p><span><em>Y2</em></span><span> - год, два знака</span></p><p><span><em>M</em></span><span> - месяц, всегда два знака (например, "02")</span></p><p><span><em>RU</em></span><span> - полная дата в формате dd.mm.yyyy. Только для Текста</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Время </strong></span><span>(доступны индексы)</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>(будет записано в формате HH:MM, индекс указывает часовой пояс, по умолчанию 0)</span></p><p><span><strong>Число </strong></span><span>- количество минут с начала дня, индекс указывает часовой пояс, по умолчанию 0</span></p><p></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Телефон</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст</strong></span></p><p><span><strong>Справочник</strong></span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Эл. почта</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст</strong></span></p><p><span><strong>Контакт</strong></span></p><p><span><strong>Справочник</strong></span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Контакт,</strong></span><span> </span><span><strong>Автор, Ответственный</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- будет записано Имя Фамилия</span></p><p><span><strong>Число </strong></span><span>- запись id</span></p><p><span><strong>Эл.Почта</strong></span><span> </span></p><p><span><strong>Справочник</strong></span></p><p><span><strong>Контакт</strong></span></p><p><span><strong>Ответственный</strong></span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Этап</strong></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span></p><p><span><strong>Текст </strong></span><span>- будет записано название этапа в соответствии с настройками формы</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  698
+]"><p><span><strong>Этап </strong></span><span>с индексом full</span></p></td><td colspan="1" rowspan="1"><p><span><strong>Текст </strong></span><span>- запись в формате &lt;номер этапа&gt;: &lt;название этапа&gt;</span></p></td></tr></table><h3 level="3"><span>Перенос файлов</span></h3><p><span>Файлы переносятся только в поля типа Файл. Всегда сохраняется версионность файлов. </span></p><h3 level="3"><span>Перенос колонок таблиц во внетабличные поля</span></h3><p><span>Может применяться в двух случаях: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>содержимое таблицы нужно перенести во внетабличное поле. Или, например, выделить в отдельное поле значения только из избранных строк (которые подходят под условия) и дальше использовать их. Или чтобы подготовить данные к переносу в другую задачу, где задача вызова представлена в виде строки таблицы, а нам надо дать сводку по таблице (график платежей, к примеру). Может быть полезно при использовании в user-скриптах</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>отобразить какой-то сводный показатель в специальном поле</span></p></div><p><span>В обоих случаях учитываются только данные в строках, подходящих по условиям (как кастомным, так и штатным).</span></p><p><span>Перенос значений строк переносятся в поле возможно только в следующих случаях:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1" aria-checked="False"><p><span>Колонка типа Файл в поле типа Файл. Например, чтобы собрать все уникальные файлы из таблицы в одно поле</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2" aria-checked="False"><p><span>Перенос во внетабличное многострочное текстовое поле - доступно для типов, для которых доступна конвертация в Текст (все кроме файлов). Значения будут записаны через перевод строки (</span><span><em>\n</em></span><span>). Если значение в ячейке пустое, то это будет как пустая строка. Поэтому если надо, чтобы записывались только значения заполненных ячеек, поставьте условие на её заполненность (пустоту и заполненность поддерживают все типы). </span></p></div><p><span>Отображение сводных показателей становится возможно, если в коде цели сделать один из следующих индексов (то есть сделать следующую пару </span><span><code>"source_table_column":"field:sum"</code></span><span>)</span></p><table><tr><td colspan="1" rowspan="1" data-format="table-cell-highlight-blue"><p><span>Индекс / операция</span></p></td><td colspan="1" rowspan="1" data-format="table-cell-highlight-blue"><p><span>Поддерживаемые типы полей для заполнения</span></p></td><td colspan="1" rowspan="1" data-format="table-cell-highlight-blue"><p><span>Результат</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>first</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Все</strong></span><span> типы</span></p></td><td colspan="1" rowspan="1"><p><span>Значение из первой строки, подходящей по условиям. При переносе справочника поле-источник и поле-цель должны ссылаться на один справочник</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>last</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Все</strong></span><span> типы</span></p></td><td colspan="1" rowspan="1"><p><span>Значение из последней строки, подходящей по условиям. При переносе справочника поле-источник и поле-цель должны ссылаться на один справочник</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>count</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Все</strong></span><span> типы</span></p></td><td colspan="1" rowspan="1"><p><span>Считает все заполненные значения (0 считается заполненным значением)</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>countu</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Все</strong></span><span> типы</span></p></td><td colspan="1" rowspan="1"><p><span>Считает все заполненные уникальные значения, кроме пустых (0 считается значением)</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>min</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span><span>, </span><span><strong>Деньги</strong></span><span>, </span><span><strong>Дата, Срок</strong></span></p></td><td colspan="1" rowspan="1"><p><span>Минимальное значение (0 учитывается, пустые ячейки нет)</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>max</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span><span>, </span><span><strong>Деньги</strong></span><span>, </span><span><strong>Дата, Срок </strong></span></p></td><td colspan="1" rowspan="1"><p><span>Максимальное значение (0 учитывается, пустые ячейки нет)</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>sum</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span><span>, </span><span><strong>Деньги</strong></span></p></td><td colspan="1" rowspan="1"><p><span>Сумма всех непустых значений</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>avg</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span><span>, </span><span><strong>Деньги</strong></span></p></td><td colspan="1" rowspan="1"><p><span>Среднее по всем непустым значениям</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span><code>median</code></span></p></td><td colspan="1" rowspan="1"><p><span><strong>Число</strong></span><span>, </span><span><strong>Деньги</strong></span></p></td><td colspan="1" rowspan="1"><p><span>Медиана непустых значений</span></p></td></tr></table><p><span>Может применяться как при переносе данных в рамках одной задачи (кейс: перенесли данные из какой-то задачи, потом бот запускается для целевой задачи и применяет правило с </span><span><code>target = $task_id</code></span><span> и в relations колонка таблицы соответствует внетабличному полю), так и при переносе данных между задачами (изменения ДС ведутся в таблице, чтобы отобразить в карточке договора в таблице ДС изменения нацеливаем колонку таблицы </span><span><strong>Изменения </strong></span><span>на ячейку </span><span><strong>Изменения в ДС</strong></span><span>). </span></p><h2 level="2"><span>Установка условий</span></h2><p><span>Бот позволяет установить условия отработки правила в задаче (</span><span><code>conditions</code></span><span>). Это может быть полезно, если в задаче много правил и для некоторых бот подключается слишком рано или если у вас есть различие в целях назначения информации в зависимости от типа задачи. </span></p><p><span>Также условия можно выставлять на перенос конкретных строк таблицы(</span><span><code>table_conditions</code></span><span>). Например, нам нужно отправлять в целевую задачу только те спецификации, которые отмечены как активные. </span></p><p><span>Условия формируются одинаково: в качестве ключа словаря указывается его код. Для значения нам нужно понимание целевого значения и оператор для сравнения. Операторы empty и not_empty не требуют передачи value. </span></p><p><span>Доступные операторы зависят от типа поля: </span></p><table><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Тип поля</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>equal</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>not_equal</span></p></td><td colspan="1" rowspan="1"><p><span>include</span></p></td><td colspan="1" rowspan="1"><p><span>not_include</span></p></td><td colspan="1" rowspan="1"><p><span>empty</span></p></td><td colspan="1" rowspan="1"><p><span>not_empty</span></p></td><td colspan="1" rowspan="1"><p><span>larger</span></p></td><td colspan="1" rowspan="1"><p><span>less</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Текст</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Выбор</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Галочка</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Справочник</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Форма</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Число/Деньги</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>Дата/Срок/Дата создания</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  168
+]"><p><span>(прочие)</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  161
+]"><p><span>—</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  183
+]"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>✔️</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td></tr></table><p><span>Форматы передаваемых значений также зависят от типа поля:</span></p><table><tr><td colspan="1" rowspan="1"><p><span>Тип поля</span></p></td><td colspan="1" rowspan="1"><p><span>Что ожидать в </span><span><code>condition.value</code></span></p></td><td colspan="1" rowspan="1"><p><span>Пример(ы)</span></p></td><td colspan="1" rowspan="1"><p><span>Нормализация/заметки</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Текст</span></p></td><td colspan="1" rowspan="1"><p><span>Строка</span></p></td><td colspan="1" rowspan="1"><p><span><code>"ACME"</code></span><span>, </span><span><code>"foo"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Для </span><span><code>include/not_include</code></span><span> ищется </span><span><strong>подстрока</strong></span><span>. Пустота: </span><span><code>''</code></span><span> или </span><span><code>null/undefined</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Выбор</span></p></td><td colspan="1" rowspan="1"><p><span>Строка </span><span><strong>или</strong></span><span> массив строк (имена вариантов)</span></p></td><td colspan="1" rowspan="1"><p><span><code>"VIP"</code></span><span>, </span><span><code>["VIP"," New "]</code></span></p></td><td colspan="1" rowspan="1"><p><span>Имена </span><span><strong>триммятся</strong></span><span>; массив сравнивается как </span><span><strong>множество</strong></span><span> (порядок не важен). Пусто: </span><span><code>[]</code></span><span> или </span><span><code>["Не выбрано"]</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Галочка</span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span> | </span><span><code>'checked'</code></span><span> | </span><span><code>'unchecked'</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span>, </span><span><code>'checked'</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>'Да'</code></span><span> приводится к </span><span><code>'checked'</code></span><span>. Для </span><span><code>empty</code></span><span> истинно, если значение поля </span><span><code>'unchecked'</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Справочник</span></p></td><td colspan="1" rowspan="1"><p><span>Строка </span><span><strong>или</strong></span><span> массив строк (ожидаемые ячейки в колонке)</span></p></td><td colspan="1" rowspan="1"><p><span><code>"Москва"</code></span><span>, </span><span><code>["SPb","Москва"]</code></span></p></td><td colspan="1" rowspan="1"><p><span>Сравниваются </span><span><strong>строки ячеек</strong></span><span> выбранной колонки. Для </span><span><code>equal</code></span><span> — равенство </span><span><strong>множества значений</strong></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Форма</span></p></td><td colspan="1" rowspan="1"><p><span>Строка с id задач через запятую</span></p></td><td colspan="1" rowspan="1"><p><span><code>"123,456"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Парсится как список </span><span><code>task_id: number[]</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Число/Деньги</span></p></td><td colspan="1" rowspan="1"><p><span>Число </span><span><strong>или</strong></span><span> строка, приводимая к числу</span></p></td><td colspan="1" rowspan="1"><p><span><code>10</code></span><span>, </span><span><code>"7.5"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Приведение через </span><span><code>Number(...)</code></span><span>; при </span><span><code>NaN</code></span><span> — ошибка </span><span><code>"Не удаётся преобразовать целевое значение в число"</code></span><span>. </span><span><code>0</code></span><span> — </span><span><strong>НЕ</strong></span><span> пусто.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>Дата/Срок/Дата создания</span></p></td><td colspan="1" rowspan="1"><p><span>Дата в формате, который понимает </span><span><code>parseDate</code></span></p></td><td colspan="1" rowspan="1"><p><span><code>"2025-08-01"</code></span><span>, </span><span><code>"01.08.2025"</code></span></p></td><td colspan="1" rowspan="1"><p><span>Если не удаётся преобразовать строку в дату — ошибка </span><span><code>"Не удаётся преобразовать целевое значение в дату"</code></span><span>.</span></p></td></tr><tr><td colspan="1" rowspan="1"><p><span>(прочие)</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>—</span></p></td><td colspan="1" rowspan="1"><p><span>Вернётся ошибка </span><span><code>"Тип поля не поддерживается"</code></span><span> для всех операторов кроме empty/not_empty.</span></p></td></tr></table><h3 level="3"><span>Условия в зависимости от значения других полей</span></h3><p><span>Кроме статичных значений в value можно передать код поля, значение которого будет использоваться для сравнения со значением целевого поля. Можно передавать как внетабличные, так и табличные поля. Таким образом можно выставить условия на задачу (например, чтобы проверить, что доходы больше расходов или что плановая дата больше даты вызова) или на колонку (например, отобрать только время ПМ из таблицы или взять только последний активный расчёт для переноса во внетабличное поле). Если в условие передаётся табличное поле и тип проверямого типа не Текст, необходмо передать индекс через двоеточик</span></p><p><span>Чтобы передать в условие другое поле, необходимо передать его код с приставкой ! в начале. Например, </span></p><pre><span> "table_conditions": {
+                "frame_table_active": [{"operator": "not_empty"}],
+                "frame_agr_table$row_id": [{"operator": "equal", "value": "!frame_agr_table$row_id:max"}]
+            },</span></pre><p><span>В примере выше необходимо во внетабличное поле перенести последний добавленный рамочный договор. У последней строки будет максимальный row_id в таблице, поэтому в value передаётся</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span><code>frame_agr_table$row_id</code></span><span> - код колонки с row_id</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span><code>! </code></span><span>- перед кодом ставится восклицательный знак, чтобы бот понял, что это не строковое значение, а код поля</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span><code>max </code></span><span>- передаётся индекс max для получения одного значения, с которым сравнивается значение ячейки в каждом ряду</span></p></div><p><span>Обратите внимание, что при передаче табличного поля значения будут браться только из колонок, которые сами подходят по условиям. В примере выше, будет браться максимальный row_id не среди всех рядов, а только среди отмеченных галочкой </span><span><code>frame_table_active</code></span></p><h2 level="2"><span>Агрегация таблиц</span></h2><h3 level="3"><span>Кейсы и примеры</span></h3><p><span>Кейс использования: в карточке какого-то объекта надо в таблице отобразить данные в разрезе каких-то критериев. Например, в карточке процесса надо отобразить время, потраченное каждым сотрудником в разрезе деятельности. По умолчанию при переносе ориентируется на колонки с номерами задач и рядов в таблицах. Но после переноса в подобную таблицу, он может провести агрегацию данных из неё во вторую таблицу. </span></p><img src="./PBlNToU54bc_files/PBlNToU54bc_5d92d518-8cd1-4a55-86a2-32f5f1d08ea3.png" alt="image.png" width="1611" height="548" class="knowledgeBaseEditor__imageBlock" haserror="False" size="66876"><p><span>Аналогично можно организовать процесс закупок (несколько отделов создают задачи, целевая определяется по месяцу оформления, в итоге группируются по номенклатуре в таблицу общего заказа) или в карточке клиента можно отображать среднюю стоимость его покупок в разрезе категорий (в задаче закупки таблица с номенклатурой, в скрытую колонку переносится категория номенклатуры, вся таблица потом переносится в карточку клиента, потом группируется по той скрытой колонке в отдельной таблице).</span></p><h3 level="3"><span>Настройка агрегации</span></h3><p><span>Агрегация выполняется после переноса всех полей, указанных в правиле. Регулируется параметром </span><span><code>agregate_tables </code></span><span> , который представляет из себя массив из объектов, каждый из которых должен обладать двумя атрибутами:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Соответствие колонок (</span><span><code>unique_columns</code></span><span>) - словарь из кодов полей. Ключ - колонка в таблице-источнике, значение - колонка в таблице-цели. При запуске бот проходит по таблице-источнику и собирает уникальные комбинации полей. Пустые поля также участвуют в наборе комбинаций. При агрегации бот в таблице-цели бот будет искать эти комбинации значений. Если не найдёт - добавит строку. Все лишние строки удаляются. Если хотя бы одной колонки в одной таблице нет, агрегация отменяется, в целевую задачу будет написана ошибка. Поля должны быть одинакового типа.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Поля для агрегации (</span><span><code>values</code></span><span>) - словарь из кодов полей. Ключ - колонка в таблице-источнике, значение - колонка в таблице-цели. Поддерживается перенос типов в соответствии с </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=20-tablica-sootvetstviya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">таблицей соответствия</a></span><span>. При запуске бот набирает для каждого поля массив значений, который затем помещает в ячейку. Механизм переноса аналогичный переносу табличного поля во внетабличное, поэтому при переносе в ячейку с типом отличным от Текст, рекомендуется использовать индекс. Поля типа Файл не поддерживаются. </span></p></div><p><span>Пример: </span></p><pre><span>{
+                "agregate_tables":[
+                    {
+                        "unique_columns": {
+                                "spent_activity": "category_activity"
+                            },
+                        "values": {
+                                "spent_time": "category_hours:sum"
+                            }
+                        }
+                    ]
+                },</span></pre><h2 level="2"><span>Сортировка таблиц</span></h2><p><span>После переноса всех данных и агрегаций можно отсортировать таблицы. Например, мы агрегируем заказы из разных задач и нам надо отсортировать таблицу по убыванию общей суммы заказа. Или же такой функционал может понадобиться, когда данные заносятся пользователями и после этого надо отсортировать таблицу. Например, пользователь заносит ФИО участников конференции и после каждой добавленной фамилии бот выстраивает участников в алфавитном порядке. </span></p><p><span>Сортировка может быть по нескольким параметрам. Например, мы собираем в карточке продукта статистику его заказов у клиентов. И мы хотим отсортировать эту таблицу по клиентам в алфавитном порядке (по возрастанию буквы), а внутри клиента по убыванию стоимости. </span></p><p><span>Для этого в правило надо добавить атрибут sorting_rules, который представляет из себя словарь, в котором ключом является код поля, а значением массив из кодов полей. По умолчанию сортировка идёт по убыванию, если нужно сортировать по возрастанию - добавьте в код любой символ через двоеточие. </span></p><p><span>Пример настроек:</span></p><pre><span>"sorting_rules": {
+                    "main_targets": ["main_targets_table_date:asc"],
+                    "process_table": ["process_table_client: asc", "process_table_minutes"],
+                    "client_table": ["u_client: asc"]
+                },</span></pre><h2 level="2"><span>Логи бота</span></h2><p><span>Во время отработки бот пишет об ошибках в задачи, для которых применяется правило. Также бот часть информации и ошибок пишет во внутренние логи, чтобы не отвлекать пользователей. В профиле бота в разделе "Журнал событий" после каждого запуска записывается лог. Штатно доступны следующие комментарии (не рекомендуется их удалять или комментировать). </span></p><h3 level="3"><span>Лог итогового списка ошибок</span></h3><p><span>Строка для поиска </span><span><code>console.log("error_log", error_log);</code></span></p><p><span>Здесь отражаются все ошибки, которые возникли в процессе запуска бота в разрезе задач. Так как бот отправляет ошибку в задачу только раз в 5 текстовых комментариев, иногда сложно понять после повторного запуска: ошибки нет потому что её исправили или просто ошибка не была отправлена в задачу? В таком случае зайдите в профиль бота: во внутренний лог бот всегда записывает все ошибки. Если ошибок в процессе запуска не было, лог будет </span><span><code>error_log {}</code></span></p><h3 level="3"><span>Лог блокировки создания</span></h3><p><span>Строка для поиска </span><span><code>console.log("stopped_creation_over_limit");</code></span></p><p><span>Как было сказано выше, в боте стоит защита от лишнего создания задач. Если в логе присутствует это сообщение, значит бот дошёл до границы создания. Задачей в таком случае является разобраться является ли это действительно следствием создания лишних задач или действительно нужно было создать более 10 задач (в таком случае, поставьте параметр ignote_limit для этого правила)</span></p><h3 level="3"><span>Лог времени</span></h3><p><span>Строка для поиска </span><span><code>console.log("working", get_time_seconds(start_time, new Date()));</code></span><span> </span></p><p><span>Записывает сколько секунд работал бот. В абсолютном большинстве случаев будет записано 0. Если цепочка переноса длинная или в процессе создавалось много задач, число может подняться до 10. Если число больше 10, следует рассматривать это как ошибку и разбираться в причинах</span></p><h3 level="3"><span>Лог ошибки сравнения</span></h3><p><span>Строка для поиска </span><span><code>console.log("used default", new_field);</code></span><span> </span></p><p><span>При применении правила бот определяет изменились ли поля в целевой задаче. И только если поля изменились, применяет правила к целевой задаче. Для этого используется функция </span><span><a href="https://pyrus.com/t#kb/article/poleznye-funkcii-type-script-ORjNRMhq9Hi?h=9-sravnenie-znachenij-polej" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">same_value</a></span><span>. Если в логе бота присутствует эта запись, значит функция не смогла обработать сравнение каких-то полей и выдала результат по умолчанию. В таком случае нужно обратиться к администратору для изучения этого кейса подробнее. Иначе бот каждый раз в этом случае выполнять лишнюю работу. применяя правила к задачам, в которых не было изменений</span></p><h3 level="3"><span>Лог ошибки получения справочника</span></h3><p><span>Строка для поиска </span><span><code>console.log(catalog);</code></span></p><p><span>При переносе данных в справочник боту необходимо его загрузить. По умолчанию пользователь организации может загрузить для чтения любой справочник. Поэтому единственный случай, когда в профиле будет этот лог, если бот пытается получить справочник другой организации. </span></p><h3 level="3"><span>Лог загрузки задачи</span></h3><p><span>Строка для поиска </span><span><code>console.log("getting_task", task_id);</code></span></p><p><span>Регистрирует каждый запрос API для получения задачи. Так можно отслеживать особо крупные цепочки задач, возможно, задуматься об их оптимизации</span></p><h3 level="3"><span>Лог комментирования задачи</span></h3><p><span>Строка для поиска </span><span><code>console.log("Отправка комментария в задачу", task_id);</code></span></p><p><span>Аналогично логируются все комментарии в задачи. Есть два режима таких комментариев: простой (пишет простое сообщение) и подробный (также отражает тело комментария). По умолчанию включён простой лог, но при необходимости или странных комментариях включите подробный комментарий. Лог полезен для отслеживания сколько раз бот комментирует одну задачу за запуск. </span></p><h2 level="2"><span>Возможности кастомизации</span></h2><p><span>В боте заложены возможности для доработки под конкретные правила . Будьте осторожны, так как ошибки в кастомных обработках могут повлиять на всю работу бота, вплоть до отключения. </span></p><h3 level="3"><span>Дополнительное логирование </span></h3><p><span>Кроме штатных логов в коде предусмотрены полезные логи, которые не нужны на постоянной основе (так как очень большие и портили бы читаемость журнала событий), но могут быть полезны при отладке правил. </span></p><h4 level="4"><span><em>Список всех правил</em></span></h4><p><span>Строка для поиска </span><span><code>rules.forEach((r, i) =&gt; console.log(i, r.comment));</code></span></p><p><span>Если список правил стал слишком большим, можно разблокировать эту строку, чтобы увидеть список всех правил. Важно, что это не список правил, применённых к задаче вызова, а список всех правил</span></p><h4 level="4"><span><em>Список изменённых полей</em></span></h4><p><span>Строка для поиска </span><span><code>console.log("Изменённые поля", rule_index, aim_task?.id,  updated_codes);</code></span></p><p><span>После применения всех правил, бот укажет массив полей, в которые он переносил значения в рамках этого правила. Не факт, что он отправит комментарий, так как возможно значение поля не изменилось. Разблокируйте эту строку, если есть подозрение, что какое-то поле не было перенесено.  </span></p><h4 level="4"><span><em>Фильтры при поиске по реестру</em></span></h4><p><span>Строка для поиска </span><span><code>console.log("Фильтры", filters);</code></span><span> </span></p><p><span>Если в каком-то случае бот не нашёл нужную задачу, может быть полезно посмотреть на сформированные им фильтры</span></p><h3 level="3"><span>Сообщения в задачу</span></h3><p><span>Строка 115</span></p><p><span>237</span></p><p><span>333</span></p><p><span>363</span></p><h3 level="3"><span>Дополнительные поля</span></h3><p><span>Возможно, для выполнения ваших задач </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=12-xarakteristiki-zadachi" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">добавленных полей</a></span><span> или </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=13-dopolnitelnye-kolonki" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">колонок таблиц</a></span><span> будет недостаточно. Вы можете добавить свои. Для этого нужно добавить их на шаблон формы и затем определить как будет устанавливаться значение каждого поля при обработке задачи. Также некоторые из подобных полей при обновлении могут менять состояние задачи и это надо предусмотреть в функции комментирования</span></p><h4 level="4"><span><em>Добавление поля на шаблон формы</em></span></h4><p><span>Чтобы поле добавилось на шаблон любой формы, нужно изменить функцию </span><span><code>fix_form</code></span><span> бота. После обработки всех полей, нужно добавить следующие две строки:</span></p><pre><span>new_form.named_fields["$Код нового поля"] = {id: null, parent_id: null, name: "Название нового поля", code: "$Код нового поля", info: {code: "$Код нового поля"}, value: null, type: "тип нового поля"};
+new_form.all_fields.push(new_form.named_fields["$Код нового поля"]);</span></pre><p><span>Код нового поля рекомендуется начинать с </span><span><strong>$</strong></span><span>, чтобы случайно не совпасть с кодом, присвоенным реальному полю на шаблоне одной из ваших форм. </span></p><p><span>Если нужно предусмотреть добавление нового "фантомного" ряда, то в момент обработки таблицы (</span><span><code>else if (field.type == 'table')</code></span><span>) нужно добавить следующие строки:</span></p><pre><span>new_form.named_fields[`${code}_$&lt;новый код&gt;`] = {id: null, parent_id:field.id, name:"Новая колонка в таблице",  code: `${code}_$&lt;новый код&gt;`, info: {code: `${code}_$&lt;новый код&gt;`}, value: null, type: "Тип нового поля"};
+new_form.all_fields.push(new_form.named_fields[`${code}_$&lt;новый код&gt;`]);</span></pre><p><span>Важно в данном случае менять только часть кода, а не весь. Иначе могут возникнуть ошибки. </span></p><h4 level="4"><span><em>Определение правил заполнения нового поля</em></span></h4><p><span>Чтобы во всех загружаемых задачах поле автоматически заполнялось, нужно внести изменения в функцию </span><span><code>fix_task</code></span></p><p><span>Для внетабличных полей их заполнение находится в конце функции. По аналогии с остальными подобными полями придумайте алгоритм заполнения этого поля:</span></p><pre><span>full_task.named_fields["$ваш код"].value= task.свойство_задачи;</span></pre><p><span>Для табличных "фантомных" колонок заполнение происходит выше, после цикла добавления недостающих ячеек </span><span><code>for (let missing_cell of list_of_missing_fields){ </code></span><span> :</span></p><pre><span>extendedRow.named_cells[`${field_code}_$&lt;новый код&gt;`].value = &lt;шаблонное значение&gt;;</span></pre><h4 level="4"><span><em>Изменение свойств задачи</em></span></h4><p><span>"Фантомные" ряды не могут влиять на свойства таблицы или задачи. Но внетабличные дополнительные поля представляют из себя свойства задачи, поэтому могут оказывать влияние на состояние задачи. Для этого нужно дописать функцию comment_task условием, что в обновляемых полях есть новое поле. Внутри условия описываете, как меняется комментарий по аналогии с уже добавленными изменениями:</span></p><pre><span>if (field.code == 'новый код поля') comment.атрибут_комментария = &lt;новое значение&gt;;</span></pre><h3 level="3"><span>Дополнительные условия для задач</span></h3><p><span>Даже если правило не имеет своих условий, функция проверки всё равно запускается. И всегда сначала выполняются пользовательские проверки. Чтобы добавить свою проверку надо изменить функцию </span><span><code>check_user_conditions</code></span><span> , которая на вход получает: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>АПИ клиент для совершения вызовов</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2" aria-checked="False"><p><span>Задача, из которой будет осуществляться перенос</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Правило копирования, которое будет применено</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4" aria-checked="False"><p><span>Порядковый номер правила в списке правил, для логирования и добавления ошибок в задачу</span></p></div><p><span>Функция должна вернуть логическую переменную или строку с ошибкой. Если результат функции строка, это сообщение будет написано в задачу, а проверка будет считаться не пройденной. </span></p><h3 level="3"><span>Дополнительные условия для строк таблиц</span></h3><p><span>Перед осуществлением переноса каждая строка проверяется на условия, указанные в правиле. Даже если нет штатных условий, функция проверки вызывает метод </span><span><code>check_user_row_conditions</code></span><span>, в который передаются:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>АПИ клиент для совершения вызовов</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2" aria-checked="False"><p><span>Задача, из которой будет осуществляться перенос</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Строка для проверки</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Правило копирования, которое будет применено</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5" aria-checked="False"><p><span>Порядковый номер правила в списке правил, для логирования и добавления ошибок в задачу</span></p></div><p><span>Аналогично дополнительным условиям для задач, эта функция должна вернуть логическую переменную или строку с ошибкой, которая будет направлена в задачу</span></p><h3 level="3"><span>Подготовка перед переносом</span></h3><p><span>Если задача подходит под условия правила, её можно "подготовить" перед применением правила. Например. можно заполнить какие-то поля на основе информации из задачи (которые затем участвуют в переносе). Для этого нужно написать функцию </span><span><code>prepare_task</code></span><span> . В функцию передаётся:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>АПИ клиент для совершения вызовов</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Задача, из которой будет осуществляться перенос</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Правило копирования, которое будет применено</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Порядковый номер правила в списке правил, для логирования и добавления ошибок в задачу</span></p></div><p><span>В этой функции необходимо провести все изменения полей и в ней же отправить. Иначе данные скорее всего (только если в процессе применения правила это поле не изменится) не будут обновлены в задаче вызова. Обновление рекомендуется делать при помощи вызова метода АПИ клиента </span><span><code>bot.comment_task</code></span></p><h3 level="3"><span>Постобработка после переноса</span></h3><p><span>После того, как значения всех полей были установлены в целевой задаче в соответствии с правилом переноса, есть возможность обработать новые данные перед отправкой изменений. Для этого надо отредактировать функцию </span><span><code>post_copy_updates</code></span><span>, в качестве аргументов которой передаётся:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>АПИ клиент для совершения вызовов</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2" aria-checked="False"><p><span>Задача, из которой будет осуществлялся перенос</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Задача, в которую перенесли данные</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Правило копирования, которое будет применено</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5" aria-checked="False"><p><span>Порядковый номер правила в списке правил, для логирования и добавления ошибок в задачу</span></p></div><p><span>Если в результате постобработки изменились поля, ОБЯЗАТЕЛЬНО верните их значения в качестве результата функции. Иначе они не будут обновлены. Если в результате изменений в целевой задаче, нужно произвести какие-то изменения в задаче вызова, не предусмотренные правилами в настройках (то есть не просто запустить обратный перенос данных), рекомендуется выполнить все изменения в этой функции при помощи вызова метода АПИ клиента </span><span><code>bot.comment_task</code></span></p><p></p></article></main>
+	
+</body></html>

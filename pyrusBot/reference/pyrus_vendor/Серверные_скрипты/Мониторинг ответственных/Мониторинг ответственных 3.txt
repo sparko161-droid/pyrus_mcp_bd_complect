@@ -1,0 +1,298 @@
+import {BotHookRequest, BotHookResponse, TaskWithComments, FormResponse, FormField, PyrusApiClient, TableRow, TaskComment,  FormRegisterRequest, TaskCommentRequest} from "pyrus-api";    
+      
+export default async function(request: BotHookRequest): Promise<BotHookResponse> {   
+  const start_time = new Date();   
+  const bot = new ExtededClient(request.access_token);  
+  let full_task = await bot.fix_task(request.task);   
+  if (!full_task) return {approval_choice: "rejected", text: "У бота нет доступа к форме"};  
+  if (!full_task.form_id) return {approval_choice: "rejected", text: "Бот не может отработать в простой задаче"};  
+  let rules: {form_ids: number[], steps?: number[], field_code: string, only_resp?: boolean, only_field?: boolean, auto_step?: number, exlude_resp:number[]}[] = JSON.parse(request.bot_settings).rules;  
+  let result = await apply_rules(bot, full_task, rules);   
+  if (result) result.skip_notification = false;  
+  console.log("working", get_time_seconds(start_time, new Date())); 
+  return result;   
+}   
+    
+async function apply_rules(bot: ExtededClient, task: ExtededTask, rules: {form_ids: number[], steps?: number[], field_code: string, only_resp?: boolean, only_field?: boolean, auto_step?:number, exlude_resp?:number[]}[]): Promise<TaskCommentRequest>{  
+  let rules_for_task = rules.filter(x=>x.form_ids.includes(task.form_id));  
+  if (rules_for_task.length == 0) return {approval_choice: "rejected", text: "Нет правил для этой формы"};  
+  let rules_for_current_step = rules_for_task.filter(x=>!x.steps || x.steps.length == 0 || x.steps.includes(task.current_step));  
+  if (rules_for_current_step.length == 0) return null;  
+  let rule = rules_for_current_step.slice(-1)[0];  
+  if (!task.named_fields[rule.field_code]) return null;  
+  let fixed_comments = await bot.fix_task_comments(task);  
+  let last_field_value = undefined;  
+  let last_resp = undefined;  
+  let auto_step_approver = undefined; 
+  let last_auto_step_approval: Date = undefined;
+  if (rule.exlude_resp?.length && rule.exlude_resp.includes(task.current_step)){
+      const last_comment = fixed_comments[fixed_comments.length - 1];
+      return last_comment.changed_step !== undefined ? {reassign_to: {id: 1730}} : null; 
+    }
+  if (rule.auto_step){ 
+      let step_condition = task.approvals[rule.auto_step - 1]; 
+      if (step_condition && step_condition.length > 0){ 
+        let current_step = task.comments[0].approvals_added?.[0]?.[0].step ? task.comments[0].approvals_added[0][0].step :  0; 
+        for (const comment of task.comments){ 
+            if (rule.auto_step == current_step && comment.approval_choice) {
+              auto_step_approver = comment.author; 
+              last_auto_step_approval = comment.create_date;
+              }
+            if (comment.changed_step) current_step = comment.changed_step; 
+          } 
+        if (current_step == rule.auto_step){
+            auto_step_approver = undefined; 
+            last_auto_step_approval = undefined;
+          }
+        console.log(current_step);
+        const last_comment = task.comments[task.comments.length - 1];
+        if (current_step == rule.auto_step && last_comment.changed_step && task.comments.length > 1){
+            let comment: TaskCommentRequest = {field_updates: [], reassign_to: undefined};
+            if (task.responsible?.id && task.responsible.id != 1730) comment.reassign_to = {id: 1730};
+            if (task.named_fields[rule.field_code].value){
+                task.named_fields[rule.field_code].value = null;
+                comment.field_updates.push(task.named_fields[rule.field_code]);
+              }
+            if (comment.reassign_to !== undefined && comment.field_updates.length) return comment;
+            else if (comment.field_updates.length) return {field_updates: comment.field_updates};
+            else if (comment.reassign_to !== undefined) return {reassign_to: comment.reassign_to};
+          }
+        } 
+    } 
+  let first_by_field = false;  
+  let last_resp_date: Date = undefined;
+  let last_field_date: Date = undefined;
+  for (let i = fixed_comments.length - 1; i >= 0; i--) {  
+        const comment = fixed_comments[i];  
+        if (last_resp === undefined && comment.reassigned_to && comment.reassigned_to.id != 1730){
+           last_resp = comment.reassigned_to;  
+           last_resp_date = comment.create_date;
+           }
+        if (last_field_value === undefined && comment.named_fields_changes[rule.field_code]) {
+          last_field_value =  comment.named_fields_changes[rule.field_code].value;  
+          last_field_date = comment.create_date;
+          }
+        if (last_resp === undefined && last_field_value !== undefined) first_by_field= true;  
+        if (last_resp !== undefined && last_field_value !== undefined) break;   
+    }  
+  let new_resp = undefined;  
+  console.log(last_field_value,last_resp, auto_step_approver) 
+  if (last_field_value === undefined && last_resp === undefined && auto_step_approver === undefined) return null;  
+  if (auto_step_approver && (!last_resp_date || last_resp_date.getTime() < last_auto_step_approval.getTime()) && (!last_field_date || last_field_date.getTime() <last_auto_step_approval.getTime())){
+      new_resp = auto_step_approver;  
+      task.named_fields[rule.field_code].value = auto_step_approver;  
+      return {reassign_to: new_resp, field_updates: [task.named_fields[rule.field_code]]} 
+    }
+  if (rule.only_field || (first_by_field && !rule.only_resp && last_field_value !== undefined)){  
+    new_resp = last_field_value ? last_field_value : {id: 1730};  
+     return {reassign_to: new_resp};  
+     }  
+  else if (rule.only_resp || (!first_by_field && last_resp !== undefined)){  
+      new_resp = last_resp && last_resp.id != 1730 ? last_resp : null;  
+      task.named_fields[rule.field_code].value = new_resp;  
+      return {field_updates: [task.named_fields[rule.field_code]]}  
+    }  
+  else if (auto_step_approver){ 
+      new_resp = auto_step_approver;  
+      task.named_fields[rule.field_code].value = auto_step_approver;  
+      return {reassign_to: new_resp, field_updates: [task.named_fields[rule.field_code]]}  
+    } 
+  return null;  
+  }  
+      
+    
+function get_time_seconds(date1, date2){  
+    return Math.floor((date2 - date1)/1000)  
+  }  
+    
+type ExtededForm = FormResponse & {    
+    named_fields: Record <string, FormField>,    
+    id_to_code: Record <number, string>,    
+    all_fields: FormField[]    
+  }    
+        
+        
+type ExtededTask = TaskWithComments & {    
+    named_fields: Record <string, FormField>,    
+    all_fields: FormField[]    
+  }    
+        
+type ExtendedTableRow = TableRow & {    
+    named_cells: Record <string, FormField>  
+  }    
+    
+type ExctendedTaskComment = TaskComment &{  
+    named_fields_changes: Record <string, FormField>  
+  }  
+        
+class ExtededClient extends PyrusApiClient{    
+    templates: Record <number, ExtededForm>;    
+    constructor (token){    
+        super(token);    
+        this.templates = {};    
+      }    
+        
+    async get_form(id: number): Promise<ExtededForm>{    
+        if (this.templates[id]) return this.templates[id];    
+        try {    
+          const form = await this.forms.get({id});    
+          let new_form: ExtededForm = this.fix_form(form);    
+          this.templates[id] = new_form;    
+          return new_form;    
+        }    
+        catch (error){    
+          console.log("Ошибка при получении формы", error);
+            return null;    
+          }    
+      }    
+        
+        
+        
+    private fix_form(form: FormResponse): ExtededForm{    
+        const all_fields = this.get_flat_fields(form.fields, true);    
+        let new_form: ExtededForm = {...form, named_fields: {}, id_to_code: {}, all_fields: all_fields};    
+        for (let field of all_fields){    
+          field.value = null;   
+            if (!field.info?.code) continue;    
+              let code = field.info.code;    
+              new_form.named_fields[code] = field;    
+              if (!new_form.id_to_code[field.id]) new_form.id_to_code[field.id] = code;    
+              if (field.type == "text"){    
+                  let analyzed_ids = [];    
+                  let next_field = all_fields.find(f => !analyzed_ids.includes(f.id) && f.name.includes(`(${field.name})`)) || null;    
+                  while (next_field) {    
+                    const shortName = next_field.name.replace(`(${field.name})`, "").replace(" ", "");    
+                    const subCode = `${code}*${shortName}`;    
+                    new_form.id_to_code[next_field.id] = subCode;    
+                    new_form.named_fields[subCode] = next_field;    
+                    analyzed_ids.push(next_field.id);    
+                    next_field = all_fields.find(f => !analyzed_ids.includes(f.id) && f.name.includes(`(${field.name})`)) || null;    
+                    }    
+                }    
+          }    
+        return new_form;    
+      }    
+            
+    private get_flat_fields(fields: FormField[], is_form: boolean = false){    
+        let result = [];    
+        for (let field of fields){    
+            result.push(field);    
+        
+            if (field.type == 'table' && field.info?.columns && is_form){    
+                result.push(...field.info.columns);    
+              }    
+            else if (field.type == 'title' && ((is_form && field.info?.fields) || (!is_form && field.value.fields))){    
+              const field_array: FormField[] = is_form ? field.info.fields : field.value.fields;    
+                  //result.push(...field.info.fields);    
+                  for (let title_field of field_array){     
+                      result.push(title_field);    
+                      if (title_field.type == 'table' && title_field.info?.columns && is_form){    
+                          result.push(...title_field.info.columns);    
+                        }    
+                    }    
+              }    
+          }    
+        return result;    
+      }    
+            
+    async get_task(task_id: number): Promise<ExtededTask | string>{    
+        try{    
+            const task = await this.tasks.get({id: task_id});    
+            if (task.task){   
+              let fixed_task = await this.fix_task(task.task);   
+                return fixed_task;   
+              }       
+          }    
+        catch (error){    
+            return error;    
+          }    
+      }    
+    async get_registry_with_fix(form_id: number, form_req: FormRegisterRequest = null): Promise<ExtededTask[] | string>{    
+        try{    
+            const form_register = await this.forms.getTasks(form_id, form_req);   
+            let return_register: ExtededTask[] = [];   
+            if (form_register.tasks?.length > 0){   
+                for (let task of form_register.tasks){   
+                  task.form_id = form_id;   
+                    let fixed_task = await this.fix_task({...task, comments: []});   
+                    return_register.push(fixed_task);   
+                  }   
+              }   
+            return return_register;   
+          }    
+        catch (error){    
+            return error;    
+          }    
+      }    
+            
+        async fix_task(task: TaskWithComments): Promise<ExtededTask>{   
+        let full_task: ExtededTask = {...task, named_fields: {}, all_fields: []};   
+        if (!full_task.form_id) return full_task;   
+        const form = await this.get_form(full_task.form_id);   
+        if (!form) return null;   
+        full_task.all_fields = this.get_flat_fields(full_task.fields);   
+        full_task.named_fields = {...form.named_fields};   
+        for (let field of full_task.all_fields){   
+          let field_code = form.id_to_code[field.id];   
+          if (!field_code) continue;   
+          full_task.named_fields[field_code] = field;   
+          if (field.type == 'table' && field.value){   
+            for (let row of field.value){   
+              const extendedRow = row as ExtendedTableRow;   
+              extendedRow.named_cells = extendedRow.named_cells || {};   
+              let cell_ids: number[] = [];   
+              if (row.cells){   
+                for (let cell of row.cells) {   
+                    cell_ids.push(cell.id);   
+                    if (!cell.code) continue;   
+                    extendedRow.named_cells[cell.code] = cell;   
+                    }   
+                  }   
+                else row.cells = [];   
+              const list_of_missing_fields = form.all_fields.filter(x=> x.parent_id == field.id && !cell_ids.includes(x.id));   
+              for (let missing_cell of list_of_missing_fields){   
+                let new_cell = {...missing_cell};   
+                row.cells.push(new_cell);   
+                  if (missing_cell.info?.code) {   
+                          
+                    extendedRow.named_cells[missing_cell.info.code] = new_cell;   
+                    }   
+                }   
+            }         
+            }    
+          }   
+        return full_task;   
+      }   
+    async fix_task_comments(task: TaskWithComments): Promise<ExctendedTaskComment[]>{   
+        let comments: ExctendedTaskComment[] = [];  
+        const form = await this.get_form(task.form_id);  
+        for (let comment of task.comments){  
+            let new_comment: ExctendedTaskComment = {...comment, named_fields_changes: {}};  
+            if (new_comment.field_updates && new_comment.field_updates.length != 0){  
+                for (let field of new_comment.field_updates){  
+                    if (!form.id_to_code[field.id]) continue;  
+                    const code = form.id_to_code[field.id];  
+                    if (!field.value) field.value = field.type == 'table' ? [] : null;  
+                    if (field.type == 'table'){  
+                        for (let row of field.value){  
+                            const extendedRow = row as ExtendedTableRow;   
+                            extendedRow.named_cells = extendedRow.named_cells || {};   
+                            if (row.cells){   
+                              for (let cell of row.cells) {    
+                                  if (!cell?.code) continue;   
+                                  extendedRow.named_cells[cell.code] = cell;   
+                                  }   
+                                }   
+                            else row.cells = [];  
+                          }  
+                          
+                      }  
+                         
+                    new_comment.named_fields_changes[code] = field;  
+                  }  
+              }  
+            comments.push(new_comment);  
+          }  
+        return comments;  
+      }  
+  }

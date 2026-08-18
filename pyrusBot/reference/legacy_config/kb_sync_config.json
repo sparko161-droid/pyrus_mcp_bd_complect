@@ -1,0 +1,9 @@
+{
+  "client_name": "00_Глобальные_Правила",
+  "sync_folders": [
+    {
+      "local_path": "UserDocs/",
+      "target_kb_topic_id": "IqKx9fi6OIH"
+    }
+  ]
+}

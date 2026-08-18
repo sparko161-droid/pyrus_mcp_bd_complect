@@ -1,0 +1,49 @@
+#!/bin/sh
+# Фундаментальные правила проверяются машиной, а не на память — для любого,
+# кто делает git commit: инженера, Оркестратора, Kilocode или другого
+# агента. Это git-хук (core.hooksPath=.githooks), а не настройка одного
+# инструмента, поэтому его соблюдают все агентские системы одинаково.
+# Обойти при крайней необходимости: git commit --no-verify
+
+fail=0
+
+echo "Проверка правил документации..."
+npm run --silent lint:docs || {
+    echo ""
+    echo "Коммит остановлен: документация нарушает Фундаментальные правила (см. выше)."
+    fail=1
+}
+
+echo "Проверка актуальности окружения..."
+npm run --silent env:check || {
+    echo ""
+    echo "Коммит остановлен: окружение не проверялось (см. выше). Запустите bootstrap.ps1"
+    echo "(Windows) или пройдите пять шагов вручную — см. раздел «Первичная проверка"
+    echo "окружения» в CLAUDE.md."
+    fail=1
+}
+
+upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null)
+if [ -n "$upstream" ]; then
+    behind=$(git rev-list --count "HEAD..$upstream" 2>/dev/null)
+    if [ -n "$behind" ] && [ "$behind" -gt 0 ] 2>/dev/null; then
+        echo ""
+        echo "Коммит остановлен: локальная ветка отстаёт от $upstream на $behind коммит(ов)."
+        echo "Сделайте git pull перед тем, как продолжить, — иначе можно затереть чужую"
+        echo "работу над Базой знаний (шаг 1 из «Начало каждой рабочей сессии»)."
+        fail=1
+    fi
+fi
+
+protected_fields=$(git diff --cached -- '*.md' | grep -E '^\+' | grep -Ev '^\+\+\+' | grep -E '(pyrus_id|synced_at|synced_hash):')
+if [ -n "$protected_fields" ]; then
+    echo ""
+    echo "⚠️  В коммите меняются служебные поля YAML (pyrus_id / synced_at / synced_hash)."
+    echo "    Их ведёт синхронизатор (npm run kb:sync) — их нельзя редактировать вручную."
+    echo "    Если это результат kb:sync — можно продолжать. Если правили руками — верните значение."
+fi
+
+if [ "$fail" -eq 1 ]; then
+    exit 1
+fi
+exit 0

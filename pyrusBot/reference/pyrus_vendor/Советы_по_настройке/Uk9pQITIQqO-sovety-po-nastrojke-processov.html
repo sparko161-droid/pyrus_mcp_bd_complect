@@ -1,0 +1,412 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+	<title>Советы по настройке процессов</title><style type="text/css">HTML, BODY {
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+    line-height: 1.5;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+BODY {
+    --color-error-250: hsl(355, 100%, 86%);
+    --color-pink-250: hsl(334, 81%, 81%);
+    --color-orange-250: hsl(19, 100%, 82%);
+    --color-warning-300: hsl(36, 91%, 74%);
+    --color-accent-secondary-250: hsl(50, 100%, 76%);
+    --color-success-250: hsl(143, 63%, 80%);
+    --color-accent-200: hsl(180, 54%, 81%);
+    --color-info-250: hsl(207, 100%, 84%);
+    --color-violet-250: hsl(249, 87%, 91%);
+    --color-purple-250: hsl(273, 100%, 89%);
+    --color-neutral-250: hsl(210, 8%, 85%);
+
+    --color-trix-text-red-background: var(--color-error-250);
+    --color-trix-text-pink-background: var(--color-pink-250);
+    --color-trix-text-orange-background: var(--color-orange-250);
+    --color-trix-text-orange-yellow-background: var(--color-warning-300);
+    --color-trix-text-yellow-background: var(--color-accent-secondary-250);
+    --color-trix-text-green-background: var(--color-success-250);
+    --color-trix-text-green-blue-background: var(--color-accent-200);
+    --color-trix-text-blue-background: var(--color-info-250);
+    --color-trix-text-violet-background: var(--color-violet-250);
+    --color-trix-text-purple-background: var(--color-purple-250);
+    --color-trix-text-gray-background: var(--color-neutral-250);
+
+	word-wrap: break-word;
+}
+
+MAIN {
+	margin: 100px auto 200px;
+	padding: 0 20px;
+	width: 100%;
+	max-width: 800px;
+	box-sizing: border-box;
+}
+
+P {
+	margin: 0.9em 0 0;
+}
+
+A {
+	color: hsl(180, 100%, 27%);
+}
+
+A[type='video']::before {
+    display: inline;
+    content: attr(href);
+}
+
+H1, H2, H3, H4 {
+	font-weight: 700;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+H1 {
+	font-size: 32px;
+	line-height: 40px;
+	margin-top: 18px;
+	margin-bottom: 22px;
+}
+
+H2, H3, H4 {
+	font-size: 1.4em;
+	line-height: 1.4em;
+	margin: 1.4em 0 0.5em;
+}
+
+H3 {
+	font-size: 1.2em;
+}
+
+H4 {
+	margin: 1.5em 0 0;
+	font-size: 1em;
+}
+
+UL {
+	padding-inline-start: 2em;
+	list-style-type: disc;
+}
+
+UL > LI {
+	padding: 0;
+	max-width: calc(100% - 1em);
+}
+
+OL {
+	padding-inline-start: 2em;
+	counter-reset: item;
+}
+
+OL > LI {
+	word-break: break-word;
+	max-width: calc(100% - 1em);
+	counter-increment: item;
+}
+
+OL > LI::marker {
+	content: counters(item, ".") ". ";
+	padding-inline-end: 0.4em;
+}
+
+LI > P {
+	margin-top: 0;
+}
+
+MARK {
+    background-color: var(--color-trix-text-yellow-background);
+    color: inherit;
+}
+
+IMG {
+	display: block;
+	margin: 0.9em;
+	max-width: calc(100% - 40px);
+	height: fit-content;
+	background-color: hsl(210, 9%, 93%);
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+IMG.left {
+	margin-right: auto;
+}
+
+IMG.right {
+	margin-left: auto;
+}
+
+IMG.center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+IMG.leftText {
+	float: left;
+	margin-right: 20px;
+}
+
+IMG.rightText {
+	float: right;
+	margin-left: 20px;
+}
+
+CODE, PRE {
+	background-color: hsl(210, 10%, 96%);
+	font-family: Courier New, Courier, monospace;
+	font-size: 85%;
+}
+
+CODE {
+	margin: 0;
+	padding: 0.2em 0.4em;
+	border-radius: 6px;
+}
+
+PRE {
+	white-space: pre-wrap;
+	margin: 1em 0;
+	padding: 1.2em;
+	border-radius: 4px;
+	tab-size: 4;
+}
+
+DIV[data-theme],
+BLOCKQUOTE {
+	margin: 0.9em 0 0.5em;
+	padding-inline-start: 1em;
+	border-inline-start: 3px solid rgba(0, 0, 0, 75%);
+}
+
+DIV[data-theme="red"] {
+    border-color: #E66773;
+    background-color: #FBE8EA;
+}
+
+DIV[data-theme="pink"] {
+    border-color: #ED6AA2;
+    background-color: #FCEBF3;
+}
+
+DIV[data-theme="orange"] {
+    border-color: #FF8E56;
+    background-color: #FEEEE6;
+}
+
+DIV[data-theme="orangeYellow"] {
+    border-color: #F7B859;
+    background-color: #FEF4E6;
+}
+
+DIV[data-theme="yellow"] {
+    border-color: #FCD640;
+    background-color: #FEF7C5;
+}
+
+DIV[data-theme="green"] {
+    border-color: #5AC180;
+    background-color: #DCF8E6;
+}
+
+DIV[data-theme="greenBlue"] {
+    border-color: #00B2B2;
+    background-color: #D1F6F6;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #6ABCFF;
+    background-color: #E8F5FF;
+}
+
+DIV[data-theme="violet"] {
+    border-color: #B4A9FA;
+    background-color: #F0EEFE;
+}
+
+DIV[data-theme="purple"] {
+    border-color: #CC92FF;
+    background-color: #F5E9FF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB2B9;
+    background-color: #ECEDEF;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #42A1FFFF;
+    background-color: #D9EBFFFF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB3B9FF;
+    background-color: #ECEDEFFF;
+}
+
+TABLE {
+	width: 100%;
+	table-layout: fixed;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+TABLE P {
+	margin: 0;
+}
+
+TD {
+	min-width: 35px;
+	padding: 4px 12px;
+	box-sizing: border-box;
+	border: 1px solid hsl(210, 8%, 85%);
+	background-clip: padding-box;
+	vertical-align: top;
+}
+
+TD[data-format='table-cell-highlight-red'] {
+	background-color: #ffebee;
+}
+
+TD[data-format='table-cell-highlight-yellow'] {
+	background-color: #fcf3d9;
+}
+
+TD[data-format='table-cell-highlight-green'] {
+	background-color: #ebfaeb;
+}
+
+TD[data-format='table-cell-highlight-blue'] {
+	background-color: #ebf4ff;
+}
+
+.attachment__block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 8px;
+    margin: 0.9em 0;
+}
+
+.attachment__item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.attachment__item:hover {
+    background-color: #f5f5f5;
+}
+
+.attachment__item::before {
+    content: "";
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 24px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 24"><path fill="%23C7CCD1" d="M0 1.8C0 .8.8 0 1.8 0h9.4c.4 0 .9.2 1.2.5l7 6.3c.4.4.6.9.6 1.4v14c0 1-.8 1.8-1.8 1.8H1.8c-1 0-1.8-.8-1.8-1.8V1.8Z"/><path fill="%23fff" d="m18.4 6.8-5.9-5.2c-.3-.4-1 0-1 .4v4c0 1 .8 1.9 1.8 1.9H18c.6 0 .9-.7.4-1Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.attachment__fileName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment__fileSize {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #999;
+}
+
+.knowledgeBaseEditorflatList {
+    --size-gap: 4ch;
+    position: relative;
+    display: list-item;
+    margin-left: var(--size-gap);
+}
+.knowledgeBaseEditorflatList[aria-level="2"] {
+    margin-left: calc(var(--size-gap) * 2);
+}
+.knowledgeBaseEditorflatList[aria-level="3"] {
+    margin-left: calc(var(--size-gap) * 3);
+}
+.knowledgeBaseEditorflatList[aria-level="4"] {
+    margin-left: calc(var(--size-gap) * 4);
+}
+.knowledgeBaseEditorflatList[aria-level="5"] {
+    margin-left: calc(var(--size-gap) * 5);
+}
+.knowledgeBaseEditorflatList[aria-level="6"] {
+    margin-left: calc(var(--size-gap) * 6);
+}
+.knowledgeBaseEditorflatList[aria-level="7"] {
+    margin-left: calc(var(--size-gap) * 7);
+}
+.knowledgeBaseEditorflatList[aria-level="8"] {
+    margin-left: calc(var(--size-gap) * 8);
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="2"] {
+    list-style-type: circle;
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="3"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="4"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="5"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="6"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="7"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="8"] {
+    list-style-type: square;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"],
+.knowledgeBaseEditorflatList[data-kind="check"] {
+    display: block;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"]::before {
+    content: attr(data-ancestors) "." attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"]::before {
+    /* Empty checkbox */
+    content: "\2610";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"][aria-checked="true"]::before {
+    /* Marked checkbox */
+    content: "\2611";
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"][aria-level="1"]::before {
+    content: attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList > P, .knowledgeBaseEditor__flatList > SPAN > P {
+    margin: 0;
+
+}
+IMG[data-type='inline'] {
+    display: inline-flex;
+    height: 1.3em;
+    width: auto;
+    margin: 0.1em;
+    vertical-align: top;
+}
+</style></head>
+	<body>
+		<main>
+		<article><div></div><h1><span>Советы по настройке процессов</span></h1><div data-theme="greenBlue"><p><span>Вопросы и пожелания к статье можно присылать в </span><span><a href="https://pyrus.com/t#id260532688" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">задаче</a></span></p></div><p><span>Функционал форм в Pyrus позволяет настроить почти любой процесс, начиная с подсчёта интервалов между курениями и заканчивая процессом продажи от лида до отгрузки клиенту. Здесь есть две задачи: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Создать пользователям удобную инфраструктуру </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Сделать процесс максимально адаптивным в будущем, особенно когда ты передашь это на внутреннюю поддержку клиенту</span></p></div><h2 level="2"><span>Поля</span></h2><p><span>Зачастую информации в форме настолько много, что задачи становятся нечитаемыми. Поэтому важно настроить шаблон, чтобы при открытии задачи пользователю было интуитивно понятно, куда ему нажимать и что заполнять. Вот несколько советов, которые позволят избежать "мусорности" формы.</span></p><h3 level="3"><span>Управляй видимостью</span></h3><p><span>Пожалуй, основной твой инструмент — видимость. Постарайся сделать так, чтобы каждый сотрудник, заходя в задачу, видел только ту информацию, которая касается его. Чтобы добавить видимость от этапа, добавь поле типа Этап на шаблон формы.</span></p><p><span>Здесь нужно быть аккуратным с взаимозависимостью. Если Поле А зависит от заполненности Поля Б, которое в свою очередь видно только на 3 этапе, то и Поле А тоже будет видимо только на 3 этапе. Даже если Поле Б заполнено, на 4 этапе поле не будет видимо. </span></p><p><span>Также следует помнить, что скрипты видимости не работают в мобильном приложении, поэтому их следует максимально избегать. </span></p><p><span>Скрипты могут читать невидимые поля, но не могут их заполнять </span></p><h3 level="3"><span>Группы</span></h3><p><span>Группы очень удобны не только своим основным функционалом. Также ты можешь облегчить себе и будущим администраторам жизнь, навесив условия видимости или неизменность на всю группу, а не на каждое поле внутри в отдельности. </span></p><p><span>Ещё группы могут быть полезны в ситуациях, когда какие-то поля должны быть видны части участников процессов при заходе в задачу, а остальным они базово не нужны, но могут быть интересны. В таком случае, ты можешь поместить их в группу, сделать её по умолчанию раскрытой и добавить вот этот </span><span><a href="https://pyrus.com/t#id259379956" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">скрипт</a></span><span>. В таком случае, для большинства группа будет свёрнута в момент захода в задачу.</span></p><h3 level="3"><span>Технические поля и группа для них</span></h3><p><span>В процессе настройки у тебя будут возникать следующее противоречие: пользователю удобнее заполнять поле такого типа, а для отчётности или бота тебе нужен другой тип поля. Или в сводке тебе надо показывать категории сделок по сумме, но для пользователей внутри этой задачи подобное поле, пусть даже автоматическое, будет только мешать.</span></p><p><span>В таком случае на помощь приходит постоянно свёрнутая группа "Технические поля", в которую ты поместишь поля, которые будут заполняться скриптами. Таким образом, у тебя сильно сокращается длина формы и пользователи через некоторое время вообще перестают обращать внимание на эту группу. Что туда можно поместить:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Поля типа Выбор и Справочник для сводки </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Разнообразные расчётные показатели для реестра или выгрузок</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Поля, которые заполняют боты</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Поля для печатных шаблонов</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>Разнообразные текстовые поля, аккумулирующие инфу из нескольких полей для удобного поиска в реестре</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="6"><p><span>Поля для автоматической регистрации каких-то действий пользователей, которые потом используются в отчётности</span></p></div><h3 level="3"><span>Справочник vs Выбор</span></h3><p><span>По умолчанию люди стараются использовать Выбор, так как он понятный и его можно редактировать прямо во время настройки поля. Однако поле Справочник имеет несколько преимуществ, которые иногда могут перевесить неудобство в его администрировании: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>В подпроцессах лучше максимально использовать справочник. Если у полей Выбор в основной и дочерней формах разные наборы вариантов, то перенос между ними невозможен. Поэтому у администраторов возникает дополнительная головная боль по поддержанию вариантов выбор в обеих формах одинаковым</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>В таблицах нельзя добавить поле Мультивыбор. А множественный выбор в справочнике настроить можно</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Поле Выбор никак нельзя отфильтровать. Например, чтобы в таблице </span><span><a href="https://pyrus.com/t#id259401104" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">нельзя было выбрать</a></span><span> два одинаковых варианта в разных строках</span></p></div><h3 level="3"><span>Формы VS Справочники</span></h3><p><span>Если тебе нужно вести реестр каких-то объектов, то в некоторых случаях лучше использовать Форму, а в некоторых Справочник. В этой </span><span><a href="https://pyrus.com/t#kb/article/osobennosti-ispolzovaniya-form-dlya-xraneniya-informacii-o-klientax-IU2quroxAbg?h=2-minusy-ispolzovaniya-form" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">статье </a></span><span>описаны особенности каждого из подходов</span></p><h3 level="3"><span>Справочник на веб-форме</span></h3><p><span>Часто клиенты сталкиваются с такой проблемой: у них есть внутренний справочник, который никак не используется пользователями, но хранит какие-то опорные значения для расчётов или за счёт значений в нём происходит валидация полей или фильтрация других справочников. И они добавляют скрипт, который загружает этот справочник и проводит какие-то манипуляции. Но на веб-форме этот скрипт перестаёт работать у пользователей, но продолжает работать у самого пользователя, даже на веб-форме. Почему?</span></p><p><span>Дело в том, что доступ пользователя к справочнику регулируется его причастностью к организации. То есть, пользователь организации Pyrus может скачать любой справочник нашей организации, а справочники Финграда ему недоступны. Если же форму заполняет внешний пользователь, без авторизации, то ему даются права на загрузку только тех справочников, для которых есть поле на шаблоне формы в разделе "Ввод". Поэтому в таких случаях стоит добавить поле на шаблон формы, ссылающееся на этот справочник и сделать условие видимости Роль = Пустая роль. В этой пустой роли не должно быть пользователей. </span></p><details><summary><span>Почему же у админа на веб-форме всё работает? </span></summary><div><p><span>Дело в том, что когда ты открываешь веб-форму в браузере, в котором ты уже авторизован в Pyrus, веб-форма подтягивает данные и доступы твоего активного пользователя. Ты можешь убедиться в этом, если сделаешь веб-форму и добавишь скрипт, в котором будет вывод информации о комментаторе console.log(state.commenter)</span></p></div></details><h3 level="3"><span>Аккуратнее с файлами</span></h3><p><span>Просто регулярное напоминание, что поле Файл нельзя очистить никаким способом. Поэтому при настройке важные Файлы стоит показывать только на определённых этапах, а с какого-то момента можно сделать его неизменяемым</span></p><h3 level="3"><span>Время — ориентир на таймзону</span></h3><p><span>Поле типа Время имеет свойство сохранять таймзону заполняющего пользователя. То есть, если человек в Москве заполнил 12:00, пользователь в Екатеринбурге 14:00. Это может быть полезно в процессах доставки, но есть риск запутать, если Время используется вместе с Датой. </span></p><p><span>Таким же свойством обладает поле типа Срок со временем</span></p><h3 level="3"><span>Таблица vs Поля</span></h3><p><span>Многие клиенты при самостоятельной настройке форм используют обычные поля в местах, где нужно использовать таблицу. Пример: для контактных лиц в карточке клиента используются 4 группы вместо полей. Если контактов больше 4, они просто заносятся в отдельное многострочное текстовое поле. </span></p><p><span>Обычно мотивируется такое поведение невозможностью производить поиск в реестре по табличным полям. В таком случае можно предложить небольшой скрипт, который в отдельное поле выводит всю информацию из таблицы и производить по нему поиск. </span></p><h3 level="3"><span>Системные поля</span></h3><p><span>Советуем сразу добавить на шаблон формы поля "Дата создания", "Открыта/завершена" и "Этап". Каждое из этих полей заполняется автоматически системой, если поставить на них условие видимости от пустой роли, то они всё равно заполнятся. Если добавить их после начала активной эксплуатации, то в старых задачах они останутся незаполненными. В открытых задачах в них будет занесено значение после следующего комментария. Однако эти поля могут быть полезны:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Дата создания обычно используется в реестре после полугода-года использования формы во время поиска какой-нибудь старой задачи. Если поля нет на шаблоне, то и в реестре нельзя будет отфильтровать задачи</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Открыта/завершена - может использоваться в сводке, чтобы показывать статистику только по открытым задачам</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Этап - от него обычно выстраиваются условия видимости. Это единственный тип поля, видимость от которого может влиять даже если само поле находится ниже на шаблоне формы. Если в какой-то момент развития процесса тебе понадобится скрыть поле на этапе, то в открытых задачах придётся произвести массовое редактирование, чтобы оно заполнилось, а условие начало в них работать</span></p></div><h3 level="3"><span>Статус</span></h3><p><span>В настройках маршрутизации можно указать варианты статусов. На основе них рисуется доска формы, они могут автоматически устанавливаться при отправке сообщений клиентам и при их установке могут автоматически отправляться письма клиентам. А ещё это единственное поле, которое может устанавливаться при помощи скрипта и оставаться доступным для заполнения пользователем</span></p><p><span>Особенностью этого поля является то, что если пользователь его переключает, то установка происходит сразу, не требуя нажатия кнопки "Сохранить". Поэтому нельзя настроить скрипт на отслеживание изменения этого поля. Только постфактум его читать (если поставить true в onChange, скрипт отработает сразу после установки статуса и если пользователь не нажмёт кнопку "Сохранить" значения этого скрипта не занесутся в базу). </span></p><p><span>Но если статус установлен скриптом, то он не сохранится пока пользователь не нажмёт соответствующую кнопку. </span></p><p><span>Представляет из себя поле типа Выбор, с единственным выбором и кодом "Status"</span></p><h2 level="2"><span>Маршрутизация</span></h2><p><span>Маршрутизация в Pyrus настраивается поэтапно, а не в виде сценариев, как в BPMN. Поэтому при настройке маршрута тебе надо понять при каких условиях на каком этапе какие пользователи должны подключиться. Обязательность, неизменность и видимость полей от этапа советуем настраивать после настройки маршрута. </span></p><h3 level="3"><span>Возврат к этапу</span></h3><p><span>Очень часто в клиентских диаграммах ты увидишь бесконечный цикл возврата инициатору для доработок. Но как это сделать в Pyrus? Ответ — никак. Судя по опыту, пользователи Pyrus очень быстро осваиваются с тегированием и, даже если у них настроены дополнительные этапы для переделки или есть кнопка с вызовом бота, который по умным правилам перезапросит согласование, не пользуются этим. Чаще всего можно увидеть просто как пользователи зовут инициатора для того, чтобы задать ему вопрос. Поэтому лучше сделать на верху шаблона поле с именем инициатора, чтобы пользователи знали, кого знать</span></p><details><summary><span>А если всё-таки надо настроить цикл?</span></summary><div><p><span>Представим, что бухгалтерии надо вернуть договор инициатору на доработку. В таком случае, на этап бухгалтерии добавь поле типа Выбор "Проверка пройдена?" с вариантами Да и Нет. Если Нет, то после этого этапа будет этап с инициатором, на котором он что-то делает, а потом снова этап с бухгалтерией. И вот если ей уже второй раз не нравится, то они перезапрашивают согласование инициатора этапом ранее</span></p></div></details><h3 level="3"><span>Сокращение условий</span></h3><p><span>Иногда в клиентских процессах прослеживается несколько сценариев, каждый из которых наступает при нескольких условиях. И если идти напрямую, то можно выставить одного человека на этап несколько раз в зависимости от комбинаций этих условий. А можно добавить техническое поле Сценарий и заполнять его скриптом на основе других полей. Таким образом резко повысится читаемость раздела маршрутизация.</span></p><h3 level="3"><span>Пустая роль — универсальный согласующий </span></h3><p><span>В организации полезно иметь Пустую роль (можно ещё называть её Архив). В ней не должно быть пользователей. Как уже обсуждали выше, при помощи такой роли можно скрывать поля, которые заполняются разнообразными интеграциями и ботами. Но эта роль также может использоваться в двух случаях в маршрутизации.</span></p><p><span>Во-первых, пустая роль может быть полезна, чтобы держать задачу вечно открытой. Она ставится на этап и тогда никто из пользователей не может случайно закрыть задачу, поставив согласование. Тут же можно поставить условие в зависимости от какого-нибудь поля. Пример: у нас есть карточка сотрудника. И пока сотрудник работает в компании его карточка должна быть открыта. Для удобства пользователей, после увольнения карточка должна закрыться. В таком случае, мы поставим пустую роль на первый этап при условии, что Статус не равен Уволен. А статус придёт из задачи на увольнение при помощи бота. </span></p><p><span>Во-вторых, пустая роль может служить преградой для продвижения процессу далее по маршруту до какого-то события, в результате которого заполнится поле (обычно автоматически). Пример описан далее. </span></p><h3 level="3"><span><strong>Ждём подпроцесс</strong></span></h3><p><span>Подпроцесс может держать задачу на своём этапе, пока не закроется подзадача. Но иногда надо пойти дальше после создания подпроцесса, но в какой-то момент дождаться его окончания. Например, в момент возврата автомобиля лизингодателю надо, чтобы к моменту продажи с него были сняты все ограничения и уплачены все штрафы. Этот процесс запускается сразу после изъятия автомобиля у лизингополучателя. Но параллельно со снятием ограничений надо найти место для хранения, оценить машину, получить возмещение страховой и тд. </span></p><p><span>Поэтому мы можем запустить подпроцесс, поставив галочку "Переходить на следующий этап". В обеих формах сделать галочку "Ограничения сняты", в подформе сделать её обязательной при завершении. А на этап Продажи добавить Пустую роль при условии, что галочка не заполнена. Тогда задача придёт на этап Продажи и будет ждать окончания процесса снятия ограничений, а после постановки галочки в подзадаче упадёт на ответственного за продажу</span></p><h2 level="2"><span>Доступы</span></h2><h3 level="3"><span>Открытые и закрытые формы</span></h3><p><span>По умолчанию в момент создания форма является закрытой. Если в настройках организации нет соответствующей настройки, то остальные админы организации её не видят в списке. </span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_74eb3f25-ec4a-4b8b-85ef-f0163647b5ee.png" alt="image.png" width="530" height="145" class="knowledgeBaseEditor__imageBlock" haserror="False" size="6750"><p><span>Также у этих форм введено ограничение на доступ к реестру (регулируется в дополнительных настройках формы). Это может помешать работе некоторых ботов</span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_1e3afaa6-630d-4d88-8aa3-56b046b9b788.png" alt="image.png" width="430" height="93" class="knowledgeBaseEditor__imageBlock" haserror="False" size="3906"><p></p><p><span>Если сделать форму открытой, то любой пользователь организации сможет создать по ней задачу. Имей это в виду, когда настраиваешь процесс, в котором важно отсутствие дубликатов, так как, если у тебя нет дублирующего справочника, ты не сможешь обеспечить уникальность задач. </span></p><p><span>Также имей в виду, что если пользователя добавить в задачу по закрытой форме и ни пользователь, ни его роль явно не прописаны на странице доступов, он получает доступ Гостя к задаче, то есть может только писать комментарии, но не сможет менять поля. При этом на него работают все поля валидации, из-за чего он в некоторых случаях не сможет отправить и простой комментарий. Пример: скрипт требует заполнить какое-то поле. Но пользователь не может заполнять поля. Соответственно, условия скрипта не выполняются и он блокирует отправку любых комментариев.</span></p><h3 level="3"><span>Редактирование полей администраторами</span></h3><p><span>Если на поле есть неизменность, то администраторы всё равно могут его изменять. Это может сыграть как в плюс, так и в минус. Минус очевиден: если у тебя слишком много пользователей имеют доступ админа к форме (а это в том числе админы организации), то всегда есть риск, что поле изменится в момент, непредусмотренный процессом</span></p><p><span>Плюсом этого решения однако является как раз обратная сторона: иногда по процессу нужно дать возможность определённым людям менять данные в задаче. Например, только HRD может внести новую зарплату в карточку сотрудника. В таком случае, назначьте HRD админом формы (так как он скорее всего и владелец процесса).</span></p><h2 level="2"><span>SLA</span></h2><p><span>Этот раздел обычно редактируется самим клиентом и вопросов здесь не так много.</span></p><h3 level="3"><span>Разные часовые пояса</span></h3><p><span>Как сделать так, чтобы этот механизм работал на компанию с сотрудниками в нескольких часовых поясах? Например, федеральную сеть. Не советует делать режим расчёта круглосуточно, так как тогда в длительные праздники и выходные задачи будут просрочены. В таком случае предложите клиенту рассчитывать SLA по полному рабочему дню, но выставив график с производственным календарём</span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_bccbbf36-586b-4003-958c-939c78e5a723.png" alt="image.png" width="467" height="266" class="knowledgeBaseEditor__imageBlock" haserror="False" size="17389"><h3 level="3"><span>Клиент не влияет на SLA</span></h3><p><span>Иногда нужно, чтобы сотрудник поддержки не страдал из-за того, что клиент долго отвечает на сообщения. В таком случае надо замораживать SLA на время ответа пользователя. </span></p><p><span>Если процесс простой, то лучше выставить SLA на статусы и поставить автоматический статус на отправку сообщений</span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_d8097827-61e5-4351-99f4-1acb6b65ddb8.png" alt="image.png" width="615" height="135" class="knowledgeBaseEditor__imageBlock" haserror="False" size="8304"><p><span>Если же процесс сложный, с несколькими этапами, на которых есть свои SLA, то рекомендуется сделать первый этап заморозки, на который поставить или последнего комментатора (определяется простым скриптом), или пустую роль по условию нахождения задачи в этом статусе. А на этап поставить заморозку. Соответственно после получения ответа, задача вернётся на первоначальный этап и работу можно будет продолжить.</span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_966e5c91-fc3c-45f0-af86-18245bd9f142.png" alt="image.png" width="523" height="85" class="knowledgeBaseEditor__imageBlock" haserror="False" size="6971"><h2 level="2"><span>Скрипты и боты</span></h2><p><span>Это большая тема освещалась уже несколько раз. Вот ссылки на полезные для изучения этого вопроса материалы.</span></p><h3 level="3"><span>Архив скриптов и ботов</span></h3><p><span><a href="https://pyrus.com/t#rg744024?ao=false&amp;tz=180&amp;chk17=true&amp;fo=false&amp;sm=0&amp;fd=false" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">Здесь</a></span><span> собраны универсальные боты и скрипты, которые могут помочь в настройке процессов у клиентов. Обрати внимание, что </span><span><strong>все боты платные. </strong></span><span>Некоторые скрипты тоже.</span></p><h3 level="3"><span>Справка</span></h3><p><span>Начать писать скрипты точно можно просто изучив </span><span><a href="https://pyrus.com/ru/help/scripts/quick-start" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">справку</a></span><span>. Особое внимание обрати на раздел с </span><span><a href="https://pyrus.com/ru/help/scripts/field-value-formats" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">форматами полей</a></span><span>, чаще всего проблемы возникают из-за неправильного формата чтения или записи данных</span></p><p><span>С ботами сложнее. Команда Project пишет ботов на языке Python. В </span><span><a href="https://pyrus.com/ru/help/api" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">справке</a></span><span> можно прочитать про общие правила нашего апи. Также полезен будет </span><span><a href="https://github.com/simplygoodsoftware/pyrusapi-python" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">readme </a></span><span>файл в гите. </span></p><h3 level="3"><span>Раздел в БЗ</span></h3><p><span>Для ботов и скриптов есть </span><span><a href="https://pyrus.com/t#kb/topic/boty-i-skripty-T0HuIWmNbUZ" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">раздел</a></span><span> в нашей БЗ с объяснением ключевых различий между ботом и скриптом. Также там есть </span><span><a href="https://pyrus.com/t#kb/topic/dokumenty-po-razrabotke-Rm2HZB3Yt86" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">документы для разработчиков</a></span><span>, которые могут помочь в написании ботов </span></p><h3 level="3"><span>Публичный вебинар по скриптам</span></h3><p><span>У нас было проведено два вебинара: только </span><span><a href="https://pyrus.com/t#kb/article/materialy-vebinara-o-skriptax-JZ1BHXqX9cr" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">по скриптам</a></span><span> и по </span><span><a href="https://youtu.be/1bBTwImu0Xs" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">скриптам и ботам</a></span><span>. На первом рассматривались конкретные примеры использования функционала скриптов, даны примеры. Второй вебинар был более обзорный, на нём объяснялись общие принципы и отвечали на вопросы клиентов</span></p><h3 level="3"><span>Непубличный вебинар</span></h3><p><span>Для наших сотрудников проводилась</span><span><a href="https://pyrus.com/t#id218411296?commentId=2040475331" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link"> встреча</a></span><span>, на основе которой появился второй публичный вебинар. Там проблематика была раскрыта чуть шире, также были ответы на вопросы </span></p><h3 level="3"><span>Тренировка</span></h3><details><summary><span>Попробуй написать скрипты для следующих 6 кейсов</span></summary><div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-start="1" data-posinset="1"><p><span>В форме есть два поля: справочник и число. Справочник это каталог услуг с указанием цен в евро. Число – это курс, по которому надо пересчитать стоимость в рубли. Заполняется вручную. Надо заполнить поле типа деньги стоимостью услуги в рублях </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Есть текстовое поле, в котором всегда стоит ФИО человека в полной форме. Надо в отдельное поле записывать фамилию + инициалы человека</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="3"><p><span>Надо запретить редактирование поля в зависимости от роли человека. Список id ролей: 12332, 32325, 6565656</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="4"><p><span>Посчитать процент строк таблицы, отмеченных галочками (галочка это отдельное колонка в таблице)</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="5"><p><span>Скрипт проверки наличия дубликатов в таблице. Есть колонка с текстом. Если в двух строках значения в этой колонке равны надо вывести предупреждение, разрешив сохранение результата, но запретив утверждение этапа. Также есть отдельное поле типа Галочка. Надо игнорировать запрет, если в галочке проставлено значение.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="6"><p><span>Запретить редактирование поля в зависимости от названия департамента, в котором работает человек. Подсказка: надо использовать вспомогательное поле типа Контакт</span></p></div></div></details><h2 level="2"><span>Расширения</span></h2><p><span>Много вещей в Pyrus можно сделать при помощи встроенных расширений без каких-либо ботов. Возможно, понадобится небольшой скрипт. Ниже описаны аспекты работы с некоторыми расширениями. </span></p><h3 level="3"><span>Pyrus Sync</span></h3><p><span><a href="https://pyrus.com/ru/help/pyrus-sync/installation-and-system-requirements" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">Это</a></span><span> отдельная программа, которая умеет выгружать и загружать информацию. Она работает на конкретном устройстве, используя учётные данные пользователя. Может быть полезна для нескольких сценариев:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Отчётность — Sync умеет выгружать реестры в формате csv. В свою очередь Excel умеет использовать csv файл в качестве внешнего источника данных для построения отчётности. Можно сделать процесс, при котором на компьютере аналитика стоит Sync, который регулярно выгружает реестр в csv файл, а сам аналитик просто открывает Excel-файл, в котором уже подготовлен отчёт на основе этих данных. Это же актуально для других BI систем.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Перетекание данных — некоторые настраивают процессы, в которых данные перетекают из одной формы в другую. В таком случае можно настроить экспорт одной формы в один файл, а импорт из другого. О том, как избежать создания лишних файлов и задач далее.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Синхронизация с базами данных — почти в любой системе в том или ином виде можно настроить выгрузку данных в файл. Sync можно нацелить на этот файл и таким образом синхронизировать справочники. </span></p></div><h4 level="4"><span>Как избежать лишних сущностей?</span></h4><p><span>По умолчанию Sync при каждом экспорте реестра генерирует новый файл, а при импорте создаёт задачи для каждой строки файла. </span></p><p><span>Чтобы избежать создания лишних файлов в </span><span><a href="https://pyrus.com/ru/help/pyrus-sync/export#export-parameters" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">настройки экспорта</a></span><span> нужно указать параметр FileName. В таком случае экспорт будет осуществлять в одно и то же место </span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_616aa6e6-4a0e-4878-b107-34795fb2e796.png" alt="image.png" width="660" height="66" class="knowledgeBaseEditor__imageBlock" haserror="False" size="9230"><p><span>При создании задач из файла, Sync может ориентироваться на одну из колонок файла, считая её колонкой уникальных значений. Аналогично работает, если ты загружаешь задачи с таблицами. В таком случае в настройках импорта ты указываешь параметры:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>PkFields — массив из колонок с ключевыми значениями. Указываются названия колонок, а не полей!</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>TablePkFields — для таблиц</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>SyncExistingTasks": true</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>"CreateNewTask": true</span></p></div><p><span>Пример настройки можно посмотреть в конце </span><span><a href="https://pyrus.com/ru/help/pyrus-sync/import" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">статьи</a></span></p><h3 level="3"><span>Эл. почта</span></h3><p><span>Очень полезное расширение, которое нужно не только  в Service-Desk. Им можно пользоваться для документооборота (чтобы общаться с контрагентом, отправляя ему варианты договора) или рекрутинге (чтобы ставить встречи кандидатам)</span></p><h4 level="4"><span>Мне нужно только отправлять</span></h4><p><span>Pyrus при подключении к почтовому ящику всегда мониторит все входящие письма. И каждое входящие письмо он или переносит в уже созданную задачу (если это ответ на письмо из Pyrus), или создаёт новую. Таким образом, очень легко утонуть в спаме. </span></p><p><span>В этом случае рекомендуется сделать первый этап разбора, на который поставить пустую роль или секретаря, который будет разбираться с поступающими письмами. Для этого выставьте настройку "Заполнять поля при создании" и поставь условие на этап. Поле можно сделать невидимым для пользователей при помощи пустой роли</span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_1d2f4e20-0fe4-479a-9527-25641f8929e9.png" alt="image.png" width="672" height="91" class="knowledgeBaseEditor__imageBlock" haserror="False" size="4622"><h4 level="4"><span>Видим всю историю</span></h4><p><span>Механизм отправки писем из Pyrus идентичен нажатию кнопки "Ответить" в почтовом клиенте. При смене адресов в поле Эл. почта вся история общения по задаче отправляется конечному адресату. Из-за этого может возникнуть следующий плохой сценарий:</span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="1"><p><span>Клиент прислал нам письмо с какими-то конфиденциальными данными</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Сотрудник поддержки разбирается с ним и хочет уточнить данные у смежного отдела. Меняет адрес в поле Эл. почта и отправляет письмо в смежный отдел</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="3"><p><span>Смежный отдел получает письмо с полной перепиской с клиентом. Уже риск получения конфиденциальных данных</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="4"><p><span>Смежный отдел пишет ответ и указывает какую-то информацию, которую не хотелось бы передавать клиенту</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="5"><p><span>Сотрудник поддержки опять меняет адрес в поле и клиент получает всю историю переписки со смежным отделом и узнаёт, что о нём думают в компании</span></p></div><p><span>Избежать этого можно заблокировав поле Эл. почта для изменения после создания, а для переписки со смежными отделами использовать вторую форму. Для создания задач по второй форме можно использовать только ручной труд. В таком случае настройка следующая: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>При создании задачи пользователь видит многострочное поле типа Текст. В нём он пишет письмо. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>В настройках интеграции указываете в приветственном письме то самое многострочное поле </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>При создании сообщения пользователям будет направлено сообщение, которое было написано пользователем.</span></p></div><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_f45f6674-c605-4696-bb2e-05c2187e7700.png" alt="image.png" width="962" height="189" class="knowledgeBaseEditor__imageBlock" haserror="False" size="13538"><p><span>Однако такой механизм не сработает, если вместе с первым сообщением нужно иметь возможность прикрепить файлы. В таком случае варианта два:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Заставить пользователя создавать задачу, потом заходить в неё и писать письмо</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Подключить </span><span><a href="https://pyrus.com/t#id204288247" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">бота отправки эл.почты</a></span><span>, который умеет отправлять письма со своего этапа и прикладывать файлы из разных полей (в том числе табличных)</span></p></div><h4 level="4"><span>Уйти с этапа</span></h4><p><span>Иногда нужно, чтобы задача пропала у исполнителя, пока мы ожидаем ответа клиента. Чаще всего это решается при помощи статуса, а именно:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Настраиваем статус, который устанавливается при отправке сообщения из Pyrus</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>На этапе исполнителя делаем условие, что он подключается, если статус не равен указанному в качестве автоматического. А при условии этого статуса подключаем Пустую роль</span></p></div><p><span>Если статусная модель у формы сложна и нам важно оставлять ручной статус (например, в заявках на поставку нам не особо важен статус общения, важнее статус самой поставки) можно в настройках интеграции поставить заполнение поля при поступлении ответа. В таком случае механизм такой же как со статусом.</span></p><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_2ac77ee8-dbe8-49d4-90f2-5f9d268b6212.png" alt="image.png" width="672" height="119" class="knowledgeBaseEditor__imageBlock" haserror="False" size="6945"><h3 level="3"><span>Telegram</span></h3><p><span>Интеграция с телеграм работает при помощи ботов в телеграме. По правилам телеграма один бот не может быть присоединён к двум сервисам. Поэтому если у клиента есть какой-то телеграм-бот с заложенной логикой, вы не можете его просто присоединить в Pyrus. При подключении интеграции, предыдущий сервис отвалится</span></p><h3 level="3"><span>I******am</span></h3><p><span>Эта соцсеть запрещена в РФ, поэтому для подключения рускоговорящим компаниям нужно сделать следующее:</span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="1"><p><span>В предпочтениях пользователя выбрать английский язык</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Зайти в нужную форму и настроить интеграцию. </span><span><a href="https://pyrus.com/en/help/integrations/instagram" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">Справка </a></span><span>доступна на английском</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="3"><p><span>Можно переключиться обратно на русский, расширение останется активно</span></p></div><h3 level="3"><span>Диадок и СБИС</span></h3><p><span>Эти расширения работают при помощи системных ботов (клиент за них не платит). При подключении интеграции бот автоматически подключится на последний этап. Поэтому, если нужно чтобы бот отработал где-то в середине процесса, подобное расширение лучше подключить в самом начале настройки формы, а затем выстроить этапы вокруг добавленного бота. </span></p><h3 level="3"><span>Веб-форма</span></h3><h4 level="4"><span>Предзаполненные формы</span></h4><p><span>Веб-формы могут быть предзаполненными. Для этого занесите значения в разделе заполнения формы, внизу появится кнопка для копирования ссылки на такую форму. Логика формирования ссылки простая: </span></p><blockquote><p><span>https://pyrus.com/form/&lt;номер формы&gt;?f<id предзаполненного="" поля="">=&lt;значение поля, для разных полей разные форматы &gt;&amp;f<id второго="" поля="">=&lt;значение второго поля&gt;</id></id></span></p></blockquote><p><span>Если полей несколько, ставится разделитель </span><span><strong>&amp;</strong></span></p><p><span>Также можно отправить ссылку с предзаполненным и скрытым полем. Для этого поставьте после </span><span><strong>f </strong></span><span>букву </span><span><strong>h</strong></span><span>. То есть в результате получится </span></p><blockquote><p><span>fh<id поля="">=&lt;значение поля&gt;</id></span></p></blockquote><p><span>Если встраиваете веб-форму, то предзаполнение также доступно. Просто в коде разделителем служит не </span><span><strong>&amp;</strong></span><span>, а </span><span><strong>\x26</strong></span><span>. Пример:</span></p><blockquote><p><span>s.src='https://pyrus.com/js/externalformstarter?jsonp='+f+'\x26id=1344000\x26fh6';</span></p></blockquote><p><span>Этот код скрывает поле с id 6. </span></p><h4 level="4"><span>Скрипты на веб-формах</span></h4><p><span>Мы уже касались этого вопроса ранее. При открытии веб-формы Pyrus проверяет твои доступы в соответствии с авторизацией в браузере. Поэтому если ты в браузере авторизирован в какого-то пользователя, то Pyrus будет использовать его доступы. Если же ты не авторизован в браузере, то Pyrus будет считать, что ты "пустой пользователь" и у тебя будут доступы только в рамках существующих полей (поэтому поле типа Форма будет запрещено для редактирования). В соответствии с этим можно поставить зависимость в скриптах. Например, не запускать какой-нибудь скрипт, если state.commenter пустой. </span></p><h3 level="3"><span>Эскалация</span></h3><p><span>Расширение можно использовать в сценарии создания отложенных задач. Например, в каких-то плановых работах, когда задача формируется за много месяцев, но должна прийти исполнителю за несколько дней. Для этого:</span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="1"><p><span>Добавь поле типа Срок. Этот срок заполняется при создании задачи и означает плановое окончание работ по задаче</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Добавь поле типа Галочка.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="3"><p><span>На первый этап поставь Пустую роль при условии пустоты галочки. А при условии заполненности поставь исполнителя</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="4"><p><span>Настрой Эскалацию на отправку напоминания за несколько дней до срока и обязательно проставь заполнение галочки. Подключать можно Пустую роль.</span></p></div><img src="./Uk9pQITIQqO_files/Uk9pQITIQqO_15d82a13-ec52-46b0-9a93-de1b01fcd617.png" alt="image.png" width="893" height="341" class="knowledgeBaseEditor__imageBlock" haserror="False" size="23603"><p></p></article></main>
+	
+</body></html>

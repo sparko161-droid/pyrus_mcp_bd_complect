@@ -1,0 +1,30 @@
+name: Проверка
+
+# Локальные проверки (pre-commit и npm run check) обходятся флагом --no-verify
+# и на чужом ПК могут быть просто не установлены. Здесь они выполняются на
+# стороне GitHub, где их обойти нельзя.
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      # Типы, локальные тесты, Фундаментальные правила документации
+      # и свежесть карты связей. Сети до Pyrus здесь нет и не требуется:
+      # тесты работают с подменённым fetch, а линтер и карта — с файлами.
+      - name: Типы, тесты, документация, карта связей
+        run: npm run check

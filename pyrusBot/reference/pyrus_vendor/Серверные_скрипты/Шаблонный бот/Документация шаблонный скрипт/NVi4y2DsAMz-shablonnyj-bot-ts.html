@@ -1,0 +1,543 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+	<title>Шаблонный бот TS</title><style type="text/css">HTML, BODY {
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+    line-height: 1.5;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+BODY {
+    --color-error-250: hsl(355, 100%, 86%);
+    --color-pink-250: hsl(334, 81%, 81%);
+    --color-orange-250: hsl(19, 100%, 82%);
+    --color-warning-300: hsl(36, 91%, 74%);
+    --color-accent-secondary-250: hsl(50, 100%, 76%);
+    --color-success-250: hsl(143, 63%, 80%);
+    --color-accent-200: hsl(180, 54%, 81%);
+    --color-info-250: hsl(207, 100%, 84%);
+    --color-violet-250: hsl(249, 87%, 91%);
+    --color-purple-250: hsl(273, 100%, 89%);
+    --color-neutral-250: hsl(210, 8%, 85%);
+
+    --color-trix-text-red-background: var(--color-error-250);
+    --color-trix-text-pink-background: var(--color-pink-250);
+    --color-trix-text-orange-background: var(--color-orange-250);
+    --color-trix-text-orange-yellow-background: var(--color-warning-300);
+    --color-trix-text-yellow-background: var(--color-accent-secondary-250);
+    --color-trix-text-green-background: var(--color-success-250);
+    --color-trix-text-green-blue-background: var(--color-accent-200);
+    --color-trix-text-blue-background: var(--color-info-250);
+    --color-trix-text-violet-background: var(--color-violet-250);
+    --color-trix-text-purple-background: var(--color-purple-250);
+    --color-trix-text-gray-background: var(--color-neutral-250);
+
+	word-wrap: break-word;
+}
+
+MAIN {
+	margin: 100px auto 200px;
+	padding: 0 20px;
+	width: 100%;
+	max-width: 800px;
+	box-sizing: border-box;
+}
+
+P {
+	margin: 0.9em 0 0;
+}
+
+A {
+	color: hsl(180, 100%, 27%);
+}
+
+A[type='video']::before {
+    display: inline;
+    content: attr(href);
+}
+
+H1, H2, H3, H4 {
+	font-weight: 700;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+H1 {
+	font-size: 32px;
+	line-height: 40px;
+	margin-top: 18px;
+	margin-bottom: 22px;
+}
+
+H2, H3, H4 {
+	font-size: 1.4em;
+	line-height: 1.4em;
+	margin: 1.4em 0 0.5em;
+}
+
+H3 {
+	font-size: 1.2em;
+}
+
+H4 {
+	margin: 1.5em 0 0;
+	font-size: 1em;
+}
+
+UL {
+	padding-inline-start: 2em;
+	list-style-type: disc;
+}
+
+UL > LI {
+	padding: 0;
+	max-width: calc(100% - 1em);
+}
+
+OL {
+	padding-inline-start: 2em;
+	counter-reset: item;
+}
+
+OL > LI {
+	word-break: break-word;
+	max-width: calc(100% - 1em);
+	counter-increment: item;
+}
+
+OL > LI::marker {
+	content: counters(item, ".") ". ";
+	padding-inline-end: 0.4em;
+}
+
+LI > P {
+	margin-top: 0;
+}
+
+MARK {
+    background-color: var(--color-trix-text-yellow-background);
+    color: inherit;
+}
+
+IMG {
+	display: block;
+	margin: 0.9em;
+	max-width: calc(100% - 40px);
+	height: fit-content;
+	background-color: hsl(210, 9%, 93%);
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+IMG.left {
+	margin-right: auto;
+}
+
+IMG.right {
+	margin-left: auto;
+}
+
+IMG.center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+IMG.leftText {
+	float: left;
+	margin-right: 20px;
+}
+
+IMG.rightText {
+	float: right;
+	margin-left: 20px;
+}
+
+CODE, PRE {
+	background-color: hsl(210, 10%, 96%);
+	font-family: Courier New, Courier, monospace;
+	font-size: 85%;
+}
+
+CODE {
+	margin: 0;
+	padding: 0.2em 0.4em;
+	border-radius: 6px;
+}
+
+PRE {
+	white-space: pre-wrap;
+	margin: 1em 0;
+	padding: 1.2em;
+	border-radius: 4px;
+	tab-size: 4;
+}
+
+DIV[data-theme],
+BLOCKQUOTE {
+	margin: 0.9em 0 0.5em;
+	padding-inline-start: 1em;
+	border-inline-start: 3px solid rgba(0, 0, 0, 75%);
+}
+
+DIV[data-theme="red"] {
+    border-color: #E66773;
+    background-color: #FBE8EA;
+}
+
+DIV[data-theme="pink"] {
+    border-color: #ED6AA2;
+    background-color: #FCEBF3;
+}
+
+DIV[data-theme="orange"] {
+    border-color: #FF8E56;
+    background-color: #FEEEE6;
+}
+
+DIV[data-theme="orangeYellow"] {
+    border-color: #F7B859;
+    background-color: #FEF4E6;
+}
+
+DIV[data-theme="yellow"] {
+    border-color: #FCD640;
+    background-color: #FEF7C5;
+}
+
+DIV[data-theme="green"] {
+    border-color: #5AC180;
+    background-color: #DCF8E6;
+}
+
+DIV[data-theme="greenBlue"] {
+    border-color: #00B2B2;
+    background-color: #D1F6F6;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #6ABCFF;
+    background-color: #E8F5FF;
+}
+
+DIV[data-theme="violet"] {
+    border-color: #B4A9FA;
+    background-color: #F0EEFE;
+}
+
+DIV[data-theme="purple"] {
+    border-color: #CC92FF;
+    background-color: #F5E9FF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB2B9;
+    background-color: #ECEDEF;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #42A1FFFF;
+    background-color: #D9EBFFFF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB3B9FF;
+    background-color: #ECEDEFFF;
+}
+
+TABLE {
+	width: 100%;
+	table-layout: fixed;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+TABLE P {
+	margin: 0;
+}
+
+TD {
+	min-width: 35px;
+	padding: 4px 12px;
+	box-sizing: border-box;
+	border: 1px solid hsl(210, 8%, 85%);
+	background-clip: padding-box;
+	vertical-align: top;
+}
+
+TD[data-format='table-cell-highlight-red'] {
+	background-color: #ffebee;
+}
+
+TD[data-format='table-cell-highlight-yellow'] {
+	background-color: #fcf3d9;
+}
+
+TD[data-format='table-cell-highlight-green'] {
+	background-color: #ebfaeb;
+}
+
+TD[data-format='table-cell-highlight-blue'] {
+	background-color: #ebf4ff;
+}
+
+.attachment__block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 8px;
+    margin: 0.9em 0;
+}
+
+.attachment__item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.attachment__item:hover {
+    background-color: #f5f5f5;
+}
+
+.attachment__item::before {
+    content: "";
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 24px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 24"><path fill="%23C7CCD1" d="M0 1.8C0 .8.8 0 1.8 0h9.4c.4 0 .9.2 1.2.5l7 6.3c.4.4.6.9.6 1.4v14c0 1-.8 1.8-1.8 1.8H1.8c-1 0-1.8-.8-1.8-1.8V1.8Z"/><path fill="%23fff" d="m18.4 6.8-5.9-5.2c-.3-.4-1 0-1 .4v4c0 1 .8 1.9 1.8 1.9H18c.6 0 .9-.7.4-1Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.attachment__fileName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment__fileSize {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #999;
+}
+
+.knowledgeBaseEditorflatList {
+    --size-gap: 4ch;
+    position: relative;
+    display: list-item;
+    margin-left: var(--size-gap);
+}
+.knowledgeBaseEditorflatList[aria-level="2"] {
+    margin-left: calc(var(--size-gap) * 2);
+}
+.knowledgeBaseEditorflatList[aria-level="3"] {
+    margin-left: calc(var(--size-gap) * 3);
+}
+.knowledgeBaseEditorflatList[aria-level="4"] {
+    margin-left: calc(var(--size-gap) * 4);
+}
+.knowledgeBaseEditorflatList[aria-level="5"] {
+    margin-left: calc(var(--size-gap) * 5);
+}
+.knowledgeBaseEditorflatList[aria-level="6"] {
+    margin-left: calc(var(--size-gap) * 6);
+}
+.knowledgeBaseEditorflatList[aria-level="7"] {
+    margin-left: calc(var(--size-gap) * 7);
+}
+.knowledgeBaseEditorflatList[aria-level="8"] {
+    margin-left: calc(var(--size-gap) * 8);
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="2"] {
+    list-style-type: circle;
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="3"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="4"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="5"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="6"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="7"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="8"] {
+    list-style-type: square;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"],
+.knowledgeBaseEditorflatList[data-kind="check"] {
+    display: block;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"]::before {
+    content: attr(data-ancestors) "." attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"]::before {
+    /* Empty checkbox */
+    content: "\2610";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"][aria-checked="true"]::before {
+    /* Marked checkbox */
+    content: "\2611";
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"][aria-level="1"]::before {
+    content: attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList > P, .knowledgeBaseEditor__flatList > SPAN > P {
+    margin: 0;
+
+}
+IMG[data-type='inline'] {
+    display: inline-flex;
+    height: 1.3em;
+    width: auto;
+    margin: 0.1em;
+    vertical-align: top;
+}
+</style></head>
+	<body>
+		<main>
+		<article><div><div></div></div><h1><span>Шаблонный бот TS</span></h1><p><span>Шаблонный бот TS написан как расширение стандартных методов библиотеки TypeScript. Он предоставляет ряд дополнительных возможностей, которые делают обработку задач проще и экономнее с точки зрения вызовов, а код лаконичнее. </span></p><p><span>Рекомендуется после завершения разработки бота у клиента стереть лишние функции, которые не использовались. </span></p><p><span>Код бота можно взять </span><span><a href="https://pyrus.com/t#id273013065" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь</a></span><span>, а в этой статье будут описаны подробности и аспекты использования некоторых методов. </span></p><h2 level="2"><span>Основная функция</span></h2><p><span>Функция запуска сделана так, чтобы бот всегда отписал о результатах своей работы. Сначала создаётся </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=7-extendedclient" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">расширенный клиент</a></span><span> bot для выполнения запросов и обработки данных (подробное описание далее). Затем задача вызова </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=18-ispravlenie-zadachi-fixtask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">исправляется </a></span><span>(также описано далее). В этот момент может оказаться, что у бота нет доступа к форме. По умолчанию считается, что бот не может отрабатывать в таких задачах, поэтому выполнение функции прерывается. </span></p><p><span>Если конвертация успешна, то запускается обработка. Рекомендуется дописывать свою обработку в function_to_do и возвращать в ней результат, который должен стать финальным действием бота. Исполнение этой функции обёрнуто в обработку исключений. Если ваш код по какой-то причине упадёт в процессе, то в задачу вызова будет написано сообщение о неожиданной ошибке, а сама ошибка записана в консоль. Сообщения пишутся только в открытые задачи, закрытые задачи не переоткрываются. Обратите внимание, что в случае таких ошибок, бот ставит визу Против. Уберите это, если не уверены, что у вас будет возможность перезапросить согласования бота. Но исключение простановки визы может привести к спаму ошибок и циклическим перевызовам ботов друг друга.</span></p><h2 level="2"><span>Расширенные типы</span></h2><p><span>Часть штатных типов для удобства были расширены. Это позволяет легче обращаться к данным в них. </span></p><h3 level="3"><span>ExtendedForm</span></h3><p><span>Является расширением штатного типа </span><span><code>FormResponse</code></span><span>. Все атрибуты формируются в функции </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=25-ispravlenie-formy-fixform" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_form</a></span><span>. Добавлены:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span><strong>named_fields </strong></span><span>- словарь, в котором ключом является код поля, а значением само поле (не его значение). Это позволяет легко обращаться к полю по коду. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span><strong>id_to_code </strong></span><span>- словарь, в котором проводится соответствие id и кодов. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span><strong>all_fields </strong></span><span>- массив всех полей. В объекте fields есть не все поля, а только "свободные". Если поле находится в группе, то его нельзя будет найти при помощи form.fields.find(x=&gt;x.id == id). all_fields представляет из себя массив, в котором есть все поля, в том числе и колонки таблиц.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span><strong>created_by_bot </strong></span><span>- счётчик задач, которые были созданы ботом в рамках одного запуска при помощи функции create_task. Полезно использовать во время тестирования (если есть опасения, что бот зациклится и создаст лишнее) или если нам надо ограничить создание задач за один запуск (например, чтобы не перегрузить другой сервис)</span></p></div><h3 level="3"><span>ExtendedTask</span></h3><p><span>Расширение штатного типа </span><span><code>TaskWithComments</code></span><span>, формируется функцией </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=18-ispravlenie-zadachi-fixtask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_task </a></span><span>.  По структуре похож на ExtendedForm. Также есть </span><span><strong>named_fields </strong></span><span>и </span><span><strong>all_fields</strong></span><span>. Добавлены </span><span><strong>named_comments</strong></span><span>, список комментариев расширенного типа ExtendedTaskComment.</span></p><p><span>Важно отметить, что изменения в </span><span><strong>named_fields </strong></span><span>провоцируют изменения и объектов </span><span><strong>fields </strong></span><span>и элемента </span><span><strong>all_fields</strong></span><span>. Например, </span></p><pre><span>task.named_fields["org"].value = "Пайрус"
+console.log(task.fields.all_fields.find(x=&gt;x.id == task.named_fields["org"].id).value) //будет Пайрус</span></pre><p></p><h3 level="3"><span><strong>ExtendedTableRow</strong></span></h3><p><span>Расширение штатного типа </span><span><code>TableRow</code></span><span>.</span><br><span>Позволяет работать с данными табличной строки более удобно:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-start="213" data-posinset="213" aria-checked="False"><p><span><strong>named_cells</strong></span><span> — словарь, где ключом является код ячейки, а значением сама ячейка (</span><span><code>FormField</code></span><span>). Это упрощает доступ к нужной ячейке по её коду, без поиска по массиву.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="214" aria-checked="False"><p><span><strong>added_now</strong></span><span> — логическое значение, которое устанавливается в </span><span><code>true</code></span><span>, если ряд был добавлен в процессе текущей обработки запроса. Это полезно для понимания, какие строки появились «на лету» и могут требовать отдельной логики обработки.</span></p></div><p><span>Обратите внимание, что изменения в </span><span><strong>named_cells </strong></span><span>меняют и элементы оригинального </span><span><strong>cells</strong></span><span>. Это позволяет при обновлении таблицы передать всю таблицу. Пример:</span></p><pre><span>//представим таблицу, в которой две строки
+task.named_fields["table"].value[0].named_cells["column1"].value = 1 //в этот момент поле в массиве cells тоже изменилось
+task.named_fields["table"].value[1].named_cells["column2"].value = "Вторая строка, вторая колонка"
+await bot.comment_task(task.id, {field_updates: [task.named_fields["table"]]}) </span></pre><p><span>После отправки запроса API-сервис Pyrus проигнорирует в таблице все, кроме атрибута </span><span><strong>cells </strong></span><span>у каждого ряда и ошибки из-за неожиданных для обработчика атрибутов не будет</span></p><h3 level="3"><span><strong>ExtendedTaskComment</strong></span></h3><p><span>Расширение штатного типа </span><span><code>TaskComment</code></span><span>. </span><br><span>Позволяет удобнее анализировать изменения, внесённые комментарием:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-start="766" data-posinset="766" aria-checked="False"><p><span><strong>named_fields_changes</strong></span><span> — словарь, где ключом является код поля, а значением — обновлённое поле (</span><span><code>FormField</code></span><span>). Это даёт возможность быстро определить, какие именно поля были изменены данным комментарием, без необходимости вручную разбирать массив изменений. </span></p></div><h2 level="2"><span>ExtendedClient</span></h2><p><span>Расширение штатного клиента </span><span><code>PyrusApiClient</code></span><span>.</span><br><span>Реализует кэширование данных (формы, справочники, задачи), автоматическую нормализацию структур (</span><span><code>ExtendedForm</code></span><span>, </span><span><code>ExtendedTask</code></span><span>, </span><span><code>ExtendedTaskComment</code></span><span>, </span><span><code>ExtendedTableRow</code></span><span>) и предоставляет набор вспомогательных методов для удобной работы с API. Рекомендуется все запросы, если есть соответствующий метод в ExtendedClient, выполнять через него. </span></p><p><span>В кеше у бота хранится: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Шаблоны форм (</span><span><code>templates</code></span><span>) - в виде словаря, где id это ключ, а шаблон формы значение</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Профиль (</span><span><code>profile_info</code></span><span>) - в виде объекта типа </span><span><code>ProfileResponse</code></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Справочники (</span><span><code>saved_catalogs</code></span><span>)  - в виде словаря, где id это ключ, а справочник значение</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Задачи (</span><span><code>saved_tasks</code></span><span>) - в виде словаря, где id задачи выступает ключом, а объект ExtendedTask значением</span></p></div><h3 level="3"><span>Создание</span></h3><p><span>При создании экземпляра класса нужно передать токен (с его помощью выполняются запросы) и id пользователя (полезно, когда надо отследить комментарии бота в задаче). По умолчанию все словари пустые, также как и </span><span><code>profile_info</code></span></p><h3 level="3"><span>Замены вызовов стандартной библиотеки </span></h3><p><span>Если у метода стандартной библиотеки есть замена в ExtendedClient, лучше использовать его. Все же остальные методы можно использовать как будто bot это обычный экземпляр класса </span><span><code>PyrusApiClient:</code></span></p><pre><span>await bot.announcements.create({text: "Объявление"})</span></pre><h4 level="4"><span>Запрос формы (get_form)</span></h4><p><span>Замена </span><span><code>forms.get({id});</code></span></p><p><span>Вместе с запросом формы, бот сразу превращает её в </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=3-extendedform" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">ExtendedForm </a></span><span>функцией </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=25-ispravlenie-formy-fixform" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_form</a></span><span>, добавляя все атрибуты. После фикса бот кеширует шаблон и при последующем запуске не делает лишний запрос, а берёт из памяти. В случае, если доступа к форме нет или в процессе конвертации формы (чего не должно произойти) случилась ошибка, функция вернёт </span><span><code>null</code></span><span>. </span></p><h4 level="4"><span>Запрос задачи (get_task)</span></h4><p><span>Замена </span><span><code>tasks.get({id: task_id});</code></span></p><p><span>Аналогично запросу формы, бот после получения задачи бот конвертирует её в </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=4-extendedtask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">ExtendedTask</a></span><span>, используя </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=18-ispravlenie-zadachi-fixtask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_task</a></span><span>. Бот кеширует состояние задачи, при последующих вызовах бот вернёт задачу из памяти. Важно: в этот момент бот не нормализует комментарии, это требует вызова отдельной функции. Функция имеет опциональный параметр </span><span><code>update</code></span><span>. Если он равен </span><span><code>true</code></span><span>, бот всегда запросит задачу из API, даже если в памяти есть состояние. По умолчанию, </span><span><code>false</code></span></p><h4 level="4"><span>Комментирование задачи (comment_task)</span></h4><p><span>Замена </span><span><code>tasks.addComment(task_id, comment)</code></span></p><p><span>Кроме отправки комментария бот предварительно преобразует все поля типа Выбор с пустым значением. Если отправить </span><span><code>null</code></span><span>, PyrusAPI вернёт ошибку о том, что он не может привести значение null к полю multiple_choice</span></p><img src="./NVi4y2DsAMz_files/NVi4y2DsAMz_b51f5480-84cf-4bce-b699-efe21f88da12.png" alt="image.png" width="711" height="94" class="knowledgeBaseEditor__imageBlock" haserror="False" size="15090"><p><span>Также присутствует защита от обновления поля типа Форма удалённой задачей. При попытке совершить такое действие, будет возвращена ошибка об отсутствии задачи в реестре. Проверка выполняется, по наличию параметра subject. </span><span><mark style="background-color: var(--color-trix-text-red-background)">Обратите внимание,</mark></span><span> что если добавляете в боте значение к полю типа Форма, в нём обязательно надо передать subject или поле не будет обновлено. </span></p><p><span>После отправки комментария бот сохранит новое состояние задачи в кеше, если задача успешно обновилась. Если обновление было неудачным, метод возвращает текст ошибки. При успешной отправке, метод возвращает изменённую задачу. </span></p><p><span>Также метод поддерживает изменение характеристик задачи через поля. Подробнее </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=29-konvertaciya-xarakteristik-zadachi-v-polya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь</a></span></p><h4 level="4"><span>Создание задачи (create_task)</span></h4><p><span>Замена </span><span><code>tasks.create(comment);</code></span></p><p><span>Если создание задачи провалилось, метод вернёт сообщение об ошибке. Если создание успешно, задача исправляется и кешируется. </span></p><h4 level="4"><span>Запрос реестра (get_registry_with_fix)</span></h4><p><span>Замена </span><span><code>forms.getTasks(form_id, form_req);</code></span></p><p><span>Каждая задача исправляется, но не кешируется, так как задача реестра не обладает всей информацией (нет комментариев, информации об авторе, маршруте и тд). Возвращается массив из исправленных задач или сообщение об ошибке</span></p><h4 level="4"><span>Запрос справочника (get_catalog)</span></h4><p><span>Замена </span><span><code>catalogs.get({id})</code></span></p><p><span>По умолчанию бот ищет справочник по id в кеше и только если не нашёл, делает вызов к API. Но если указан параметр </span><span><code>update</code></span><span>, бот запросит API, игнорируя кеш. Если запрос неудачный, вернёт строку с ошибкой</span></p><h4 level="4"><span>Обновление справочника (update_catalog)</span></h4><p><span>Замена </span><span><code>catalogs.update</code></span></p><p><span>После обновления, если справочник был в кеше, метод обновит его. Если в кеше его не было, добавление не происходит.</span></p><h4 level="4"><span>Запрос профиля (get_profile)</span></h4><p><span>Замена </span><span><code>profile.get()</code></span></p><p><span>Аналогично с предыдущими методами по умолчанию берётся значение из кеша, если не найдено, то делается запрос и заносится в кеш </span></p><h3 level="3"><span>Полезные методы</span></h3><p><span>Эти методы обычно вызываются в процессе выполнения функций</span></p><h4 level="4"><span>Исправление задачи (fix_task)</span></h4><p><span>По плану эта функция используется только один раз - при запуске бота, чтобы не делать лишний запрос к задаче вызова, лучше сразу запустить fix_task. Обычно запускается в </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=11-zapros-zadachi-gettask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">get_task </a></span><span>или </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=14-zapros-reestra-getregistrywithfix" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">get_registry_with_fix</a></span></p><p><span>В процессе выполнения функции наполняется словарь </span><span><strong>named_fields </strong></span><span>и заполняется массив </span><span><strong>all_fields </strong></span><span>(при помощи функции </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=26-poluchenie-vsex-polej-getflatfields" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">get_flat_fields</a></span><span>). Также в этот момент ряды таблиц расширяются до типа </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=5-extendedtablerow" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">ExtendedTableRow </a></span><span>и создаются словари </span><span><strong>named_cells </strong></span><span>в рядах. Также набор </span><span><strong>cells </strong></span><span>дополняется недостающими (PyrusAPI не возвращает пустые ячейки). </span></p><p><span>Явно в самой функции это не прописано, но благодаря обработке в </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=25-ispravlenie-formy-fixform" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_form </a></span><span>в </span><span><strong>named_fields </strong></span><span>попадают также дочерние поля текстовых полей типов Организация, Банк, Адрес и тд. Аналогично происходит в </span><span><strong>named_cells</strong></span><span>. </span></p><p><span>Также в качестве полей добавляются характеристики задачи. Подробнее </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=29-konvertaciya-xarakteristik-zadachi-v-polya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь</a></span></p><h4 level="4"><span>Запрос пользователя по id (get_info_by_id)</span></h4><p><span>Запрос полезен, если у нас где-то есть id пользователя (например в колонке маршрутизации справочника) для получения полной информации о нём. Также может использоваться для того, чтобы преобразовать роль в пользователя и по ходу выполнения обработки использовать данные роли как данные пользователя.</span></p><h4 level="4"><span>Получение словаря соответствия для вариантов Выбора (get_multiple_choice_dict)</span></h4><p><span>Варианты выбора в поле типа Выбор хранятся неудобно и присутствуют только в поле формы. Поэтому для получения словаря вариантов используется этот метод: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Для полей типа Выбор он вернёт словарь соответствия заголовка выбора и его id</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Для остальных полей метод вернёт пустой словарь</span></p></div><h4 level="4"><span>Добавление строки в таблицу (add_row_to_table)</span></h4><p><span>Полезный метод, чтобы после добавления ряда указанный ряд не отличался от уже существующих. В нём полный состав </span><span><strong>cells </strong></span><span>и </span><span><strong>named_cells</strong></span><span>, корректный </span><span><strong>row_id</strong></span><span>. Сильно экономит место в основных функциях. Пример использования</span></p><pre><span> let new_row = await bot.add_row_to_table(
+                    return_task.named_fields[parent_table_code].value as ExtendedTableRow[],
+                    return_task.named_fields[parent_table_code].id,
+                    created_form.id,
+                    return_task.id
+                  );
+                  new_row.named_cells[code].value = value;</span></pre><h4 level="4"><span>Исправление комментариев (fix_task_comments)</span></h4><p><span>Проверяет есть ли в задаче уже </span><span><strong>named_comments</strong></span><span>. Если есть, то возвращает их, если нет, значит пока что обработка комментариев никогда не запускалась для этой задачи. Каждый комментарий проверяется на изменение полей и если поля менялись, в комментарии формируется словарь </span><span><strong>named_fields_changes</strong></span><span>. Если изменялась таблица, то каждый изменённый ряд будет приведён к типу </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=5-extendedtablerow" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">ExtendedTableRow</a></span><span>, при этом будут добавлены только изменившиеся ячейки в </span><span><strong>named_cells</strong></span><span>. Если же в комментарии не было изменений полей, то словарь будет пустым (но он не будет </span><span><code>null </code></span><span>или </span><span><code>undefined</code></span><span>)</span></p><p><span>После обработки комментариев они сохраняются в задачу, в соответственно и в кеш this.saved_tasks, если задача была получена методом </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=11-zapros-zadachi-gettask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">get_task</a></span><span>. </span></p><h4 level="4"><span>Восстановление последних значений (restore_last_values)</span></h4><p><span>В метод передаётся список интересующих полей и возвращается их последнее состояние до комментария, вызвавшего бота. Однако последний комментарий можно добавить в выборку проверяемых, если проставить соответствующий параметр. Таким образом можно восстановить полную историю состояния поля, если постепенно увеличивать параметр </span><span><strong>depth </strong></span><span>(по умолчанию равный 1). Также можно проследить как поле исправлял конкретный пользователь. </span></p><p><span>Не работает для отслеживания конкретного ряда или конкретной колонки, только всей таблицы целиком. </span></p><h3 level="3"><span>Внутренние методы</span></h3><p><span>Эти методы редко или никогда не вызываются вне класса ExtendedClient</span></p><h4 level="4"><span>Исправление формы (fix_form)</span></h4><p><span>Преобразует </span><span><code>FormResponse</code></span><span> в </span><span><code>ExtendedForm</code></span><span>:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-start="1545" data-posinset="1545" aria-checked="False"><p><span>формирует полный список полей (</span><span><code>all_fields</code></span><span>),</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1546" aria-checked="False"><p><span>создаёт словари:</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1546" data-posinset="1" aria-checked="False"><p><span><code>named_fields</code></span><span> — доступ к полям по коду</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1546" data-posinset="2" aria-checked="False"><p><span><code>id_to_code</code></span><span> — доступ к коду по ID поля,</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1547" aria-checked="False"><p><span>подготавливает </span><span><code>value</code></span><span> для полей (таблицы → </span><span><code>[]</code></span><span>, остальные → </span><span><code>null</code></span><span>),</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1548"><p><span>обрабатывает «сложные» поля (например, Организация) для присвоения кодов дочерним полям. Таким образом вместо кодов Dadata&lt;параметр&gt; поля приобретают коды &lt;код основного поля&gt;*&lt;заголовок параметра&gt;. Например, org*ИНН. Это особенно необходимо, в случае, если полей типа Организация несколько на шаблоне. Тогда у нескольких полей будет код DadataINN. Далее это используется в fix_task при конвертации задачи</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1549"><p><span>Добавляет в named_fields характеристики задачи как поля. Подробнее </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=29-konvertaciya-xarakteristik-zadachi-v-polya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь</a></span></p></div><h4 level="4"><span>Получение всех полей (get_flat_fields)</span></h4><p><span>Разворачивает вложенные поля в «плоский» список:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-start="1992" data-posinset="1992" aria-checked="False"><p><span>добавляет колонки таблиц (только для форм)</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1993" aria-checked="False"><p><span>для групп (</span><span><code>title</code></span><span>) разворачивает вложенные поля и при необходимости колонки таблиц внутри них.</span></p></div><h2 level="2"><span>Другие функции шаблонного бота</span></h2><h3 level="3"><span>Фиксация ошибок и предупреждений</span></h3><p><span>В процессе выполнения кода вам может потребоваться отправить сообщение об ошибке или предупреждение в задачу. Для облегчения написания кода при запуске бота появляется error_log - словарь, в котором ключом является номер задачи, в которую надо отправить сообщение, а значением массив строк - предупреждений. Последовательность следующая: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Запускается функция function_to_do или другие ваши функции. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>После их отработки проверяется лог ошибок. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Если лог не пустой, то во все задачи отправляется сообщение с ошибками. Сообщение отправляется только в случае, если с момента отправки последнего сообщения было оставлено не менее 5 текстовых комментариев. Но в консоль весь лог записывается всегда. </span></p></div><p><span>Для добавление сообщения в лог ошибок по задаче вызовите функцию add_error, передав в неё номер задачи и текст ошибки. </span></p><p><span>Например</span></p><pre><span>if (!task.named_fields['field_code']) add_error(task.id, `Нет поля с кодом ${field_code}`);</span></pre><details><summary><span>Код функции</span></summary><div><pre><span>  //функция для обновления лога ошибок, точка входа для запуска процессов копирования в задаче 
+function add_error(task_id: number, error: string){  
+    if (!error_log[task_id]) error_log[task_id] = [error]; 
+    else error_log[task_id].push(error); 
+  } </span></pre></div></details><h3 level="3"><span>Конвертация характеристик задачи в поля</span></h3><p><span>Методы </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=25-ispravlenie-formy-fixform" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_form</a></span><span>, </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=18-ispravlenie-zadachi-fixtask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_task </a></span><span>и </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=12-kommentirovanie-zadachi-commenttask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">comment_task </a></span><span>адаптированы под работу с характеристиками задачи как с полями. Это может быть полезно как при написании кода, так и в случаях, когда в настройки бота подразумевают передачу полей (например, заполнение шаблона сообщения, перенос полей или выставление условий на их состояние). </span></p><h4 level="4"><span>Поля с номером задачи разных типов</span></h4><p><span>Доступны поля типа: Число (код </span><span><code>$task_id</code></span><span>), Текст (код </span><span><code>$task_link</code></span><span>), Форма (код </span><span><code>$task_field</code></span><span>). Их можно использовать для указания в качестве целевой задачи задачу вызова. Например, когда надо конвертировать поле одного типа в другое. Пример: </span></p><pre><span>{
+            "comment": "Перенос id пользователя в отдельное поле для формирования ссылки в ИПР",
+            "permitted_forms": [2335766],
+            "target": "$task_link",
+            "relations":{
+                "emp": "emp_id"
+            }
+}</span></pre><h4 level="4"><span>Характеристики задачи </span></h4><p><span>Часть свойств задачи превращены в поля, чтобы их можно было переносить в другие задачи или использовать в условиях для правил. Часть таких полей можно менять в процессе выполнения - тогда при отправке через метод </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=12-kommentirovanie-zadachi-commenttask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">comment_task </a></span><span>изменится и состояние задачи</span></p><table><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span>Код</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Свойство</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Тип поля</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Комментарий</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Заполнение</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$close_state</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Закрыта/Открыта</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Галочка.</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Проставлена, если закрыта. </span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Если заполнить в процессе запуска, то при комментировании задача закроется. Если снять, задача переоткроется</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$assignee</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Системный ответственный</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Контакт</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Можно изменить, пользователь будет назначен ответственным</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Если заполнить в процессе запуска, пользователь будет установлен ответственным</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$last_modified_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Последняя дата изменения</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$current_step</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Этап задачи</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Число</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Отсчёт с 1</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$close_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Дата закрытия</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$parent_task_id</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Номер задачи-родителя</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Число</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Если у задачи нет родителя, пустое. </span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>-</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$due</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Срок задачи со временем</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Обратите внимание, что не может быть одновременно и </span><span><code>$due</code></span><span>, и </span><span><code>$due_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Установится срок со временем. Если передана просто дата (например, из поля Дата), то будет указана полночь по нулевой таймзоне (то есть, в Москве будет отображаться срок в три часа ночи)</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$due_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Срок задачи</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Обратите внимание, что не может быть одновременно и </span><span><code>$due</code></span><span>, и </span><span><code>$due_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Установится срок без времени. Если передать в переменную дату со временем, время будет обрезано </span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$duration</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Длительность</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Число</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Продолжительность срока, если установлен срок с интервалом</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>Если передать вместе с due или due_date, будет установлен срок с интервалом</span></p></td></tr><tr><td colspan="1" rowspan="1" colwidth="[
+  349
+]"><p><span><code>$due_end_date</code></span></p></td><td colspan="1" rowspan="1" colwidth="[
+  146
+]"><p><span>Конец интервала Срока</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  108
+]"><p><span>Дата</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  379
+]"><p><span>Конец интервала срока</span></p></td><td colspan="1" rowspan="1" colwidth="[
+  717
+]"><p><span>При передаче нового значения в задаче будет установлен срок с интервалом.</span></p></td></tr></table><h4 level="4"><span>Результаты согласования этапов (закомментировано)</span></h4><p><span>Для каждого этапа добавляется 2 поля: согласующий пользователь и результат согласования. Количество этапов считается по настройкам маршрутизации. Нумерация этапов для формирования названий считается с 1. </span></p><p><span>Также добавляется таблица с историей согласований. </span></p><p><span>По умолчанию, эта функция закомментирована, так как для её корректной работы требуется получение доступа ко всем комментариям и проход по всем комментариям, что может снижать скорость работы бота. Чтобы функция корректно заработала, снимите комментарии в методах </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=25-ispravlenie-formy-fixform" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_form </a></span><span>и </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=18-ispravlenie-zadachi-fixtask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">fix_task</a></span></p><p><span><strong>	Поля с согласующими пользователями</strong></span></p><p><span>	Для каждого этапа в словарь named_fields добавляется поле с кодом вида </span><span><code>$approver_step_${step}</code></span><span>, где </span><span><code>step </code></span><span>номер этапа с 1. Поле имеет тип Число. Если на этапе стоит только один пользователь/роль/бот, полю будет присвоено значение id этого пользователя. Если в форме выставлена настройка подключения пользователей с визой Против, то после её исполнения поле будет опустошаться, потому что на этапе, с точки зрения бота, стоит два пользователя. Если на этапе стоит Роль и виза не проставлена, поле будет иметь значение id роли. После простановки визы значение поля будет равно id поставившего визу пользователя. </span></p><img src="./NVi4y2DsAMz_files/NVi4y2DsAMz_c9302acc-ab54-463f-a6f5-e0f0414cead8.png" alt="image.png" width="309" height="102" class="knowledgeBaseEditor__imageBlock rightText" haserror="False" size="7001"><p><span>	Для корректной установки конкретного пользователя у бот должен быть доступ ко всем комментариям</span></p><p><span><strong>	Поля с результатами согласований</strong></span></p><p><span>	Для каждого этапа в словарь named_fields добавляется поле с кодом вида </span><span><code>$approver_choice_step_${step_num}</code></span><span>, где </span><span><code>${step_num} </code></span><span>номер этапа с 1. Поле имеет тип Текст и может содержать 4 значения: </span><span><strong>approved, acknowledged, rejected </strong></span><span>или </span><span><strong>waiting</strong></span><span>. Если на этапе есть хоть один пользователь, не поставивший согласование, поле будет иметь значение </span><span><strong>waiting</strong></span><span>. Если на этапе есть хоть одна виза Против, поле будет иметь значение </span><span><strong>rejected</strong></span><span>. Если на этапе никого нет, поле будет пустым. Для корректной установки конкретного пользователя у бот должен быть доступ ко всем комментариям</span></p><p><span><strong>	Таблица согласований</strong></span></p><p><span>	При обработке задачи в словарь named_fields добавляется таблица с кодом </span><span><code>$approver_table.</code></span><span> В отличие от остальных дополнительных полей, у этого поля </span><span><code>id</code></span><span> не </span><span><code>null</code></span><span>, а -1, а у всех его колонок </span><span><code>parent_id = -1</code></span><span>. Колонки таблицы:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="1" aria-checked="False"><p><span>Обычные дополнительные колонки, как у всех таблиц с кодами </span><span><code>$approver_table_$task_id</code></span><span> и </span><span><code>$approver_table_$row_id</code></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="2" aria-checked="False"><p><span>Номер этапа (</span><span><code>$approval_step</code></span><span>) - колонка типа Число</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="3" aria-checked="False"><p><span>Согласующий на этапе (</span><span><code>$approver</code></span><span>) - колонка типа Число, в ней хранится id пользователя/роли/бота, который стоит на маршруте</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="4" aria-checked="False"><p><span>Дата согласования (</span><span><code>$approving_date</code></span><span>) - поле типа Дата с датой последней простановки согласования. Если виза не проставлена - пустая</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="5" aria-checked="False"><p><span>Решение (</span><span><code>$approval_choice</code></span><span>) - поле типа Текст. Может иметь значения </span><span><strong>approved, acknowledged, rejected </strong></span><span>или </span><span><strong>waiting. </strong></span><span>Никогда не </span><span><strong>null</strong></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="6" aria-checked="False"><p><span>Согласовавший пользователь (</span><span><code> $approval_user</code></span><span>) - колонка типа Число, в ней хранится id пользователя/бота, который поставил визу от лица согласующего (если это роль). Если согласования нет, ячейка пустая</span></p></div><p><span>	Таблица заполняется по истории комментариев, поэтому важно, чтобы у бота был доступ ко всем комментариям. Таблица может пригодиться в следующих случаях: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="1" aria-checked="False"><p><span>Особые правила регистрации итогового решения. Если стандартное правило, описанное выше, не подходит, в кастомные </span><span><a href="https://pyrus.com/t#kb/article/administrirovanie-bota-kopirovaniya-ts-PBlNToU54bc?h=32-vozmozhnosti-kastomizacii" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">функции </a></span><span> можно будет дописать код, который заполнит специальные поля под каждый этап по нужному правилу</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="1" data-posinset="2" aria-checked="False"><p><span>Формирование листа согласования - иногда требуется сделать особый шаблон листа согласования. Тогда сделайте таблицу на форме и заполняйте её на основе автоматически формируемой. Можно заносить в эту таблицу только интересующие вас этапы, если в параметр </span><span><code>table_conditions</code></span><span> настроек добавить условия на колонку </span><span><code>$approval_step</code></span></p></div><h2 level="2"><span>История версий</span></h2><p><span>История ведётся с 6 версии</span></p><h3 level="3"><span>7.0 (16.01.2026)</span></h3><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Добавлен метод </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=16-obnovlenie-spravochnika-updatecatalog" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">обновления справочника</a></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Добавлена </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=30-konvertaciya-xarakteristik-zadachi-v-polya" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">конвертация характеристик задачи в поля </a></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Добавлен лог ошибок</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>Добавлена защита от обновления полей типа Форма удалёнными задачами в метод </span><span><a href="https://pyrus.com/t#kb/article/shablonnyj-bot-ts-NVi4y2DsAMz?h=12-kommentirovanie-zadachi-commenttask" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">comment_task </a></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>Исправлена баг при конвертации задачи, когда значение 0 у полей типа Число и Деньги превращалось в null</span></p></div><h3 level="3"><span>6.2 (14.10.2025)</span></h3><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Исправлена функция отправки комментария - теперь во время запуска функции комментирования штатной библиотеки комментарий копируется.</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>В класс ExtendedTaskComment добавлен массив flat_fields - плоский массив всех изменённых полей </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Функция fix_task_comments адаптирована под новый класс</span></p></div><h3 level="3"><span>6.1.1 (02.09.2025)</span></h3><p><span>Bug fix</span></p><h3 level="3"><span>Версия 6.1 (18.08.2025)</span></h3><p><span>Добавлена более строгая типизация, для исключения ошибок в VS Code при </span><span><a href="https://pyrus.com/t#kb/article/lokalnyj-zapusk-servernyx-skriptov-RHECTFAK1xc" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">локальном запуске</a></span></p><h3 level="3"><span>Версия 6.0</span></h3><p></p></article></main>
+	
+</body></html>

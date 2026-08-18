@@ -1,0 +1,473 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+	<title>Внутренний вебинар по скриптам, серверным скриптам и ботам</title><style type="text/css">HTML, BODY {
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+    line-height: 1.5;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+        "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+BODY {
+    --color-error-250: hsl(355, 100%, 86%);
+    --color-pink-250: hsl(334, 81%, 81%);
+    --color-orange-250: hsl(19, 100%, 82%);
+    --color-warning-300: hsl(36, 91%, 74%);
+    --color-accent-secondary-250: hsl(50, 100%, 76%);
+    --color-success-250: hsl(143, 63%, 80%);
+    --color-accent-200: hsl(180, 54%, 81%);
+    --color-info-250: hsl(207, 100%, 84%);
+    --color-violet-250: hsl(249, 87%, 91%);
+    --color-purple-250: hsl(273, 100%, 89%);
+    --color-neutral-250: hsl(210, 8%, 85%);
+
+    --color-trix-text-red-background: var(--color-error-250);
+    --color-trix-text-pink-background: var(--color-pink-250);
+    --color-trix-text-orange-background: var(--color-orange-250);
+    --color-trix-text-orange-yellow-background: var(--color-warning-300);
+    --color-trix-text-yellow-background: var(--color-accent-secondary-250);
+    --color-trix-text-green-background: var(--color-success-250);
+    --color-trix-text-green-blue-background: var(--color-accent-200);
+    --color-trix-text-blue-background: var(--color-info-250);
+    --color-trix-text-violet-background: var(--color-violet-250);
+    --color-trix-text-purple-background: var(--color-purple-250);
+    --color-trix-text-gray-background: var(--color-neutral-250);
+
+	word-wrap: break-word;
+}
+
+MAIN {
+	margin: 100px auto 200px;
+	padding: 0 20px;
+	width: 100%;
+	max-width: 800px;
+	box-sizing: border-box;
+}
+
+P {
+	margin: 0.9em 0 0;
+}
+
+A {
+	color: hsl(180, 100%, 27%);
+}
+
+A[type='video']::before {
+    display: inline;
+    content: attr(href);
+}
+
+H1, H2, H3, H4 {
+	font-weight: 700;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+H1 {
+	font-size: 32px;
+	line-height: 40px;
+	margin-top: 18px;
+	margin-bottom: 22px;
+}
+
+H2, H3, H4 {
+	font-size: 1.4em;
+	line-height: 1.4em;
+	margin: 1.4em 0 0.5em;
+}
+
+H3 {
+	font-size: 1.2em;
+}
+
+H4 {
+	margin: 1.5em 0 0;
+	font-size: 1em;
+}
+
+UL {
+	padding-inline-start: 2em;
+	list-style-type: disc;
+}
+
+UL > LI {
+	padding: 0;
+	max-width: calc(100% - 1em);
+}
+
+OL {
+	padding-inline-start: 2em;
+	counter-reset: item;
+}
+
+OL > LI {
+	word-break: break-word;
+	max-width: calc(100% - 1em);
+	counter-increment: item;
+}
+
+OL > LI::marker {
+	content: counters(item, ".") ". ";
+	padding-inline-end: 0.4em;
+}
+
+LI > P {
+	margin-top: 0;
+}
+
+MARK {
+    background-color: var(--color-trix-text-yellow-background);
+    color: inherit;
+}
+
+IMG {
+	display: block;
+	margin: 0.9em;
+	max-width: calc(100% - 40px);
+	height: fit-content;
+	background-color: hsl(210, 9%, 93%);
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+IMG.left {
+	margin-right: auto;
+}
+
+IMG.right {
+	margin-left: auto;
+}
+
+IMG.center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+IMG.leftText {
+	float: left;
+	margin-right: 20px;
+}
+
+IMG.rightText {
+	float: right;
+	margin-left: 20px;
+}
+
+CODE, PRE {
+	background-color: hsl(210, 10%, 96%);
+	font-family: Courier New, Courier, monospace;
+	font-size: 85%;
+}
+
+CODE {
+	margin: 0;
+	padding: 0.2em 0.4em;
+	border-radius: 6px;
+}
+
+PRE {
+	white-space: pre-wrap;
+	margin: 1em 0;
+	padding: 1.2em;
+	border-radius: 4px;
+	tab-size: 4;
+}
+
+DIV[data-theme],
+BLOCKQUOTE {
+	margin: 0.9em 0 0.5em;
+	padding-inline-start: 1em;
+	border-inline-start: 3px solid rgba(0, 0, 0, 75%);
+}
+
+DIV[data-theme="red"] {
+    border-color: #E66773;
+    background-color: #FBE8EA;
+}
+
+DIV[data-theme="pink"] {
+    border-color: #ED6AA2;
+    background-color: #FCEBF3;
+}
+
+DIV[data-theme="orange"] {
+    border-color: #FF8E56;
+    background-color: #FEEEE6;
+}
+
+DIV[data-theme="orangeYellow"] {
+    border-color: #F7B859;
+    background-color: #FEF4E6;
+}
+
+DIV[data-theme="yellow"] {
+    border-color: #FCD640;
+    background-color: #FEF7C5;
+}
+
+DIV[data-theme="green"] {
+    border-color: #5AC180;
+    background-color: #DCF8E6;
+}
+
+DIV[data-theme="greenBlue"] {
+    border-color: #00B2B2;
+    background-color: #D1F6F6;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #6ABCFF;
+    background-color: #E8F5FF;
+}
+
+DIV[data-theme="violet"] {
+    border-color: #B4A9FA;
+    background-color: #F0EEFE;
+}
+
+DIV[data-theme="purple"] {
+    border-color: #CC92FF;
+    background-color: #F5E9FF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB2B9;
+    background-color: #ECEDEF;
+}
+
+DIV[data-theme="blue"] {
+    border-color: #42A1FFFF;
+    background-color: #D9EBFFFF;
+}
+
+DIV[data-theme="gray"] {
+    border-color: #ACB3B9FF;
+    background-color: #ECEDEFFF;
+}
+
+TABLE {
+	width: 100%;
+	table-layout: fixed;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+TABLE P {
+	margin: 0;
+}
+
+TD {
+	min-width: 35px;
+	padding: 4px 12px;
+	box-sizing: border-box;
+	border: 1px solid hsl(210, 8%, 85%);
+	background-clip: padding-box;
+	vertical-align: top;
+}
+
+TD[data-format='table-cell-highlight-red'] {
+	background-color: #ffebee;
+}
+
+TD[data-format='table-cell-highlight-yellow'] {
+	background-color: #fcf3d9;
+}
+
+TD[data-format='table-cell-highlight-green'] {
+	background-color: #ebfaeb;
+}
+
+TD[data-format='table-cell-highlight-blue'] {
+	background-color: #ebf4ff;
+}
+
+.attachment__block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 8px;
+    margin: 0.9em 0;
+}
+
+.attachment__item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.attachment__item:hover {
+    background-color: #f5f5f5;
+}
+
+.attachment__item::before {
+    content: "";
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 24px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 24"><path fill="%23C7CCD1" d="M0 1.8C0 .8.8 0 1.8 0h9.4c.4 0 .9.2 1.2.5l7 6.3c.4.4.6.9.6 1.4v14c0 1-.8 1.8-1.8 1.8H1.8c-1 0-1.8-.8-1.8-1.8V1.8Z"/><path fill="%23fff" d="m18.4 6.8-5.9-5.2c-.3-.4-1 0-1 .4v4c0 1 .8 1.9 1.8 1.9H18c.6 0 .9-.7.4-1Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.attachment__fileName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment__fileSize {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #999;
+}
+
+.knowledgeBaseEditorflatList {
+    --size-gap: 4ch;
+    position: relative;
+    display: list-item;
+    margin-left: var(--size-gap);
+}
+.knowledgeBaseEditorflatList[aria-level="2"] {
+    margin-left: calc(var(--size-gap) * 2);
+}
+.knowledgeBaseEditorflatList[aria-level="3"] {
+    margin-left: calc(var(--size-gap) * 3);
+}
+.knowledgeBaseEditorflatList[aria-level="4"] {
+    margin-left: calc(var(--size-gap) * 4);
+}
+.knowledgeBaseEditorflatList[aria-level="5"] {
+    margin-left: calc(var(--size-gap) * 5);
+}
+.knowledgeBaseEditorflatList[aria-level="6"] {
+    margin-left: calc(var(--size-gap) * 6);
+}
+.knowledgeBaseEditorflatList[aria-level="7"] {
+    margin-left: calc(var(--size-gap) * 7);
+}
+.knowledgeBaseEditorflatList[aria-level="8"] {
+    margin-left: calc(var(--size-gap) * 8);
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="2"] {
+    list-style-type: circle;
+}
+.knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="3"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="4"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="5"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="6"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="7"], .knowledgeBaseEditorflatList[data-kind="bullet"][aria-level="8"] {
+    list-style-type: square;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"],
+.knowledgeBaseEditorflatList[data-kind="check"] {
+    display: block;
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"]::before {
+    content: attr(data-ancestors) "." attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"]::before {
+    /* Empty checkbox */
+    content: "\2610";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList[data-kind="check"][aria-checked="true"]::before {
+    /* Marked checkbox */
+    content: "\2611";
+}
+.knowledgeBaseEditorflatList[data-kind="ordered"][aria-level="1"]::before {
+    content: attr(data-posinset) ".";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline-end: 0.4em;
+    transform: translateX(-100%);
+}
+.knowledgeBaseEditorflatList > P, .knowledgeBaseEditor__flatList > SPAN > P {
+    margin: 0;
+
+}
+IMG[data-type='inline'] {
+    display: inline-flex;
+    height: 1.3em;
+    width: auto;
+    margin: 0.1em;
+    vertical-align: top;
+}
+</style></head>
+	<body>
+		<main>
+		<article><div></div><h1><span>Внутренний вебинар по скриптам, серверным скриптам и ботам</span></h1><h2 level="2"><span>Скрипты</span></h2><p><span>Скрипты нужны для автоматических операций в процессе заполнения задачи пользователями. Скрипт имеет следующую структуру: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>form - нужен всегда. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>onChange - функция, которая вызывается в момент изменения поля, коды или названия которых переданы в качестве её аргументов. Если передан параметр true, то скрипт отрабатывает при открытии страницы. Если пользователь сохраняет значение, страница обновляется и все скрипты с параметром true отрабатывают</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Функция - некоторые функции существуют в двух версиях: обычной и асинхронной. Асинхронную функцию мы используем, если внутри надо сделать какой-то запрос: к реестру или справочнику. Все функции подробнее описаны далее. </span></p></div><p><span>Итого скрипт выглядит так:</span></p><p><span><code>form.Onchange(["НазваниеПоля1", "КодПоля2", ...], true).&lt;функция&gt;(&lt;параметры функции&gt;, state=&gt;{&lt;исполняемый код&gt;})</code></span></p><p><span>Скрипт имеет лимит на исполнение в 5 секунд. </span></p><h3 level="3"><span>Какими данными оперирует скрипт</span></h3><p><span>Скрипт оперирует данными, которые хранятся в параметре state. В нём есть: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>changes - массив полей, которые были переданы в onChange. Каждое поле приходит со своими атрибутами. Подробнее ниже</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>commenter - пользователь, от лица которого действуем. О нём скрипты знают: </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="1"><p><span>Имя</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="2"><p><span>Фамилию</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="3"><p><span>Локацию - из профиля</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="4"><p><span>Id организации</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="5"><p><span>Название организации</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="6"><p><span>id пользователя</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="7"><p><span>номер телефона</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="8"><p><span>остаток дней отпуска</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="2" data-ancestors="2" data-posinset="9"><p><span>роли, в которые входит</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>currentStep - номер этапа, на котором находится задача (при заполнении равно 0)</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>prev - у заполняющих функций там хранится значение заполняемых полей. У остальных бесполезно</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>taskId - номер задачи (при заполнении null).</span></p></div><p><span>Всеми этими данными можно пользоваться в теле исполняемого кода. Главное, уметь его достать. И тут надо поговорить об особенностях разных типов полей. </span></p><h3 level="3"><span>Типы полей и их особенности</span></h3><p><span>Типы полей описаны </span><span><a href="https://pyrus.com/ru/help/scripts/field-value-formats" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">здесь </a></span><span>. </span></p><h4 level="4"><span>Текст</span></h4><p><span>Основной атрибут значения - text. Единственное поле, которое вызывает все свои скрипты </span><span><strong>в процессе</strong></span><span> заполнения. То есть каждая буква - вызов. </span></p><p><span>Заполняется простой передачей строки в return:</span></p><p><span><code>return "Это простой текст"</code></span></p><h4 level="4"><span>Выбор</span></h4><p><span>Четыре атрибута значения - choice_id, choice_name, choice_ids, choice_names. Если поле является мультивыбором, то в первых двух передаётся последнее значение в списке выбранных значений. Рекомендуется всегда использовать данные из choice_names</span></p><p><span>Заполняется передачей объекта с атрибутом choice_names или choice_ids:</span></p><p><span><code>return {choice_names: ["Да", "Нет"]}</code></span><span> </span></p><h4 level="4"><span>Галочка</span></h4><p><span>Основной атрибут checked. При открытии задачи, если не заполнено имеет значение '', которое является не логической переменной, а строкой. Но JS всё равно воспринимает пустую строку как false при переводе в логический тип, так что без разницы. А вот при нажатии принимает значения true/false. </span></p><p><span>Заполняется словами checked/unchecked</span></p><p><span><code>return "checked"</code></span></p><h4 level="4"><span>Справочник</span></h4><p><span>Если поле пустое, то передаётся null, вообще нет объекта с атрибутами. Если же поле заполнено, то набор атрибутов зависит от типа поля: единственный или множественный выбор. </span></p><p><span>Если выбор единственный, то передаются атрибуты: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>item_id - внутренний номер элемента</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>columns - словарь из значений колонок выбранного элемента</span></p></div><details><summary><span>Что такое словарь и как работать с ним в JS</span></summary><div><p><span>Словарь это объект, состоящий из пар ключ-значение. В словаре не могут повторяться ключи. Обращение к значению идёт по ключу, заключенному в квадратные скобки. Например, у нас есть справочник с колонкой "Категория". В таком случае, обращаться к значению надо так (представим, что поле справочник вы поместили в переменную catalog_item): catalog_item.columns["Категория"]</span></p><p><span>Если обратиться к ключу, которого нет в словаре, то получишь undefined. </span></p></div></details><p><span>Если же выбор множественный, то добавляется атрибут values. В нём перечислены все выбранные варианты, а item_id, columns отражают значение для последнего элемента из списка. Values - это массив из объектов с атрибутами item_id, columns. </span></p><p><span>Заполнение также зависит от того, сколько вариантов можно выбрать в поле. Если выбор единственный, то заполнять можно, используя только item_id или item_name. Item_name  - значение в первой колонке элемента. </span></p><p><span><code>return {item_id: 2121212}</code></span></p><p><span><code>return {item_name: "Значение в первой колонке"}</code></span></p><p><span>Так же можно заполнять и множественное значение. Но лучше использовать values, куда передавать набор вариантов. </span></p><p><span><code>return {values: [{item_id: 212121}, {item_id: 122210}]}</code></span></p><p><span>Но если попробовать так заполнить поле с единственным выбором, то выдаст ошибку, которую можно увидеть в консоли: </span></p><p><span> </span></p><img src="./Nxt74v2BrIZ_files/Nxt74v2BrIZ_04a762ce-b8ad-4c52-8ad5-4be3238d221c.png" alt="image.png" width="524" height="21" class="knowledgeBaseEditor__imageBlock" haserror="False" size="2569"><p></p><p><span>Обратите внимание, что при изменении поля скрипт, у которого поле в onChange, вызовется два раза: при нажатие на поле и при выборе значения </span></p><h4 level="4"><span>Форма</span></h4><p><span>Передаются атрибуты:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>task_id - null, если пустое или номер выбранной задачи. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>task_ids - то же самое, только в массиве (всегда массив из одного элемента)</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>fields - массив смежных полей. Передаётся только если в этот запуск выбиралось значение в поле. Иначе пустой массив. Рекомендуется использовать только, если скрипт должен отработать в момент выбора значения в поле. Иначе используйте fetchRegister (описано далее)</span></p></div><p><span>Заполняется объектом с атрибутом task_id:</span></p><p><span><code>return {task_id: 1231}</code></span></p><p><span>При заполнении имитируется выбор пользователем, поэтому все смежные поля заполнятся в соответствии с настройками поля. </span></p><h4 level="4"><span>Число и деньги</span></h4><p><span>Основной атрибут value. Если табличное, то есть атрибут sum, представляющий из себя сумму по колонке. Заполняется передачей числа</span></p><p><span><code>return 102</code></span></p><h4 level="4"><span>Дата</span></h4><p><span>Основной атрибут date. Если его передать в new Date(), то получите объект типа </span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">Date </a></span><span>с часовым поясом пользователя. </span></p><p><span>Заполняется передачей объекта с атрибутом date и строкой со значением формата "YYYY-MM-DD"</span></p><p><span><code>return {date: "2025-02-28"}</code></span></p><p><span>Однако если у вас есть объект Date, то можно использовать метод toISOString()</span></p><p><span><code>return {date: new Date().toISOString()}</code></span></p><h4 level="4"><span>Время</span></h4><p><span>Передаётся в виде строки формата "HH:MM" в атрибуте time.  </span></p><p><span>Время в базе хранится с нулевой таймзоной и уже вам на фронте вам отображается в часовом поясе пользователя. Отсюда следует вывод, что если нужно производить какие-то вычисления в текстовые поля или сравнения с другими значениями, нужно помнить про часовые пояса. Для получения часового пояса пользователя есть специальная функция о которой далее. </span></p><p><span>Заполняется объектом с атрибутом time. Значение атрибута должно быть строкой HH:MM, но можно обрезать до H:M, если часы и минуты однозначные. Помните про часовой пояс, если в Москве заполнить 15:00, то в Лондоне будет отображаться 12:00. </span></p><p><span><code>return {time: "23:01"}</code></span></p><h4 level="4"><span>Телефон</span></h4><p><span>В атрибуте text передаётся весь номер без знаков и пробелов. Заполняется аналогично простым return </span></p><p><span><code>return "79165026989"</code></span></p><h4 level="4"><span>Эл. Почта</span></h4><p><span>Передаётся в атрибуте value. Заполняется простым return </span></p><p><span><code>return test@test.ru</code></span></p><p><span>Единственное, на что надо обращать внимание - формат записи. Сама платформа не позволит сохранить некоррректное значение, поэтому перед заполнением лучше проверить, что заносимое значение соответствует маске x@x.x, иначе пользователь окажется заперт: он же не может поправить почту вручную</span></p><h4 level="4"><span>Контакт</span></h4><p><span>Если поле пустое, то отдаётся Null, как у справочника. Если же заполнено, то передаётся: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>id пользователя</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">мобильный номер</mark></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">Название департамента</mark></span><span> - здесь передаётся не полное название департамента вместе со всеми вышестоящими отделами, а только название отдела, в котором числится человек</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">email</mark></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="5"><p><span>Имя</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="6"><p><span>Фамилия</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="7"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">Локация</mark></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="8"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">id в мессенджере </mark></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="9"><p><span>id организации</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="10"><p><span>Название организации</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="11"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">Персональный номер</mark></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="12"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">Должность</mark></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="13"><p><span>Остаток отпуска</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="14"><p><span><mark style="background-color: var(--color-trix-text-green-background)" data-format="highlight-green">Рабочий номер</mark></span></p></div><p><span>Зелёным отмечены атрибуты, которых нет у state.commenter. Таким образом, если нужно при обработке (например, валидации) записывайте значение комментирующего в отдельное поле и затем читайте свойства из него </span></p><p><span>Заполняется передачей id, email для заполнения использовать нельзя</span></p><p><span><code>return 151514</code></span></p><h4 level="4"><span>Файл</span></h4><p><span>Значение поля зависит от того, было ли оно уже заполнено на момент открытия или нет. </span></p><p><span>У поля есть два атрибута, в которых хранится информация:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>files - это файлы, которые есть сейчас в поле. То есть при его изменении оно меняется</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>values - атрибут существует только если на момент открытия задачи в поле уже были значения. По мере заполнения оно не меняется, обновления в нём вы заметите когда страница обновится. Зато по сравнению с files каждый объект из values имеет много больше характеристик. </span></p></div><p><span>При анализе files легко можно понять, какой файл новый, а какой был на момент открытия задачи: у нового id отрицательный и вообще отсутствует атрибут URL. У старого же id это положительное число, а url заполнен. </span></p><p><span>Если вы прикладываете какое-то поле в качестве новой версии уже существующего файла, то у нового файла будет непустой положительный атрибут existing_id. Важно, что инфу о предыдущей версии можно прочитать в последний раз в этот момент. После сохранения скрипт уже никак не может дотянуться до предыдущей версии, если история заполнения не дублировалась в другое поле. </span></p><p><span>Заполнить поле скриптами нельзя (и слава богу).</span></p><h4 level="4"><span>Подпись </span></h4><p><span>Такое же как и поле Файл. Единственное отличие: файл в поле всегда один. Если потом подпись меняется, это отражается как новая версия</span></p><h4 level="4"><span>Группа</span></h4><p><span>Читать значение нет смысла, оно всегда undefined. Но вот смысл заполнять поле есть: иногда группу нужно делать по умолчанию развёрнутой для одних и свёрнутой для других. </span></p><details><summary><span>Пример</span></summary><div><p><span>Например, в задаче на согласование ДС есть группа с характеристиками основного договора. Эта информация нужна бухгалтерам и юристам, но для всех остальных это просто куча лишней информации, которая занимает слишком много места на форме.</span></p></div></details><p><span>В таком случае, нужно: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Сделать группу развёрнутой по умолчанию</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Добавить на шаблон скрипт вида:</span></p></div><pre><span>form.onChange([], true).setValue("open_group", state=&gt;{
+if (!state.commenter.role_ids.includes(1411) || state.current_step != 3 )return null;
+});</span></pre><p><span>В IF надо прописать, какие условия выполняются, чтобы группа свернулась</span></p><h4 level="4"><span>Таблица и поля в таблице</span></h4><p><span>В самом поле таблицы не хранятся колонки этой таблицы. В атрибуте value хранится массив из объектов с атрибутами: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Id - id ряда. Из-за удалений строк они не всегда идут подряд</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>GuId - бесполезный для нам атрибут</span></p></div><p><span>Соответственно, если в таблице нет рядов, то массив будет пустым.</span></p><p><span>Если в onChange находится табличное поле, то скрипт запустится для каждой строки отдельно. Если в onChange находятся колонки двух таблиц, то скрипт выполнится для каждой пары строк из таблицы. То если мы берём колонку А из Таблицы 1 (3 строки) и колонку Б из Таблицы 2 (5 строк), то скрипт выполнится 15 раз. Важно: все скрипты выполняются одновременно, а не последовательно. </span></p><p><span>Табличные поля мало отличаются от внетабличных. Все основные атрибуты остаются. Там передаётся значение, которое находится в ряду. Однако добавляется атрибут rows. В нём содержатся значения во всех рядах таблицы. Также добавляется rowId, по нему можно определить номер строки, для которой выполняется скрипт. </span></p><details><summary><span>Зачем это нужно с примером</span></summary><div><p><span>Например, нам надо вывести какой-то лог из таблицы, основанный на данных в ней. Чтобы ускорить скрипт и сэкономить ресурсы имеет смысл выполнять скрипт только для первой строки, а для всех остальных прерываться. Тогда при помощи rowId и Id рядов в значении таблицы определите в какой строке вы сейчас находитесь и прерывайтесь для всех, кроме первой. Имейте в виду, что у первой строки rowID может быть и не равный 0, если строки удалялись:</span></p><p><span>Пример:</span></p><pre><span>form.onChange(['Таблица', 'Текст таблица'], true).validate("Текст таблица", state=&gt; {
+    const [table, text_table] = state.changes;
+    let index = table.value &amp;&amp; text_table.rows ? table.value.findIndex(x=&gt;x.Id == text_table.rowId) : undefined;
+    if (index === undefined || index != 0) return;
+    return {errorMessage: "Плохо"};
+});</span></pre></div></details><p><span>Обратите внимание, что в rows всегда на один элемент больше, чем в таблице. Это "фантомная" следующая строка, которую пользователь ещё не добавил. </span></p><p><span>Также надо учитывать, что есть одно поле, которое может сломать все алгоритмы: это Справочник. Если в ряду он пустой, то он передаётся в виде объекта null, то есть вообще без атрибутов. Поэтому всегда проверяйте его на существование, если он у вас есть в onChange. </span></p><p><span>Добавлять, удалять, менять порядок рядов в таблице нельзя скриптом. </span></p><p><span>Колонки можно заполнять только, если в onChange передать другие колонки этой таблицы. В таком случае заполнится колонка, которая в том же ряду. Если же попробовать заполнить колонку в таблицы без передачи OnChange колонки из таблицы, то заполнится только первая строка (причём она добавится, если её до этого не было). Все остальные строки в этой колонке останутся пустыми. </span></p><details><summary><span>Пример работы скриптов для таблицы</span></summary><div><p><span>Допустим, у нас есть таблица с двумя колонками:</span><br><span>Колонка А и Колонка Б. Есть скрипт</span></p><pre><span>form.onChange(["Колонка А"], true).setValue("Колонка Б", state=&gt;{
+    return state.changes[0]?.value ? state.changes[0].value*1.2 : null;
+});</span></pre><p><span>В таблице два ряда. В таком случае при открытии страницы или при внесении изменений в одну из строк скрипт запустится два раза и для заполнит две ячейки во втором столбце, взяв за value значение в первой колонке из каждого ряда.</span></p></div></details><h4 level="4"><span>Примечание</span></h4><p><span>Не имеет значения, нельзя заполнить. </span></p><p><span>Но можно воздействовать на него скриптами валидации или видимости. Этому полю нельзя присвоить код. Но к нему можно обратиться по названию: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Если это просто текст, то в качестве аргумента надо передать весь текст</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Если есть Кнопка, то надо передать заголовок кнопки</span></p></div><h4 level="4"><span>Открыта/Завершена</span></h4><p><span>Передаётся объект с атрибутом value. В открытой задаче имеет значение false. Заполнять нельзя. </span></p><h4 level="4"><span>Автор</span></h4><p><span>В отличие поля типа Контакт здесь value это не объект с кучей данных, а только id. Поэтому не рекомендуется использование этого типа, лучше использовать поле Контакт со значением по умолчанию. Заполнять нельзя.</span></p><h4 level="4"><span>Дата создания</span></h4><p><span>Похоже на поле типа Дата, но вместо атрибута date атрибут value и нельзя заполнять. </span></p><h4 level="4"><span>Срок</span></h4><p><span>Передаётся объект с атрибутами value и duration_minutes. Оба параметра передаются вне зависимости от выбранного типа срока. В value передаётся объект Date в часовом поясе заполняющего. Если тип срока "Дата", то время в будет равно временем заполнения. Если интервал не настроен, то duration_minutes будет 0. </span></p><p><span>Заполняется оно при помощи передачи атрибута.... date. Рекомендация: лучше всегда создайте переменную типа Date, поместите туда желаемое значение и затем передайте Date.toISOString()</span></p><p><span><code>return {date: new Date().toISOString()}</code></span></p><p><span>Если срок с интервалом, то в передаваемый объект также нужно отдать duration_minutes. </span></p><p><span> Также можно передавать hours_from_create, но лучше использовать значение по умолчанию в настройках поле</span></p><h4 level="4"><span>Этап</span></h4><p><span>Лучше используйте state.currentStep.</span></p><h3 level="3"><span>Функции скриптов</span></h3><p><span>Кроме чтения полей на них можно воздействовать при помощи скриптов. У onChange есть несколько методов, основные аспекты которых описаны далее</span></p><h4 level="4"><span>setValue</span></h4><p><span>Функция заполнения одного поля. В качестве аргумента принимает строку: название или код поля. Правила заполнения для каждого поля подробно описаны выше. Если возвращать null, то в большинстве случаев сделает поле без значения. Чтобы прерваться надо написать пустой return</span></p><p><span><code>if (need_to_stop) return;</code></span></p><p><span>Блокирует поле для ручного заполнения. </span></p><h4 level="4"><span>setValues</span></h4><p><span>Очень похож на setValue, но в качестве аргумента принимает массив строк, которые представляют из себя названия или коды полей. Если написать </span><span><code>return null </code></span><span> , скрипт прервётся, но целевые значения не обнулятся. Если нужно обнулять значения, то надо передавать массив из null. </span></p><p><span>Блокирует поле для ручного заполнения</span></p><h4 level="4"><span>setAssignee</span></h4><p><span>Устанавливает ответственного в задаче. Не имеет аргументов, в return нужно передать id пользователя. </span></p><h4 level="4"><span>setFilter</span></h4><p><span>Ограничивает варианты выбора в поле. В качестве аргумента принимает название или код полей типа Справочник и Форма. Возвращаемые значения зависят от типа поля. </span></p><p><span>Для справочников нужно возвращать массив из строк, значений первых колонок. </span></p><p><span>Для полей типа Форма нужно возвращать список фильтров вида:</span></p><pre><span>{
+	fieldCode: "Название поля",
+	value: "Значение поля"
+}</span></pre><p><span>Вместо fieldCode можно передавать fieldName. Value зависит от типа поля, по которому фильтруем. </span></p><h4 level="4"><span>setStatus</span></h4><p><span>Устанавливает статус в задаче, аргументов не имеет. Так как поле Статус это на самом деле поле типа Выбор, то передаётся значение </span><span><code>{choice_name: "Нужный статус"}</code></span></p><p><span>В отличие от установки статуса самим пользователем, он меняется не мгновенно, а ждёт сохранения пользователем. Имейте это в виду при разработке дизайна процесса. </span></p><h4 level="4"><span>setVisibility</span></h4><p><span>Принимает в качестве аргументов массив из названий или кодов полей. Если возвращаете true, показывает поле, если false скрывает. </span></p><p><span><strong>Не работает на мобильниках, поэтому не рекомендуется использовать эти скрипты. Лучше использовать связку галочек, скриптов setValue и штатных условий видимости</strong></span></p><h4 level="4"><span><strong>validate</strong></span></h4><p><span>Запрещает сохранение значения, выводит предупреждающее сообщение. В качестве аргумента принимает название/код поля. Если вернуть null, то предупреждения и блокировки не будет. Чтобы выводить сообщение нужно передавать </span><span><code>{errorMessage: "Предупреждение"}</code></span></p><p><span>Если по процессу не требуется блокировать поле, а только вывести предупреждение, то в дополнение к errorMessage надо передать аргументы: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>canSave - можно сохранять, но всё ещё нельзя утвердить</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>canApprove - можно утвердить </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>canReject - можно поставить Против</span></p></div><p><span>Если не передавать их результате, от все три считаются false</span></p><h4 level="4"><span>Асинхронные версии</span></h4><p><span>Некоторые из функций выше имеют асинхронную версию. Такие версии нужно использовать, если внутри функции используется запрос (например, к справочнику или реестру). В таком случае запись должна быть такая:</span></p><pre><span>form.onChange([], true).setValueAsync("Поле", async state=&gt;{return null})</span></pre><p><span>Не забывайте писать async перед state, иначе скрипт не отработает. </span></p><h3 level="3"><span>Другие функции и хинты в скриптах</span></h3><p><span>Кроме метода onChange у объекта form есть несколько других методов, которые могут оказаться полезными</span></p><h4 level="4"><span>fetchRegister и fetchSelfRegister</span></h4><p><span>Это функции запроса реестров. Отличие в том, что у fetchregister первым аргументом идёт номер формы, у fetchSelfRegister сразу идут следующие аргументы:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>Фильтры. Пишется как f=&gt;f.fieldEquals. Вместо fieldEquals может быть fieldGreaterThen или fieldLessThen. В него передаются два аргумента: название/код поля и значение. Значение передаётся в формате, как при заполнении поля скриптами setValue или setValues. Если нужно несколько фильтров, то они записываются последовательно. Например, </span><span><code>f=&gt;f.fieldLessThen("number_field", 1221).fieldEquals("date_field", {date: new Date().toISOString()}</code></span><span>Если же требуется взять все задачи, то нужно написать </span><span><code>f=&gt;null </code></span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>Массив полей - по умолчанию возвращаются просто задачи, без полей. Если нужны поля, то их надо перечислить в этом массиве. Таблицы и табличные поля таким образом получить нельзя. </span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="3"><p><span>Опции - здесь можно указать нужны ли только архивные задачи, только активные или указать конкретные задачи: activeOnly, archicedOnly, taskIds</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="4"><p><span>В taskIds  нужно передать номера задач </span></p></div><p><span>Это функция по умолчанию возвращает Promise. Поэтому запрос реестра нужно выполнять в асинхронной версии скрипта и не забыть поставить await перед запросом:</span></p><pre><span>form.onChange([], true).setValueAsync("Типы заявок", async state=&gt;{
+    let tasks = await form.fetchSelfRegister(f=&gt;null, ["Поля"], {taskIds: [1515151]})
+    return {values: [{item_name: "Пожелания"}]};
+});</span></pre><p><span>В ответ возвращается объект с атрибутом tasks. То есть для того, чтобы прочитать задачи из примера в цикл надо передать tasks.tasks. Если задач нет, то вернётся пустой массив. Каждая задача имеет атрибуты:</span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>task_id</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>fields </span></p></div><p><span>В fields хранятся поля, которые переданы в массиве запроса. Значение поля такое же как если его получать через onChange, кроме пустых значений. Если поле пустое, то все типы полей передадутся как null. </span></p><p><span><mark style="background-color: var(--color-trix-text-red-background)" data-format="highlight-red"><strong>Обратите внимание.</strong></mark></span><span><strong> Пользователю вернутся только задачи, к которым у него есть доступ. </strong></span></p><h4 level="4"><span><strong>getCatalog</strong></span></h4><p><span>Это запрос аналогичный fetchRegister. Вместо большого количества аргументов, надо передать только id или название справочника. Лучше всегда передавать id. Результат переносится в отдельную переменную: </span></p><pre><span>let catalogValues = null;
+await form.getCatalog(23232).then(items=&gt;catalogValues = items)</span></pre><p><span>По умолчанию пользователь имеет доступ к справочникам, которые присутствуют на шаблоне формы или в организации пользователя. </span></p><details><summary><span>Как неавторизованному пользователю получить доступ к справочнику</span></summary><div><p><span>Часто клиенты сталкиваются с такой проблемой: у них есть внутренний справочник, который никак не используется пользователями, но хранит какие-то опорные значения для расчётов или за счёт значений в нём происходит валидация полей или фильтрация других справочников. И они добавляют скрипт, который загружает этот справочник и проводит какие-то манипуляции. Но на веб-форме этот скрипт перестаёт работать у пользователей, но продолжает работать у самого пользователя, даже на веб-форме. Почему?</span></p><p><span>Дело в том, что доступ пользователя к справочнику регулируется его причастностью к организации. Если же форму заполняет внешний пользователь, без авторизации, то ему даются права на загрузку только тех справочников, для которых есть поле на шаблоне формы в разделе "Ввод". Поэтому в таких случаях стоит добавить поле на шаблон формы, ссылающееся на этот справочник и сделать условие видимости Роль = Пустая роль. В этой пустой роли не должно быть пользователей. </span></p></div></details><p><span>В итоге получаете массив элементов справочника, каждый представляет из себя объект с атрибутами item_id и columns. </span></p><h4 level="4"><span>fetchRoles</span></h4><p><span>Запрос для получения ролей организации. Не принимает никаких аргументов, также требует await перед собой. Возвращает массив ролей организации, представляющих из себя объекты: </span></p><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="1"><p><span>role_id - id роли</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="bullet" aria-level="1" data-posinset="2"><p><span>member_ids - массив из id пользователей, входящих в роль</span></p></div><h4 level="4"><span>getDateWithTimezoneOffset</span></h4><p><span>При помощи следующего алгоритма, можно узнать часовой пояс пользователя:</span></p><pre><span>(new Date().getTime() - form.getDateWithTimezoneOffset(now.toISOString()).getTime())/(1000*60*60) </span></pre><p><span>Результат - часы, на которые отличается время пользователя от лондонского. Это можно использовать, когда переносите даты или сроки в текстовые или другие поля.</span></p><h4 level="4"><span>console.log</span></h4><p><span>Очень полезная функция. Выводит в консоль браузера (F12) промежуточные значения скрипта. Если падает скрипт или непонятно, почему он выдаёт такой результат, вставь в код </span><span><code>console.log(&lt;Интересующие данные&gt;)</code></span><span>, куда передай нужную тебе переменную и посмотри промежуточное значение. Также часто бывает, что скрипт просто как будто ничего не делает: ты тестируешь изменение поля, но никакой ошибки нет, но и результата нет. Расставь по коду метки, например </span><span><code>console.log("Теперь проверяем значение")</code></span><span> и </span><span><code>console.log("Дошли до заполнения значения")</code></span><span>, и посмотри все ли сообщения отобразились. </span></p><p><span><em>Только надо быть осторожным: если выражение в console.log приводит к ошибке (например, берётся атрибут пустого объекта), то скрипт упадёт на этом моменте, а в консоли не появится содержание лога.</em></span></p><p><span>В console.log можно передать сколько угодно показаний. Очень полезно, если ты меняешь значения одного объекта и хочешь вести лог этого</span></p><pre><span>console.log("До изменений", variable)
+variable = coef*1.2
+console.log("После изменений", variable)</span></pre><h4 level="4"><span>Делаем код короче</span></h4><p><span>В JS есть возможности записать длинные куски кода в одну строку. Например, нам не надо последовательно проверять существование атрибутов в сложных объектах. Это можно делать при помощи знака вопроса после каждого уровня объекта</span></p><p><span>Вместо</span></p><p><span><code>if (object &amp;&amp; object.level1 &amp;&amp; object.level1.level2)</code></span></p><p><span>Можно написать </span></p><p><span><code>if (object?.level1?.level2)</code></span></p><p><span>А  if/else можно вместить в одну строку:</span></p><p><span>Вместо </span></p><pre><span>if (level &gt; 10) return 'High'
+else return 'Low'</span></pre><p><span>Можно написать</span></p><p><span><code>return level &gt; 10 ? 'High' : 'Low' </code></span></p><h4 level="4"><span>Внеблоковые переменные</span></h4><p><span>Иногда некоторые переменные лучше хранить не внутри функций, а за границами скриптов. Таким образом можно хранить константы или другие значения, которые должны браться единожды за время посещения пользователем страницы. Например, список элементов справочника. Также это позволяет совершить какие-то действия, которые должны быть выполнены только в момент открытия пользователем задачи. Например, сохранить значение поля при открытии. Пример: </span></p><pre><span>let helpVar = "БЛОКИРУЮЩЕЕ СООБЩЕНИЕBLOCK MESSAGE123456789";
+const roles_allowed = [12332, 32325, 6565656, 1204371];
+form.onChange(["input"], true).validate("input", state =&gt; {
+    const [input] = state.changes;
+    if (helpVar == "БЛОКИРУЮЩЕЕ СООБЩЕНИЕBLOCK MESSAGE123456789")
+        helpVar = input.text;    
+	if ((input.text == helpVar || (!Boolean(helpVar) &amp;&amp; !Boolean(input.text)))|| state.commenter.role_ids.some(role =&gt; roles_allowed.includes(role)))
+        return null;    
+	return {
+        errorMessage: 'Вы не входите в список разрешённых ролей.'
+    };
+});</span></pre><p><span>Этот скрипт блокирует изменение поля пользователем, который не входит в роль. Но если бы мы написали этот скрипт без использования внеблоковой переменной, то после изменения поля или простого клика на поле, пользователю пришлось бы перезагружать страницу, теряя данные в других полях. Однако, в таком формате пользователь может просто вернуть значение после своих изменений и продолжить работу в задаче</span></p><h4 level="4"><span>Оптимизация запросов</span></h4><p><span>Иногда в скриптах приходится использовать большие справочники по несколько десятков тысяч элементов. Или запросы к большим реестрам форм, в которых нет возможности сделать фильтрацию. И если используется табличное поле или просто несколько скриптов используют одни и те же данные, возникает проблема TimeOut, когда скрипт просто не успевает отработать за отведённое время. В таком случае, есть возможность его "ускорить", записав запрос во внеблоковую переменную. </span></p><pre><span>let catalog_promise = form.getCatalog(544151);
+form.onChange([], true).setValueAsync("Типы заявок", async state=&gt;{
+    let catalog_items = null;
+    await catalog_promise.then(items=&gt;catalog_items = items)
+    return {values: [{item_name: "Пожелания"}]};
+});
+form.onChange([], true).setValueAsync("Вопросы", async state=&gt;{
+    let catalog_items = null;
+    await catalog_promise.then(items=&gt;catalog_items = items)
+    return {values: [{item_name: "Пожелания"}]};
+});</span></pre><p><span>В приведённом выше примере каталог 544151 нам нужен в двух скриптах. И если бы мы просто в каждом из них написали запрос </span><span><code>await form.getCatalog(544151).then(items=&gt;catalog_items = items) </code></span><span>, скрипты отправили бы два независимых запроса на в базу и оба ожидали бы отдельно. Вместо этого, в такой конструкции запрос отправляется один раз. А в обоих скриптах просто ожидается результат этого запроса. </span></p><h2 level="2"><span>API</span></h2><p><span>Возможности нашего апи можно описать так: с его помощью можно имитировать почти любое действие пользователя, исключение - настройка форм. </span></p><p><span>Апи позволяет читать и редактировать задачи, анализировать реестры, управлять пользователями, ролями, ставить напоминания и так далее. Подробно про возможности можно прочитать в справке: </span><span><a href="https://pyrus.com/ru/help/api" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">https://pyrus.com/ru/help/api</a></span></p><p><span>Здесь же мы рассмотрим только основные моменты, которые неочевидны из справки</span></p><h3 level="3"><span>Особенности АПИ</span></h3><h4 level="4"><span>Права бота</span></h4><p><span>Бот это такой же пользователь, поэтому у него свой пул прав. Его возможности ограничены возможностями его профиля, ему нужно выдавать доступы к формам, общеорганизационные права, права на выгрузку реестров. </span></p><h4 level="4"><span>Реестры без комментариев </span></h4><p><span>При загрузке реестра вы получаете массив из элементов, которые представляют из себя задачи по форме. Но в этих задачах не будет части информации, такой как дата создания и, что самое важное, комментариев. Для получения комментариев нужно делать отдельный запрос к каждой задаче. </span></p><h4 level="4"><span>Таблицы</span></h4><p><span>Значение таблиц это массив рядов. У каждого ряда есть атрибут cells. Только в этом массиве приходят только заполненные ячейки. Это исправляется нашими шаблонными ботами, но если не использовать их или писать на другом языке, об этом нужно помнить. Также, если ряд пустой, то cells приходит в виде пустого объекта, а не массива без элементов. </span></p><h4 level="4"><span>Файлы</span></h4><p><span>Работа с файлами также требует дополнительной осторожности. Для помещения файла куда угодно, его сначала надо загрузить посредством метода </span><span><a href="https://pyrus.com/ru/help/api/files#uploadfile" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">/files/upload</a></span><span>. В ответе придёт guid загруженного файла. И уже этот guid передаётся в комментарии для приложения файла. </span></p><p><span>Но этот guid можно использовать только один раз. Поэтому если один файл надо поместить в два места, то следует использовать следующий алгоритм:</span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-start="1" data-posinset="1"><p><span>Сделать запрос на загрузку файла и получить guid</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Использовать этот guid в одном месте, получить ответ и найти ID приложенного файла или его URL</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="3"><p><span>Использовать его для добавления файла в уже произвольное количество мест</span></p></div><h4 level="4"><span>Справочники</span></h4><p><span>Здесь надо помнить два аспекта: </span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-start="1" data-posinset="1"><p><span>Если попробуете сэкономить и передать только часть данных, остальная часть удалится. Например, непереданные элементы (для обновления конкретных элементов используйте отдельный </span><span><a href="https://pyrus.com/ru/help/api/catalogs#diffcatalog" target="_blank" rel="noopener noreferrer nofollow" class="knowledgeBaseEditor__link">метод </a></span><span>) будут удалены, если используется метод полного обновления. Аналогично с колонками справочника</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Изменение первой колонки отличается от таковой в веб-интерфейсе. В вебе можно изменить значение первой колонки справочника без изменения item_id элемента. При изменении через апи старый элемент будет удалён, а новый добавлен. </span></p></div><h4 level="4"><span>Манипуляции с сотрудниками</span></h4><p><span>Вы можете почти заменить HR ботов в части ведения сотрудников в Pyrus. У пользователя можно изменить все его характеристики, добавить его в роль, даже выдать доп права к формам. Единственное, что сделать не получится: отключить пользователя, только заблокировать</span></p><h4 level="4"><span>Комментарии после закрытия</span></h4><p><span>Помните, что теперь при комментировании закрытой задачи она не переоткрывается. Поэтому, если хотите чтобы переоткрылась, добавьте параметр action=reopened</span></p><h3 level="3"><span>Хинты в апи</span></h3><h4 level="4"><span>Пользуйтесь шаблонными ботами</span></h4><p><span>У нас есть шаблонные боты для Python и TypeScript. Используйте их для адресации к полям по кодам, более удобному прочтению комментариев, облегчённой работе с таблицами. </span></p><h4 level="4"><span>Как строить отчётность</span></h4><p><span>Зачастую для отчётности нам приходится использовать информацию из комментариев для расчётов таких показателей, как среднее время ответа, количество изменений полей, скорость прохождения этапов и тд. Как уже было сказано, реестры приходят без комментариев и для их получения приходится делать отдельные запросы к задачам. Но это радикально снижает скорость работы боты. Поэтому при дизайне процесса рекомендуется делать следующее:</span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-start="1" data-posinset="1"><p><span>При закрытии задачи поставить бота, который подготовит данные и поместит их в отдельные поля. Комментирование после закрытия происходит без переоткрытия, поэтому здесь беспокоиться на стоит. Если же нужно скрывать от пользователей полученные данные (только убедитесь, что действительно нужно), то эти данные можно помещать в отдельный реестр. Правда, не забудьте добавить алгоритм для занесения повторных данных при переоткрытии, чтобы не создать слишком много дублей</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>При построении отчёта при загрузке реестра вся нужная информация будет уже в полях, а не в комментариях и дополнительных запросов не понадобится. </span></p></div><h4 level="4"><span>Получение реестров по частям</span></h4><p><span>Ограничение на получение реестра - 20 000 задач. Иногда придётся оперировать с реестром большей длины. Есть несколько способов это сделать: </span></p><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-start="1" data-posinset="1"><p><span>Загрузить реестр задач в файл Excel при помощи Sync. Тогда бот будет работать не с задачами, а с этим файлом без ограничений</span></p></div><div class="knowledgeBaseEditorflatList" data-kind="ordered" aria-level="1" data-posinset="2"><p><span>Сделать несколько запросов к реестру. Пример на Python: </span></p></div><pre><span>    def get_full_registry(self, form, form_register_request=None):
+        full_registry = []
+        last_task_id = 0
+        try_cnt = 0
+        while last_task_id is not None and try_cnt &lt; 10:
+            try:
+                if not form_register_request:
+                    form_register_request = FormRegisterRequest()
+                form_register_request.__setattr__('sort', 'id')
+                form_register_request.__setattr__('item_count', '20000')
+                if last_task_id &gt; 0:
+                    form_register_request.__setattr__('id', f'gt{last_task_id}')
+                last_segment = self.bot_client.get_registry(form.id, form_register_request).tasks or []
+                last_task_id = None
+                if last_segment and len(last_segment) == 20000:
+                    last_task_id = last_segment[-1].id
+                full_registry.extend(last_segment)
+            except Exception:
+                try_cnt += 1
+
+        return full_registry
+</span></pre><h4 level="4"><span>Массовые изменения через апи</span></h4><p><span>Иногда нам надо загрузить исторические данные в уже существующие задачи. Удобнее всего делать это через апи, так как здесь может помочь ChatGPT, если нужно загрузить информацию из Excel-файла. В таком случае просто напишите нужный код в PyCharm и запустите его. Не забудьте при комментировании задач указать skip_notification -  в таком случае у пользователей не всплывут оповещения. </span></p><p></p></article></main>
+	
+</body></html>
