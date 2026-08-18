@@ -1,0 +1,32 @@
+version: 2
+roles:
+  - id: human-architect
+    can_merge: true
+    primary_gate: product-and-security-approval
+  - id: ai-cto
+    reports_to: human-architect
+    can_merge: false
+    primary_gate: synthesis
+  - id: chief-architect
+    reports_to: ai-cto
+    can_approve_architecture: true
+  - id: python-backend-lead
+    reports_to: ai-cto
+  - id: pyrus-integrations-lead
+    reports_to: chief-architect
+  - id: qa-lead
+    reports_to: ai-cto
+  - id: security-agent
+    reports_to: ai-cto
+  - id: code-quality-agent
+    reports_to: chief-architect
+  - id: documentation-agent
+    reports_to: chief-architect
+  - id: devops-lead
+    reports_to: ai-cto
+
+## Assignment rules
+- Every task has one primary executor and at least one independent reviewer.
+- The Pyrus Integrations Lead owns the Pyrus API contracts and guarantees 1:1 mapping with the old Railway MCP.
+- The AI CTO owns orchestration, not product decisions reserved for the Human Architect.
+- Agents use Antigravity tools; role and gate are strictly enforced through handoffs.

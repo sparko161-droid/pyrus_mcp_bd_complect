@@ -1,0 +1,134 @@
+version: 1
+tasks:
+  - id: P0-000
+    phase: 0
+    title: "Project Setup & Environment"
+    primary: "python-backend-lead"
+    status: "IN_PROGRESS"
+    deps: []
+    reviewer: "chief-architect"
+    gate_owners:
+      - "qa-lead"
+      - "security-agent"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-001
+    phase: 1
+    title: "Architecture & ADRs"
+    primary: "chief-architect"
+    status: "PLANNED"
+    deps: ["P0-000"]
+    reviewer: "ai-cto"
+    gate_owners:
+      - "security-agent"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-002
+    phase: 2
+    title: "Core HTTP Client Layer (client.py)"
+    primary: "python-backend-lead"
+    status: "PLANNED"
+    deps: ["P0-001"]
+    reviewer: "chief-architect"
+    gate_owners:
+      - "qa-lead"
+      - "security-agent"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-003
+    phase: 2
+    title: "Pydantic Domain Models"
+    primary: "pyrus-integrations-lead"
+    status: "PLANNED"
+    deps: ["P0-002"]
+    reviewer: "chief-architect"
+    gate_owners:
+      - "qa-lead"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-004
+    phase: 3
+    title: "Read-only Basic Tools (profile, inbox)"
+    primary: "pyrus-integrations-lead"
+    status: "PLANNED"
+    deps: ["P0-003"]
+    reviewer: "python-backend-lead"
+    gate_owners:
+      - "qa-lead"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-005
+    phase: 3
+    title: "Form, Member, & Catalog Tools"
+    primary: "pyrus-integrations-lead"
+    status: "PLANNED"
+    deps: ["P0-004"]
+    reviewer: "python-backend-lead"
+    gate_owners:
+      - "qa-lead"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-006
+    phase: 3
+    title: "Task Tools (17 tools including get_registry)"
+    primary: "pyrus-integrations-lead"
+    status: "PLANNED"
+    deps: ["P0-005"]
+    reviewer: "chief-architect"
+    gate_owners:
+      - "qa-lead"
+      - "security-agent"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-007
+    phase: 4
+    title: "New Features: Pagination, Batch Ops, SQLite Cache"
+    primary: "python-backend-lead"
+    status: "PLANNED"
+    deps: ["P0-006"]
+    reviewer: "chief-architect"
+    gate_owners:
+      - "qa-lead"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-008
+    phase: 5
+    title: "QA, Sandbox Tests & Acceptance"
+    primary: "qa-lead"
+    status: "PLANNED"
+    deps: ["P0-007"]
+    reviewer: "ai-cto"
+    gate_owners:
+      - "human-architect"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
+
+  - id: P0-009
+    phase: 6
+    title: "Docs & Docker Deploy"
+    primary: "devops-lead"
+    status: "PLANNED"
+    deps: ["P0-008"]
+    reviewer: "chief-architect"
+    gate_owners:
+      - "qa-lead"
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
