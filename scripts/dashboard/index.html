@@ -743,15 +743,48 @@
 
     let wavesHTML = "";
     for (const w of REGISTRY.waves) {
+      // Derive wave gate status from its phases' REV tasks
+      const waveRevTasks = w.phases.flatMap(p => REGISTRY.tasks.filter(t => t.phase === p && t.id.startsWith("REV-")));
+      let waveGate;
+      if (waveRevTasks.length === 0) {
+        waveGate = w.gate_status || "PENDING";
+      } else if (waveRevTasks.every(t => t.status === "DONE")) {
+        waveGate = "APPROVED";
+      } else if (waveRevTasks.some(t => t.status === "DONE")) {
+        waveGate = "IN_PROGRESS";
+      } else {
+        waveGate = "PENDING";
+      }
+      const waveBadgeColor = waveGate === "APPROVED" ? "var(--c-done-fg)" : waveGate === "IN_PROGRESS" ? "var(--c-review-fg)" : "var(--ink-faint)";
       wavesHTML += `<div style="border: 1px solid var(--line); border-radius: 8px; margin-bottom: 12px; padding: 12px; background: var(--surface);">`;
-      wavesHTML += `<h3 style="margin:0 0 8px; font-family:'Martian Mono', monospace;">${w.id}: ${w.name} <span class="badge">${w.gate_status}</span></h3>`;
+      wavesHTML += `<h3 style="margin:0 0 8px; font-family:'Martian Mono', monospace;">${w.id}: ${w.name} <span class="badge" style="color:${waveBadgeColor};">${waveGate}</span></h3>`;
       
       const phaseDetails = w.phases.map(p => {
         const ph = phasesInfo.get(p);
         const pTasks = REGISTRY.tasks.filter(t => t.phase === p);
         const revTask = pTasks.find(t => t.id.startsWith("REV-"));
-        let revState = revTask ? revTask.status : "NO_GATE";
-        let color = revState === "DONE" ? "var(--c-done-fg)" : (revState === "PLANNED" ? "var(--ink-faint)" : "var(--c-review-fg)");
+        
+        // Derive gate status: DONE REV = APPROVED, anything else = its status, no REV = NO_GATE
+        let revState;
+        if (!revTask) {
+          revState = "NO_GATE";
+        } else if (revTask.status === "DONE") {
+          revState = "APPROVED";
+        } else {
+          revState = revTask.status; // PLANNED, READY, IN_PROGRESS, etc.
+        }
+
+        // Color scheme
+        let color;
+        if (revState === "APPROVED") {
+          color = "var(--c-done-fg)";
+        } else if (revState === "NO_GATE") {
+          color = "var(--ink-faint)";
+        } else if (revState === "PLANNED") {
+          color = "var(--ink-faint)";
+        } else {
+          color = "var(--c-review-fg)"; // READY, IN_PROGRESS
+        }
         
         const onClick = revTask ? `onclick="window.openDetail('${revTask.id}')"` : "";
         const hoverCss = revTask ? `onmouseover="this.style.background='var(--line-soft)'" onmouseout="this.style.background='transparent'"` : "";
