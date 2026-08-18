@@ -7,6 +7,46 @@ rules:
   evidence: DONE requires code/docs/tests/evidence links appropriate to the task.
   phase_exit: A phase closes only when its exit criteria are green and no unaccepted P0/P1 blocker remains.
   phase_review: Every phase must conclude with a comprehensive review of all deliverables for ecosystem coherence and structure.
+waves:
+  - id: W1
+    name: Foundation & Threat Modeling
+    phases:
+      - 0
+      - 1
+      - 2
+    status: IN_PROGRESS
+    gate_status: PENDING
+  - id: W2
+    name: Core Protocol & Parity
+    phases:
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+    status: PLANNED
+    gate_status: PENDING
+  - id: W3
+    name: Advanced Features & Production
+    phases:
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+    status: PLANNED
+    gate_status: PENDING
+  - id: W4
+    name: Knowledge Base & Ecosystem
+    phases:
+      - 16
+      - 17
+      - 18
+    status: PLANNED
+    gate_status: PENDING
 phases:
   - id: 0
     name: contract-recovery
@@ -1505,49 +1545,3 @@ tasks:
     deps:
       - FUT-001
     status: PLANNED
-blockers:
-  - id: BLK-001
-    priority: P0
-    title: Legacy 1:1 MCP contract artefacts are missing from repository
-    owner: pyrus-integrations-lead
-    blocks:
-      - MCP-006
-      - MCP-077
-      - MCP-088
-      - MCP-090
-    unblock: Recover exact legacy tool/schema/fixture/quirk evidence.
-    status: OPEN
-  - id: BLK-002
-    priority: P0
-    title: Legacy tool count is not reproducible from current visible plan
-    owner: pyrus-integrations-lead
-    blocks:
-      - MCP-006
-    unblock: Reconcile exact tool count from legacy evidence; current plan summary must not be treated as authoritative.
-    status: OPEN
-  - id: BLK-003
-    priority: P0
-    title: Single SERVER_AUTH_TOKEN is not a production multi-user authorization model
-    owner: identity-security-lead
-    blocks:
-      - MCP-036
-      - MCP-047
-      - MCP-092
-    unblock: Approve and implement MCP/OAuth-compatible identity, token, scope and tenant model.
-    status: OPEN
-  - id: BLK-004
-    priority: P1
-    title: Webhook subscription capability must be verified before register_webhook is promised
-    owner: pyrus-integrations-lead
-    blocks:
-      - MCP-108
-    unblock: Complete MCP-008 and record the actual Pyrus-supported configuration path.
-    status: OPEN
-  - id: BLK-005
-    priority: P1
-    title: SQLite cannot be the durable production store for a public multi-user service
-    owner: data-engineer
-    blocks:
-      - MCP-151
-    unblock: External PostgreSQL persistence + recovery evidence complete.
-    status: OPEN

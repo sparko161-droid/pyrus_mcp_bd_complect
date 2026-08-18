@@ -376,20 +376,43 @@
     <div class="meta-strip" id="meta-strip"></div>
   </header>
 
-  <section class="phases-overview" id="phases-overview" aria-label="Обзор фаз"></section>
-
-  <div class="controls">
-    <div class="chipset" id="status-filters" role="group" aria-label="Фильтр по статусу"></div>
-    <select id="role-filter" aria-label="Фильтр по роли">
-      <option value="">Все роли</option>
-    </select>
-    <input id="search" type="search" placeholder="Поиск: ID или текст задачи…" aria-label="Поиск задач" />
-    <div class="spacer"></div>
-    <button id="btn-rules" type="button" class="chip" style="background: var(--surface-2); font-weight:bold;">⚖️ Правила (Rules)</button>
-    <span class="result-count" id="result-count"></span>
+  <div class="controls" style="margin-bottom:12px; justify-content:center;">
+    <div class="chipset" id="view-toggle">
+      <button class="chip" data-view="board" aria-pressed="true">📋 Task Board</button>
+      <button class="chip" data-view="control" aria-pressed="false">🛡️ Control View</button>
+    </div>
   </div>
 
-  <div id="board"><div class="empty-state">Загрузка…</div></div>
+  <div id="view-board">
+    <section class="phases-overview" id="phases-overview" aria-label="Обзор фаз"></section>
+    <div class="controls">
+      <div class="chipset" id="status-filters" role="group" aria-label="Фильтр по статусу"></div>
+      <select id="role-filter" aria-label="Фильтр по роли">
+        <option value="">Все роли</option>
+      </select>
+      <input id="search" type="search" placeholder="Поиск: ID или текст задачи…" aria-label="Поиск задач" />
+      <div class="spacer"></div>
+      <button id="btn-rules" type="button" class="chip" style="background: var(--surface-2); font-weight:bold;">⚖️ Правила (Rules)</button>
+      <span class="result-count" id="result-count"></span>
+    </div>
+    <div id="board"><div class="empty-state">Загрузка…</div></div>
+  </div>
+
+  <div id="view-control" style="display:none; display:flex; flex-direction:column; gap:20px;">
+    <div class="phase-section open">
+      <div class="phase-head" style="background:var(--c-review-bg); color:var(--c-review-fg); cursor:default;">
+        <h2>🌊 Wave Gates & Phase Architecture</h2>
+      </div>
+      <div class="phase-body" id="control-waves" style="display:block; padding:16px;"></div>
+    </div>
+    
+    <div class="phase-section open">
+      <div class="phase-head" style="background:var(--c-blocked-bg); color:var(--c-blocked-fg); cursor:default;">
+        <h2>🛑 Active Blockers & Rule Violations</h2>
+      </div>
+      <div class="phase-body" id="control-blockers" style="display:block; padding:16px;"></div>
+    </div>
+  </div>
 
   <footer class="legend" id="legend"></footer>
 
@@ -708,6 +731,56 @@
       + `<span class="src">tasks/registry.yaml · v${REGISTRY.version}</span>`;
   }
 
+  function renderControlView() {
+    const wavesEl = document.getElementById("control-waves");
+    const blockersEl = document.getElementById("control-blockers");
+    
+    if (!REGISTRY.waves) {
+      wavesEl.innerHTML = "No waves defined.";
+      return;
+    }
+
+    let wavesHTML = "";
+    for (const w of REGISTRY.waves) {
+      wavesHTML += `<div style="border: 1px solid var(--line); border-radius: 8px; margin-bottom: 12px; padding: 12px; background: var(--surface);">`;
+      wavesHTML += `<h3 style="margin:0 0 8px; font-family:'Martian Mono', monospace;">${w.id}: ${w.name} <span class="badge">${w.gate_status}</span></h3>`;
+      
+      const phaseDetails = w.phases.map(p => {
+        const ph = phasesInfo.get(p);
+        const pTasks = REGISTRY.tasks.filter(t => t.phase === p);
+        const revTask = pTasks.find(t => t.id.startsWith("REV-"));
+        let revState = revTask ? revTask.status : "NO_GATE";
+        let color = revState === "DONE" ? "var(--c-done-fg)" : (revState === "PLANNED" ? "var(--ink-faint)" : "var(--c-review-fg)");
+        
+        return `<div style="display:flex; justify-content:space-between; padding:4px 0; border-top:1px dashed var(--line-soft);">
+          <span style="font-size:13px; color:var(--ink-soft);">P${p}: ${ph ? ph.name : ""}</span>
+          <strong style="font-size:12px; color:${color};">Phase Gate: ${revState}</strong>
+        </div>`;
+      }).join("");
+
+      wavesHTML += phaseDetails;
+      wavesHTML += `</div>`;
+    }
+    wavesEl.innerHTML = wavesHTML;
+
+    // Rule violations and blockers
+    const blockedTasks = REGISTRY.tasks.filter(t => bucketOf(t.status) === "blocked");
+    const violations = REGISTRY.tasks.filter(t => t.status !== "DONE" && t.status !== "PLANNED" && (!t.reviewer || !t.gate_owners || t.gate_owners.length === 0));
+    
+    let blockHTML = "";
+    if (blockedTasks.length > 0) {
+      blockHTML += `<h4 style="margin:0 0 8px; color:var(--c-blocked-fg);">Blocked Tasks (${blockedTasks.length})</h4>`;
+      blockHTML += blockedTasks.map(t => `<div style="font-size:13px; margin-bottom:6px;"><strong>${t.id}:</strong> ${escapeHTML(t.title)} <br><span style="color:var(--ink-faint)">Reason: ${escapeHTML(t.blocked_reason || "unknown")}</span></div>`).join("");
+    }
+    
+    if (violations.length > 0) {
+      blockHTML += `<h4 style="margin:16px 0 8px; color:var(--c-progress-fg);">Rule Violations (Missing Reviewer/Gate Owner)</h4>`;
+      blockHTML += violations.map(t => `<div style="font-size:13px; margin-bottom:4px;"><strong>${t.id}:</strong> ${escapeHTML(t.title)}</div>`).join("");
+    }
+    
+    blockersEl.innerHTML = blockHTML || "<div style='font-size:13px; color:var(--ink-faint);'>All good. No blockers or rule violations found.</div>";
+  }
+
   function renderAll() {
     recomputeIndexes();
     document.getElementById("total-count").textContent = REGISTRY.tasks.length;
@@ -715,11 +788,26 @@
     renderPhaseOverview();
     renderFilters();
     renderBoard();
+    renderControlView();
     renderLegend();
     applyFilters();
     
     const rulesBtn = document.getElementById("btn-rules");
     if (rulesBtn) rulesBtn.onclick = () => openDetail("RULES");
+
+    document.querySelectorAll("#view-toggle .chip").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("#view-toggle .chip").forEach(b => b.setAttribute("aria-pressed", "false"));
+        btn.setAttribute("aria-pressed", "true");
+        if (btn.dataset.view === "board") {
+          document.getElementById("view-board").style.display = "block";
+          document.getElementById("view-control").style.display = "none";
+        } else {
+          document.getElementById("view-board").style.display = "none";
+          document.getElementById("view-control").style.display = "flex";
+        }
+      };
+    });
   }
 
   async function loadRegistry() {

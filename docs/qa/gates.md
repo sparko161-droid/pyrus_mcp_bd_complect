@@ -253,3 +253,24 @@ The AI CTO collects all gate results, checks dependency readiness and may stop t
 - **Phase Exit Criteria:** Have the explicit exit criteria defined in \egistry.yaml\ been unambiguously met?
 
 If any check fails, new tasks MUST be spawned in the backlog, blocking the start of the next phase until structural integrity is restored.
+## Wave Gate (Macro Level)
+**Owner:** Human Architect & AI CTO
+**Trigger:** Before transitioning from one Wave of development to the next.
+**Checks:**
+- Wave deliverables meet global strategic objectives.
+- Resource allocation and security posture for the next wave are approved.
+- System integrity holds across all previously completed waves.
+
+## Phase Architecture Gate
+**Owner:** Chief Architect
+**Trigger:** Start of any new Phase.
+**Checks:**
+- Technical approach for the Phase is validated via ADRs.
+- No deviation from the Wave's strategic goals.
+
+## Evolution & Compatibility Layer (Phase 1 Specific)
+**Owner:** Pyrus Integrations Lead & Chief Architect
+**Trigger:** Within Phase 1 (Product Threat Model & Identity).
+**Checks:**
+- Ensure any new Identity/Threat models do not break the 61 legacy contracts recovered in Phase 0.
+- Evolution of data structures maintains 100% backward compatibility with pyrusBot and existing clients.
