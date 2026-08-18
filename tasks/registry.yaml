@@ -1390,7 +1390,7 @@ tasks:
     deps:
       - MCP-024
       - MCP-092
-    status: READY
+    status: DONE
   - id: REV-012
     phase: 12
     title: Phase 12 Coherence Review & Sign-off
@@ -1421,7 +1421,7 @@ tasks:
     deps:
       - MCP-047
       - MCP-130
-    status: READY
+    status: DONE
   - id: MCP-132
     phase: 13
     title: Run SSRF/origin/proxy-header/payload-limit tests
@@ -1432,7 +1432,7 @@ tasks:
     deps:
       - MCP-033
       - MCP-059
-    status: READY
+    status: DONE
   - id: MCP-133
     phase: 13
     title: Run log-redaction and secret-leak regression tests
@@ -1442,7 +1442,7 @@ tasks:
       - identity-security-lead
     deps:
       - MCP-120
-    status: READY
+    status: DONE
   - id: MCP-140
     phase: 14
     title: Create staging environment matching production topology
@@ -1458,7 +1458,7 @@ tasks:
     phase: 13
     title: Phase 13 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-130
       - MCP-131
@@ -1469,7 +1469,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Auth fuzzing suite validates malformed/injection tokens fail gracefully.
+      - Tenant isolation strictly verified across distinct client contexts.
+      - Sensitive fields (tokens, secrets, passwords) verified to be redacted in logs.
   - id: MCP-141
     phase: 14
     title: Run full protocol + compatibility + sandbox integration suite
@@ -1513,6 +1516,22 @@ tasks:
       - MCP-141
       - MCP-143
     status: READY
+  - id: REV-014
+    phase: 14
+    title: Phase 14 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-140
+      - MCP-141
+      - MCP-142
+      - MCP-143
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-151
     phase: 15
     title: Production smoke and health gate
