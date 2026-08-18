@@ -1,0 +1,5 @@
+# MCP-сервер банка решений
+starlette>=0.37
+uvicorn[standard]>=0.30
+psycopg[binary,pool]>=3.1
+httpx>=0.27

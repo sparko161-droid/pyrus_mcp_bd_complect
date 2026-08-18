@@ -1,0 +1,22 @@
+# Postgres с pgvector для банка решений.
+# Готовый образ pgvector/pgvector избавляет от сборки расширения руками.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: bank
+      POSTGRES_PASSWORD: bank
+      POSTGRES_DB: bank
+    ports: ["5432:5432"]
+    volumes:
+      - bankdata:/var/lib/postgresql/data
+      # Схема накатывается автоматически при первом старте пустого тома.
+      - ./schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bank -d bank"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  bankdata:
