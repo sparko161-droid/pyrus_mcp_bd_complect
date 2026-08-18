@@ -1,134 +1,228 @@
-version: 1
+version: 3
+status: ACTIVE
+rules:
+  atomicity: "One task = one independently testable outcome."
+  ownership: "Exactly one primary executor, at least one independent reviewer, explicit gate owners."
+  discovery: "New findings create linked tasks; silent scope expansion is forbidden."
+  evidence: "DONE requires code/docs/tests/evidence links appropriate to the task."
+  phase_exit: "A phase closes only when its exit criteria are green and no unaccepted P0/P1 blocker remains."
+
+phases:
+  - id: 0
+    name: contract-recovery
+    exit: "Legacy 1:1 catalogue, inventory, fixtures and API mapping are versioned and approved."
+  - id: 1
+    name: product-threat-model
+    exit: "Production product scope, tenant model, auth model, threat model and SLOs approved."
+  - id: 2
+    name: delivery-foundation
+    exit: "Local/CI/container foundation is reproducible and secure."
+  - id: 3
+    name: mcp-protocol-shell
+    exit: "Streamable HTTP + lifecycle + health + context + protocol conformance pass."
+  - id: 4
+    name: identity-tenancy
+    exit: "Multi-user authentication, authorization, scopes, tenant isolation and audit pass."
+  - id: 5
+    name: pyrus-client-core
+    exit: "Tenant credentials, auth refresh, API URLs, retries, limits and errors pass integration tests."
+  - id: 6
+    name: domain-models
+    exit: "Typed models and validation cover all required Pyrus domains."
+  - id: 7
+    name: readonly-parity
+    exit: "All recovered read-only legacy tools have contract tests and implementation."
+  - id: 8
+    name: write-parity
+    exit: "All recovered write tools have implementation, idempotency analysis and tests."
+  - id: 9
+    name: parity-gate
+    exit: "Compatibility matrix is green or exceptions are explicitly approved by ADR."
+  - id: 10
+    name: new-capabilities
+    exit: "Cache, comments pagination, registry pagination/status, batch operations and webhooks pass."
+  - id: 11
+    name: production-persistence
+    exit: "External persistent storage, migrations and recovery are proven."
+  - id: 12
+    name: observability-sre
+    exit: "Metrics, logs, alerts, SLOs and operational runbooks exist."
+  - id: 13
+    name: security-hardening
+    exit: "Security suite and staging DAST/fuzz/tenant-isolation checks are green."
+  - id: 14
+    name: staging-acceptance
+    exit: "Exact production artifact passes all staging acceptance gates."
+  - id: 15
+    name: production-release
+    exit: "Production rollout and rollback are demonstrated and accepted."
+  - id: 16
+    name: knowledge-contracts
+    exit: "Knowledge MCP contracts, data model and retrieval/publication rules are approved."
+  - id: 17
+    name: knowledge-mcp
+    exit: "Knowledge MCP supports versioned canonical storage, hybrid retrieval, embeddings and publication workflow in staging."
+  - id: 18
+    name: pyrusbot-integration
+    exit: "PyrusBot uses both MCPs through stable contracts and publication is evidence-backed."
+  - id: 19
+    name: future-interface
+    exit: "PyrusBot orchestration can be exposed through UI-neutral adapters."
+
 tasks:
-  - id: P0-000
-    phase: 0
-    title: "Project Setup & Environment"
-    primary: "python-backend-lead"
-    status: "DONE"
-    deps: []
-    reviewer: "chief-architect"
-    gate_owners:
-      - "qa-lead"
-      - "security-agent"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-001, phase: 0, title: "Recover exact legacy MCP tool list", primary: pyrus-integrations-lead, reviewer: chief-architect, gate_owners: [qa-lead, ai-cto], deps: [], status: READY}
+  - {id: MCP-002, phase: 0, title: "Recover exact legacy input JSON schemas", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-001], status: READY}
+  - {id: MCP-003, phase: 0, title: "Recover exact legacy output fixtures", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-001], status: READY}
+  - {id: MCP-004, phase: 0, title: "Recover legacy error and edge-case behavior", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-001], status: READY}
+  - {id: MCP-005, phase: 0, title: "Map each legacy tool to Pyrus API endpoint and quirks", primary: pyrus-integrations-lead, reviewer: chief-architect, gate_owners: [qa-lead], deps: [MCP-001, MCP-002, MCP-003, MCP-004], status: READY}
+  - {id: MCP-006, phase: 0, title: "Approve compatibility catalogue and freeze parity baseline", primary: chief-architect, reviewer: human-architect, gate_owners: [pyrus-integrations-lead, qa-lead], deps: [MCP-005], status: READY}
+  - {id: MCP-007, phase: 0, title: "Research Pyrus API limits, pagination and undocumented behaviors", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [], status: READY}
+  - {id: MCP-008, phase: 0, title: "Research Pyrus webhook configuration and subscription capabilities", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [chief-architect], deps: [], status: READY}
 
-  - id: P0-001
-    phase: 1
-    title: "Architecture & ADRs"
-    primary: "chief-architect"
-    status: "READY"
-    deps: ["P0-000"]
-    reviewer: "ai-cto"
-    gate_owners:
-      - "security-agent"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-010, phase: 1, title: "Define multi-user identity model", primary: identity-security-lead, reviewer: chief-architect, gate_owners: [human-architect], deps: [MCP-006], status: READY}
+  - {id: MCP-011, phase: 1, title: "Define tenant/account binding model", primary: identity-security-lead, reviewer: pyrus-integrations-lead, gate_owners: [security-agent], deps: [MCP-010], status: READY}
+  - {id: MCP-012, phase: 1, title: "Define OAuth/MCP token strategy and discovery metadata", primary: identity-security-lead, reviewer: chief-architect, gate_owners: [security-agent, human-architect], deps: [MCP-010], status: READY}
+  - {id: MCP-013, phase: 1, title: "Define scopes and per-tool authorization matrix", primary: identity-security-lead, reviewer: pyrus-integrations-lead, gate_owners: [security-agent], deps: [MCP-012], status: READY}
+  - {id: MCP-014, phase: 1, title: "Write threat model and abuse cases", primary: security-agent, reviewer: identity-security-lead, gate_owners: [human-architect], deps: [MCP-010, MCP-011, MCP-012, MCP-013], status: READY}
+  - {id: MCP-015, phase: 1, title: "Define SLO/SLA, quotas and retention targets", primary: devops-lead, reviewer: ai-cto, gate_owners: [human-architect], deps: [MCP-014], status: READY}
+  - {id: MCP-016, phase: 1, title: "Create ADR set 001–012", primary: documentation-agent, reviewer: chief-architect, gate_owners: [human-architect], deps: [MCP-012, MCP-014, MCP-015], status: READY}
 
-  - id: P0-002
-    phase: 2
-    title: "Core HTTP Client Layer (client.py)"
-    primary: "python-backend-lead"
-    status: "PLANNED"
-    deps: ["P0-001"]
-    reviewer: "chief-architect"
-    gate_owners:
-      - "qa-lead"
-      - "security-agent"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-020, phase: 2, title: "Pin Python runtime and dependency policy", primary: python-backend-lead, reviewer: code-quality-agent, gate_owners: [chief-architect], deps: [MCP-016], status: READY}
+  - {id: MCP-021, phase: 2, title: "Configure uv/pyproject/Ruff/typing/Pytest", primary: python-backend-lead, reviewer: code-quality-agent, gate_owners: [qa-lead], deps: [MCP-020], status: READY}
+  - {id: MCP-022, phase: 2, title: "Create CI workflow for lint/type/test", primary: devops-lead, reviewer: code-quality-agent, gate_owners: [qa-lead], deps: [MCP-021], status: READY}
+  - {id: MCP-023, phase: 2, title: "Create dependency and secret scanning", primary: security-agent, reviewer: devops-lead, gate_owners: [identity-security-lead], deps: [MCP-022], status: READY}
+  - {id: MCP-024, phase: 2, title: "Create hardened Docker image", primary: devops-lead, reviewer: security-agent, gate_owners: [code-quality-agent], deps: [MCP-021], status: READY}
+  - {id: MCP-025, phase: 2, title: "Create local compose environment with external-service mocks", primary: devops-lead, reviewer: python-backend-lead, gate_owners: [qa-lead], deps: [MCP-024], status: READY}
+  - {id: MCP-026, phase: 2, title: "Define environment/secrets interface and .env.example", primary: identity-security-lead, reviewer: devops-lead, gate_owners: [security-agent], deps: [MCP-012], status: READY}
 
-  - id: P0-003
-    phase: 2
-    title: "Pydantic Domain Models"
-    primary: "pyrus-integrations-lead"
-    status: "PLANNED"
-    deps: ["P0-002"]
-    reviewer: "chief-architect"
-    gate_owners:
-      - "qa-lead"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-030, phase: 3, title: "Implement FastMCP application shell", primary: python-backend-lead, reviewer: chief-architect, gate_owners: [qa-lead], deps: [MCP-021], status: READY}
+  - {id: MCP-031, phase: 3, title: "Implement Streamable HTTP /mcp endpoint", primary: python-backend-lead, reviewer: chief-architect, gate_owners: [security-agent, qa-lead], deps: [MCP-030], status: READY}
+  - {id: MCP-032, phase: 3, title: "Implement MCP initialize/version/capability handling", primary: python-backend-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-031], status: READY}
+  - {id: MCP-033, phase: 3, title: "Implement Origin validation and HTTP security middleware", primary: identity-security-lead, reviewer: security-agent, gate_owners: [chief-architect], deps: [MCP-031], status: READY}
+  - {id: MCP-034, phase: 3, title: "Implement request context, correlation ids and cancellation", primary: python-backend-lead, reviewer: qa-lead, gate_owners: [code-quality-agent], deps: [MCP-032], status: READY}
+  - {id: MCP-035, phase: 3, title: "Implement health/live/ready/version endpoints", primary: devops-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-030], status: READY}
+  - {id: MCP-036, phase: 3, title: "Run MCP protocol conformance test suite", primary: qa-lead, reviewer: chief-architect, gate_owners: [security-agent], deps: [MCP-031, MCP-032, MCP-033, MCP-034, MCP-035], status: READY}
 
-  - id: P0-004
-    phase: 3
-    title: "Read-only Basic Tools (profile, inbox)"
-    primary: "pyrus-integrations-lead"
-    status: "PLANNED"
-    deps: ["P0-003"]
-    reviewer: "python-backend-lead"
-    gate_owners:
-      - "qa-lead"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-040, phase: 4, title: "Implement identity/token domain models", primary: identity-security-lead, reviewer: data-engineer, gate_owners: [security-agent], deps: [MCP-012, MCP-013], status: READY}
+  - {id: MCP-041, phase: 4, title: "Implement client registration", primary: identity-security-lead, reviewer: security-agent, gate_owners: [chief-architect], deps: [MCP-040], status: READY}
+  - {id: MCP-042, phase: 4, title: "Implement access-token issuance/validation", primary: identity-security-lead, reviewer: security-agent, gate_owners: [human-architect], deps: [MCP-041, MCP-033], status: READY}
+  - {id: MCP-043, phase: 4, title: "Implement expiry/revocation/rotation", primary: identity-security-lead, reviewer: qa-lead, gate_owners: [security-agent], deps: [MCP-042], status: READY}
+  - {id: MCP-044, phase: 4, title: "Implement scope authorization middleware", primary: identity-security-lead, reviewer: pyrus-integrations-lead, gate_owners: [security-agent], deps: [MCP-013, MCP-042], status: READY}
+  - {id: MCP-045, phase: 4, title: "Implement tenant isolation enforcement", primary: identity-security-lead, reviewer: security-agent, gate_owners: [chief-architect], deps: [MCP-011, MCP-044], status: READY}
+  - {id: MCP-046, phase: 4, title: "Implement audit event generation for security events", primary: data-engineer, reviewer: identity-security-lead, gate_owners: [security-agent], deps: [MCP-043, MCP-045], status: READY}
+  - {id: MCP-047, phase: 4, title: "Run auth, scope, revocation and cross-tenant test suite", primary: qa-lead, reviewer: security-agent, gate_owners: [identity-security-lead, human-architect], deps: [MCP-043, MCP-044, MCP-045, MCP-046], status: READY}
 
-  - id: P0-005
-    phase: 3
-    title: "Form, Member, & Catalog Tools"
-    primary: "pyrus-integrations-lead"
-    status: "PLANNED"
-    deps: ["P0-004"]
-    reviewer: "python-backend-lead"
-    gate_owners:
-      - "qa-lead"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-050, phase: 5, title: "Implement tenant credential repository interface", primary: data-engineer, reviewer: identity-security-lead, gate_owners: [security-agent], deps: [MCP-011, MCP-026], status: READY}
+  - {id: MCP-051, phase: 5, title: "Implement secret-manager adapter", primary: identity-security-lead, reviewer: security-agent, gate_owners: [devops-lead], deps: [MCP-050], status: READY}
+  - {id: MCP-052, phase: 5, title: "Implement Pyrus /auth client with person_id support", primary: pyrus-integrations-lead, reviewer: python-backend-lead, gate_owners: [security-agent, qa-lead], deps: [MCP-050, MCP-051], status: READY}
+  - {id: MCP-053, phase: 5, title: "Implement Pyrus access-token cache/refresh", primary: pyrus-integrations-lead, reviewer: identity-security-lead, gate_owners: [security-agent], deps: [MCP-052], status: READY}
+  - {id: MCP-054, phase: 5, title: "Implement api_url/files_url tenant routing", primary: pyrus-integrations-lead, reviewer: chief-architect, gate_owners: [qa-lead], deps: [MCP-052], status: READY}
+  - {id: MCP-055, phase: 5, title: "Implement shared httpx Pyrus client", primary: python-backend-lead, reviewer: pyrus-integrations-lead, gate_owners: [qa-lead], deps: [MCP-053, MCP-054], status: READY}
+  - {id: MCP-056, phase: 5, title: "Implement retry/backoff/idempotent retry classifier", primary: python-backend-lead, reviewer: qa-lead, gate_owners: [pyrus-integrations-lead], deps: [MCP-055], status: READY}
+  - {id: MCP-057, phase: 5, title: "Implement rate limiter and concurrency limiter", primary: python-backend-lead, reviewer: devops-lead, gate_owners: [qa-lead], deps: [MCP-055, MCP-007], status: READY}
+  - {id: MCP-058, phase: 5, title: "Implement Pyrus error taxonomy and mapping", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [security-agent], deps: [MCP-055, MCP-007], status: READY}
+  - {id: MCP-059, phase: 5, title: "Implement response-size guard", primary: python-backend-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-058], status: READY}
+  - {id: MCP-05A, phase: 5, title: "Implement circuit breaker and upstream failure policy", primary: python-backend-lead, reviewer: devops-lead, gate_owners: [qa-lead], deps: [MCP-056, MCP-057, MCP-058], status: READY}
 
-  - id: P0-006
-    phase: 3
-    title: "Task Tools (17 tools including get_registry)"
-    primary: "pyrus-integrations-lead"
-    status: "PLANNED"
-    deps: ["P0-005"]
-    reviewer: "chief-architect"
-    gate_owners:
-      - "qa-lead"
-      - "security-agent"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-060, phase: 6, title: "Implement common API/paging/error models", primary: python-backend-lead, reviewer: pyrus-integrations-lead, gate_owners: [qa-lead], deps: [MCP-058], status: READY}
+  - {id: MCP-061, phase: 6, title: "Implement task/form/field models", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-060], status: READY}
+  - {id: MCP-062, phase: 6, title: "Implement catalog/list/member/role models", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-060], status: READY}
+  - {id: MCP-063, phase: 6, title: "Implement announcement/KB/file/profile/calendar models", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-060], status: READY}
+  - {id: MCP-064, phase: 6, title: "Create recorded API fixtures for all recovered domains", primary: qa-lead, reviewer: pyrus-integrations-lead, gate_owners: [chief-architect], deps: [MCP-060, MCP-061, MCP-062, MCP-063], status: READY}
 
-  - id: P0-007
-    phase: 4
-    title: "New Features: Pagination, Batch Ops, SQLite Cache"
-    primary: "python-backend-lead"
-    status: "PLANNED"
-    deps: ["P0-006"]
-    reviewer: "chief-architect"
-    gate_owners:
-      - "qa-lead"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-070, phase: 7, title: "Implement misc read-only tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-064, MCP-044], status: READY}
+  - {id: MCP-071, phase: 7, title: "Implement form read-only tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-061, MCP-064], status: READY}
+  - {id: MCP-072, phase: 7, title: "Implement member/role read-only tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-062, MCP-064], status: READY}
+  - {id: MCP-073, phase: 7, title: "Implement list/catalog read-only tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-062, MCP-064], status: READY}
+  - {id: MCP-074, phase: 7, title: "Implement announcement/KB read-only tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-063, MCP-064], status: READY}
+  - {id: MCP-075, phase: 7, title: "Implement basic task read tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-061, MCP-064], status: READY}
+  - {id: MCP-076, phase: 7, title: "Implement registry/search/overdue task read tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-075, MCP-007], status: READY}
+  - {id: MCP-077, phase: 7, title: "Run read-only compatibility tests against recovered fixtures", primary: qa-lead, reviewer: pyrus-integrations-lead, gate_owners: [chief-architect], deps: [MCP-070, MCP-071, MCP-072, MCP-073, MCP-074, MCP-075, MCP-076], status: READY}
 
-  - id: P0-008
-    phase: 5
-    title: "QA, Sandbox Tests & Acceptance"
-    primary: "qa-lead"
-    status: "PLANNED"
-    deps: ["P0-007"]
-    reviewer: "ai-cto"
-    gate_owners:
-      - "human-architect"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-080, phase: 8, title: "Implement member and role write tools", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-072, MCP-077], status: READY}
+  - {id: MCP-081, phase: 8, title: "Implement list and catalog write tools", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-073, MCP-077], status: READY}
+  - {id: MCP-082, phase: 8, title: "Implement announcement and KB write tools", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-074, MCP-077], status: READY}
+  - {id: MCP-083, phase: 8, title: "Implement create/update/assign task tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [security-agent], deps: [MCP-075, MCP-077], status: READY}
+  - {id: MCP-084, phase: 8, title: "Implement approvals/subscribers/comments task tools", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [security-agent], deps: [MCP-083], status: READY}
+  - {id: MCP-085, phase: 8, title: "Implement task close/reopen/delete tools", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-083], status: READY}
+  - {id: MCP-086, phase: 8, title: "Implement file attachment/version tools", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-054, MCP-083], status: READY}
+  - {id: MCP-087, phase: 8, title: "Perform idempotency and partial-failure analysis for all write tools", primary: qa-lead, reviewer: security-agent, gate_owners: [chief-architect], deps: [MCP-080, MCP-081, MCP-082, MCP-083, MCP-084, MCP-085, MCP-086], status: READY}
+  - {id: MCP-088, phase: 8, title: "Run sandbox write-operation suite", primary: qa-lead, reviewer: pyrus-integrations-lead, gate_owners: [security-agent], deps: [MCP-087], status: READY}
 
-  - id: P0-009
-    phase: 6
-    title: "Docs & Docker Deploy"
-    primary: "devops-lead"
-    status: "PLANNED"
-    deps: ["P0-008"]
-    reviewer: "chief-architect"
-    gate_owners:
-      - "qa-lead"
-    discovery_links: []
-    blocked_reason: null
-    human_decisions: []
+  - {id: MCP-090, phase: 9, title: "Generate compatibility report", primary: qa-lead, reviewer: pyrus-integrations-lead, gate_owners: [chief-architect], deps: [MCP-077, MCP-088], status: READY}
+  - {id: MCP-091, phase: 9, title: "Resolve compatibility breaks or create ADR exceptions", primary: pyrus-integrations-lead, reviewer: chief-architect, gate_owners: [human-architect], deps: [MCP-090], status: READY}
+  - {id: MCP-092, phase: 9, title: "Freeze 1:1 parity contract version 1", primary: human-architect, reviewer: ai-cto, gate_owners: [qa-lead, security-agent], deps: [MCP-091], status: READY}
+
+  - {id: MCP-100, phase: 10, title: "Implement form metadata cache with invalidation", primary: python-backend-lead, reviewer: qa-lead, gate_owners: [pyrus-integrations-lead], deps: [MCP-071, MCP-092], status: READY}
+  - {id: MCP-101, phase: 10, title: "Implement service-level task comments pagination", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-075, MCP-092], status: READY}
+  - {id: MCP-102, phase: 10, title: "Research and implement explicit is_closed semantics", primary: pyrus-integrations-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [MCP-007, MCP-076], status: READY}
+  - {id: MCP-103, phase: 10, title: "Implement safe registry auto-pagination", primary: python-backend-lead, reviewer: pyrus-integrations-lead, gate_owners: [qa-lead], deps: [MCP-102], status: READY}
+  - {id: MCP-104, phase: 10, title: "Implement batch update task fields", primary: python-backend-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-083, MCP-087], status: READY}
+  - {id: MCP-105, phase: 10, title: "Implement batch close tasks with partial result model", primary: python-backend-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-085, MCP-087], status: READY}
+  - {id: MCP-106, phase: 10, title: "Implement webhook signature verification", primary: pyrus-integrations-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-008, MCP-024], status: READY}
+  - {id: MCP-107, phase: 10, title: "Implement webhook idempotent ingestion queue", primary: data-engineer, reviewer: qa-lead, gate_owners: [security-agent], deps: [MCP-106], status: READY}
+  - {id: MCP-108, phase: 10, title: "Implement webhook retry/DLQ/event retrieval", primary: python-backend-lead, reviewer: qa-lead, gate_owners: [devops-lead], deps: [MCP-107], status: READY}
+  - {id: MCP-109, phase: 10, title: "Run feature-specific integration and failure tests", primary: qa-lead, reviewer: chief-architect, gate_owners: [security-agent], deps: [MCP-100, MCP-101, MCP-103, MCP-104, MCP-105, MCP-108], status: READY}
+
+  - {id: MCP-110, phase: 11, title: "Design PostgreSQL schema and migrations", primary: data-engineer, reviewer: chief-architect, gate_owners: [security-agent], deps: [MCP-040, MCP-046, MCP-107], status: READY}
+  - {id: MCP-111, phase: 11, title: "Implement migration runner and startup policy", primary: data-engineer, reviewer: devops-lead, gate_owners: [qa-lead], deps: [MCP-110], status: READY}
+  - {id: MCP-112, phase: 11, title: "Implement persistent token/tenant/audit repositories", primary: data-engineer, reviewer: identity-security-lead, gate_owners: [security-agent], deps: [MCP-111], status: READY}
+  - {id: MCP-113, phase: 11, title: "Implement webhook event and idempotency persistence", primary: data-engineer, reviewer: qa-lead, gate_owners: [security-agent], deps: [MCP-111], status: READY}
+  - {id: MCP-114, phase: 11, title: "Add optional shared Redis adapters", primary: data-engineer, reviewer: devops-lead, gate_owners: [chief-architect], deps: [MCP-111], status: READY}
+  - {id: MCP-115, phase: 11, title: "Prove backup/restore and migration rollback", primary: data-engineer, reviewer: qa-lead, gate_owners: [devops-lead], deps: [MCP-112, MCP-113], status: READY}
+
+  - {id: MCP-120, phase: 12, title: "Implement structured logging and redaction", primary: devops-lead, reviewer: security-agent, gate_owners: [qa-lead], deps: [MCP-034], status: READY}
+  - {id: MCP-121, phase: 12, title: "Implement metrics and latency/error dashboards", primary: devops-lead, reviewer: qa-lead, gate_owners: [ai-cto], deps: [MCP-120], status: READY}
+  - {id: MCP-122, phase: 12, title: "Implement alerting and SLO burn-rate rules", primary: devops-lead, reviewer: release-manager, gate_owners: [human-architect], deps: [MCP-121], status: READY}
+  - {id: MCP-123, phase: 12, title: "Write incident/degradation/recovery runbooks", primary: documentation-agent, reviewer: devops-lead, gate_owners: [release-manager], deps: [MCP-122], status: READY}
+
+  - {id: MCP-130, phase: 13, title: "Run SAST/dependency/container/security scans", primary: security-agent, reviewer: code-quality-agent, gate_owners: [identity-security-lead], deps: [MCP-024, MCP-092], status: READY}
+  - {id: MCP-131, phase: 13, title: "Run auth and tenant-isolation fuzz tests", primary: security-agent, reviewer: qa-lead, gate_owners: [identity-security-lead], deps: [MCP-047, MCP-130], status: READY}
+  - {id: MCP-132, phase: 13, title: "Run SSRF/origin/proxy-header/payload-limit tests", primary: security-agent, reviewer: chief-architect, gate_owners: [qa-lead], deps: [MCP-033, MCP-059], status: READY}
+  - {id: MCP-133, phase: 13, title: "Run log-redaction and secret-leak regression tests", primary: security-agent, reviewer: qa-lead, gate_owners: [identity-security-lead], deps: [MCP-120], status: READY}
+
+  - {id: MCP-140, phase: 14, title: "Create staging environment matching production topology", primary: devops-lead, reviewer: release-manager, gate_owners: [security-agent], deps: [MCP-115, MCP-123], status: READY}
+  - {id: MCP-141, phase: 14, title: "Run full protocol + compatibility + sandbox integration suite", primary: qa-lead, reviewer: chief-architect, gate_owners: [pyrus-integrations-lead, security-agent], deps: [MCP-140], status: READY}
+  - {id: MCP-142, phase: 14, title: "Run staging load and failure-injection tests", primary: qa-lead, reviewer: devops-lead, gate_owners: [release-manager], deps: [MCP-140, MCP-141], status: READY}
+  - {id: MCP-143, phase: 14, title: "Run staging deployment and rollback drill", primary: release-manager, reviewer: devops-lead, gate_owners: [human-architect], deps: [MCP-142], status: READY}
+
+  - {id: MCP-150, phase: 15, title: "Produce immutable production release artifact", primary: devops-lead, reviewer: code-quality-agent, gate_owners: [security-agent], deps: [MCP-141, MCP-143], status: READY}
+  - {id: MCP-151, phase: 15, title: "Production smoke and health gate", primary: release-manager, reviewer: qa-lead, gate_owners: [human-architect], deps: [MCP-150], status: READY}
+  - {id: MCP-152, phase: 15, title: "Production observability and rollback monitoring", primary: devops-lead, reviewer: release-manager, gate_owners: [human-architect], deps: [MCP-151], status: READY}
+
+  - {id: KM-001, phase: 16, title: "Define document identity and lifecycle contract", primary: knowledge-architecture-lead, reviewer: chief-architect, gate_owners: [human-architect], deps: [MCP-016], status: READY}
+  - {id: KM-002, phase: 16, title: "Define immutable version/change-set contract", primary: knowledge-architecture-lead, reviewer: documentation-agent, gate_owners: [chief-architect], deps: [KM-001], status: READY}
+  - {id: KM-003, phase: 16, title: "Define evidence/lineage/relation contract", primary: knowledge-architecture-lead, reviewer: pyrus-integrations-lead, gate_owners: [chief-architect], deps: [KM-001], status: READY}
+  - {id: KM-004, phase: 16, title: "Define deterministic chunking contract", primary: knowledge-architecture-lead, reviewer: retrieval-engineer, gate_owners: [qa-lead], deps: [KM-002], status: READY}
+  - {id: KM-005, phase: 16, title: "Define embedding generation/version contract", primary: retrieval-engineer, reviewer: knowledge-architecture-lead, gate_owners: [security-agent], deps: [KM-004], status: READY}
+  - {id: KM-006, phase: 16, title: "Define hybrid retrieval and citation contract", primary: retrieval-engineer, reviewer: knowledge-architecture-lead, gate_owners: [qa-lead], deps: [KM-003, KM-005], status: READY}
+  - {id: KM-007, phase: 16, title: "Define approval and publication-to-Pyrus contract", primary: knowledge-architecture-lead, reviewer: pyrus-integrations-lead, gate_owners: [human-architect], deps: [KM-002, MCP-092], status: READY}
+  - {id: KM-008, phase: 16, title: "Approve Knowledge MCP architecture and ADR set", primary: human-architect, reviewer: chief-architect, gate_owners: [qa-lead, security-agent], deps: [KM-001, KM-002, KM-003, KM-004, KM-005, KM-006, KM-007], status: READY}
+
+  - {id: KM-010, phase: 17, title: "Scaffold Knowledge MCP FastMCP service", primary: python-backend-lead, reviewer: knowledge-architecture-lead, gate_owners: [qa-lead], deps: [KM-008], status: READY}
+  - {id: KM-011, phase: 17, title: "Create PostgreSQL/pgvector schema and migrations", primary: data-engineer, reviewer: knowledge-architecture-lead, gate_owners: [security-agent], deps: [KM-008], status: READY}
+  - {id: KM-012, phase: 17, title: "Implement document/version/change-set services", primary: knowledge-architecture-lead, reviewer: data-engineer, gate_owners: [qa-lead], deps: [KM-010, KM-011], status: READY}
+  - {id: KM-013, phase: 17, title: "Implement chunking/indexing service", primary: retrieval-engineer, reviewer: knowledge-architecture-lead, gate_owners: [qa-lead], deps: [KM-012], status: READY}
+  - {id: KM-014, phase: 17, title: "Implement embedding generation worker and model registry", primary: retrieval-engineer, reviewer: data-engineer, gate_owners: [security-agent], deps: [KM-013], status: READY}
+  - {id: KM-015, phase: 17, title: "Implement exact/full-text/vector/hybrid retrieval", primary: retrieval-engineer, reviewer: qa-lead, gate_owners: [knowledge-architecture-lead], deps: [KM-013, KM-014], status: READY}
+  - {id: KM-016, phase: 17, title: "Implement evidence/citation retrieval", primary: knowledge-architecture-lead, reviewer: qa-lead, gate_owners: [chief-architect], deps: [KM-015], status: READY}
+  - {id: KM-017, phase: 17, title: "Implement approval/review workflow", primary: knowledge-architecture-lead, reviewer: documentation-agent, gate_owners: [human-architect], deps: [KM-012, KM-016], status: READY}
+  - {id: KM-018, phase: 17, title: "Implement Pyrus KB publication adapter via Pyrus MCP", primary: pyrus-integrations-lead, reviewer: knowledge-architecture-lead, gate_owners: [security-agent, human-architect], deps: [KM-017, MCP-092], status: READY}
+  - {id: KM-019, phase: 17, title: "Implement publication verification and rollback projection", primary: knowledge-architecture-lead, reviewer: qa-lead, gate_owners: [human-architect], deps: [KM-018], status: READY}
+  - {id: KM-020, phase: 17, title: "Run Knowledge MCP retrieval/revision/publication acceptance suite", primary: qa-lead, reviewer: chief-architect, gate_owners: [human-architect], deps: [KM-019], status: READY}
+
+  - {id: INT-001, phase: 18, title: "Define PyrusBot -> Pyrus MCP integration contract", primary: chief-architect, reviewer: pyrus-integrations-lead, gate_owners: [human-architect], deps: [MCP-092], status: READY}
+  - {id: INT-002, phase: 18, title: "Define PyrusBot -> Knowledge MCP integration contract", primary: knowledge-architecture-lead, reviewer: chief-architect, gate_owners: [human-architect], deps: [KM-020], status: READY}
+  - {id: INT-003, phase: 18, title: "Implement context retrieval with provenance in PyrusBot", primary: python-backend-lead, reviewer: retrieval-engineer, gate_owners: [qa-lead], deps: [INT-002], status: READY}
+  - {id: INT-004, phase: 18, title: "Implement approved-document publication workflow in PyrusBot", primary: python-backend-lead, reviewer: pyrus-integrations-lead, gate_owners: [security-agent], deps: [INT-001, INT-002], status: READY}
+  - {id: INT-005, phase: 18, title: "Run end-to-end PyrusBot -> Knowledge MCP -> Pyrus MCP -> KB acceptance", primary: qa-lead, reviewer: release-manager, gate_owners: [human-architect], deps: [INT-003, INT-004], status: READY}
+
+  - {id: FUT-001, phase: 19, title: "Extract PyrusBot orchestration core from IDE-specific UI", primary: chief-architect, reviewer: ai-cto, gate_owners: [human-architect], deps: [INT-005], status: PLANNED}
+  - {id: FUT-002, phase: 19, title: "Define chat/CLI/web adapter contracts", primary: chief-architect, reviewer: documentation-agent, gate_owners: [human-architect], deps: [FUT-001], status: PLANNED}
+
+blockers:
+  - {id: BLK-001, priority: P0, title: "Legacy 1:1 MCP contract artefacts are missing from repository", owner: pyrus-integrations-lead, blocks: [MCP-006, MCP-077, MCP-088, MCP-090], unblock: "Recover exact legacy tool/schema/fixture/quirk evidence.", status: OPEN}
+  - {id: BLK-002, priority: P0, title: "Legacy tool count is not reproducible from current visible plan", owner: pyrus-integrations-lead, blocks: [MCP-006], unblock: "Reconcile exact tool count from legacy evidence; current plan summary must not be treated as authoritative.", status: OPEN}
+  - {id: BLK-003, priority: P0, title: "Single SERVER_AUTH_TOKEN is not a production multi-user authorization model", owner: identity-security-lead, blocks: [MCP-036, MCP-047, MCP-092], unblock: "Approve and implement MCP/OAuth-compatible identity, token, scope and tenant model.", status: OPEN}
+  - {id: BLK-004, priority: P1, title: "Webhook subscription capability must be verified before register_webhook is promised", owner: pyrus-integrations-lead, blocks: [MCP-108], unblock: "Complete MCP-008 and record the actual Pyrus-supported configuration path.", status: OPEN}
+  - {id: BLK-005, priority: P1, title: "SQLite cannot be the durable production store for a public multi-user service", owner: data-engineer, blocks: [MCP-151], unblock: "External PostgreSQL persistence + recovery evidence complete.", status: OPEN}
