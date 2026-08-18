@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     pyrus_login: str = ""
     pyrus_security_key: str = ""
     pyrus_webhook_secret: str = ""
+    redis_url: str = ""  # Optional — if set, enables Redis cache adapter
     pyrus_api_url: str = "https://api.pyrus.com/v4"
     
     # Server configuration

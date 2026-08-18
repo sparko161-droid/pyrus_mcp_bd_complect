@@ -1241,7 +1241,7 @@ tasks:
       - MCP-040
       - MCP-046
       - MCP-107
-    status: READY
+    status: DONE
   - id: MCP-111
     phase: 11
     title: Implement migration runner and startup policy
@@ -1251,7 +1251,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-110
-    status: READY
+    status: DONE
   - id: MCP-112
     phase: 11
     title: Implement persistent token/tenant/audit repositories
@@ -1261,7 +1261,7 @@ tasks:
       - security-agent
     deps:
       - MCP-111
-    status: READY
+    status: DONE
   - id: MCP-113
     phase: 11
     title: Implement webhook event and idempotency persistence
@@ -1271,7 +1271,7 @@ tasks:
       - security-agent
     deps:
       - MCP-111
-    status: READY
+    status: DONE
   - id: MCP-114
     phase: 11
     title: Add optional shared Redis adapters
@@ -1281,7 +1281,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-111
-    status: READY
+    status: DONE
   - id: MCP-115
     phase: 11
     title: Prove backup/restore and migration rollback
@@ -1292,7 +1292,7 @@ tasks:
     deps:
       - MCP-112
       - MCP-113
-    status: READY
+    status: DONE
   - id: MCP-120
     phase: 12
     title: Implement structured logging and redaction
@@ -1307,7 +1307,7 @@ tasks:
     phase: 11
     title: Phase 11 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-110
       - MCP-111
@@ -1320,7 +1320,11 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - SQLite via aiosqlite chosen over PostgreSQL for initial persistence layer — no external service required. Swap is one line in connection.py.
+      - WEBHOOK_BYPASS_PATHS set in middleware ensures /webhook skips Bearer check and routes to HMAC-only validation.
+      - Starlette lifespan hook opens DB and applies idempotent CREATE TABLE IF NOT EXISTS migrations on every startup.
+      - Redis adapter abstracted behind CacheAdapter interface — enabled via REDIS_URL env var with zero code changes.
   - id: MCP-121
     phase: 12
     title: Implement metrics and latency/error dashboards
@@ -1362,6 +1366,22 @@ tasks:
       - MCP-024
       - MCP-092
     status: READY
+  - id: REV-012
+    phase: 12
+    title: Phase 12 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-120
+      - MCP-121
+      - MCP-122
+      - MCP-123
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-131
     phase: 13
     title: Run auth and tenant-isolation fuzz tests

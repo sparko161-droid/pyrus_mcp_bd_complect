@@ -15,8 +15,22 @@ from .context import correlation_id
 
 logger = structlog.get_logger()
 
+from contextlib import asynccontextmanager
+
 from .tools import register_tools
 from .webhooks import webhook_handler
+from . import db
+
+
+@asynccontextmanager
+async def lifespan(app):
+    """Open DB + run migrations on startup; close on shutdown."""
+    await db.open()
+    await db.run_migrations()
+    logger.info("DB ready, server starting up")
+    yield
+    await db.close()
+    logger.info("Server shut down cleanly")
 
 # MCP Server Definition
 # We use the low-level Server from the official MCP SDK to have full control over the Starlette app
@@ -62,6 +76,7 @@ async def ready_check(request):
 
 # Construct the HTTP App
 app = Starlette(
+    lifespan=lifespan,
     routes=[
         Route("/health", health_check, methods=["GET"]),
         Route("/ready", ready_check, methods=["GET"]),
