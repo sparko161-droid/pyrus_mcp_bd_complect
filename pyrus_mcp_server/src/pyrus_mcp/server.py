@@ -1,22 +1,96 @@
-import asyncio
-from fastmcp import FastMCP
-from pyrus_mcp.config import settings
+import sys
+import structlog
+from typing import Any
+from starlette.applications import Starlette
+from starlette.routing import Route
+from starlette.responses import JSONResponse
+from mcp.server import Server
+from mcp.server.sse import SseServerTransport
+from mcp.types import InitializationOptions
 
-mcp = FastMCP(
-    "pyrus_mcp_server",
-    description="Python FastMCP Server for Pyrus API",
-    dependencies=["httpx", "pydantic"]
+from .config import settings
+from .middleware import SecurityMiddleware
+from .context import correlation_id
+
+logger = structlog.get_logger()
+
+# MCP Server Definition
+# We use the low-level Server from the official MCP SDK to have full control over the Starlette app
+server = Server("pyrus-mcp-server")
+
+@server.list_tools()
+async def list_tools() -> list[Any]:
+    # Placeholder for Phase 4 where we actually define the tools
+    return []
+
+@server.call_tool()
+async def call_tool(name: str, arguments: dict) -> list[Any]:
+    raise ValueError(f"Tool {name} not found")
+
+# SSE Transport Endpoint
+sse_transport: SseServerTransport | None = None
+
+async def handle_sse(request):
+    global sse_transport
+    sse_transport = SseServerTransport("/mcp/messages")
+    async def process_messages():
+        await server.run(
+            sse_transport,
+            server.create_initialization_options()
+        )
+    
+    # We run the MCP server loop in the background while returning the SSE response
+    import asyncio
+    asyncio.create_task(process_messages())
+    return await sse_transport.handle_sse(request)
+
+async def handle_messages(request):
+    global sse_transport
+    if sse_transport is None:
+        return JSONResponse({"error": "SSE connection not established"}, status_code=400)
+    await sse_transport.handle_post_message(request)
+    return JSONResponse({"status": "accepted"}, status_code=202)
+
+# Health Endpoints
+async def health_check(request):
+    return JSONResponse({
+        "status": "up",
+        "version": "0.1.0",
+        "correlation_id": correlation_id.get()
+    })
+
+async def ready_check(request):
+    return JSONResponse({"status": "ready"})
+
+# Construct the HTTP App
+app = Starlette(
+    routes=[
+        Route("/health", health_check, methods=["GET"]),
+        Route("/ready", ready_check, methods=["GET"]),
+        Route("/mcp", handle_sse, methods=["GET"]),
+        Route("/mcp/messages", handle_messages, methods=["POST"]),
+    ]
 )
 
-@mcp.tool()
-async def health_check() -> str:
-    """Returns the health status of the Pyrus MCP Server."""
-    return f"Pyrus MCP Server is alive. Target API: {settings.pyrus_api_url}"
+# Apply Security Middleware
+app.add_middleware(SecurityMiddleware)
 
 def main() -> None:
-    # Later we will support transport configuration (stdio vs http)
-    # For now, default to stdio which Claude / Antigravity use directly
-    mcp.run()
+    import uvicorn
+    logger.info("Starting Pyrus MCP Server", transport=settings.mcp_transport, host=settings.host, port=settings.port)
+    
+    if settings.mcp_transport == "sse":
+        uvicorn.run(app, host=settings.host, port=settings.port)
+    else:
+        # For stdio, we use the standard transport
+        from mcp.server.stdio import stdio_server
+        import asyncio
+        
+        async def run_stdio():
+            async with stdio_server() as (read_stream, write_stream):
+                await server.run(read_stream, write_stream, server.create_initialization_options())
+                
+        asyncio.run(run_stdio())
 
 if __name__ == "__main__":
     main()

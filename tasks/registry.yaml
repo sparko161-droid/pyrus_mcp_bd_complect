@@ -411,7 +411,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-021
-    status: READY
+    status: DONE
   - id: MCP-031
     phase: 3
     title: Implement Streamable HTTP /mcp endpoint
@@ -422,7 +422,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-030
-    status: READY
+    status: DONE
   - id: MCP-032
     phase: 3
     title: Implement MCP initialize/version/capability handling
@@ -432,7 +432,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-031
-    status: READY
+    status: DONE
   - id: MCP-033
     phase: 3
     title: Implement Origin validation and HTTP security middleware
@@ -442,7 +442,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-031
-    status: READY
+    status: DONE
   - id: MCP-034
     phase: 3
     title: Implement request context, correlation ids and cancellation
@@ -452,7 +452,7 @@ tasks:
       - code-quality-agent
     deps:
       - MCP-032
-    status: READY
+    status: DONE
   - id: MCP-035
     phase: 3
     title: Implement health/live/ready/version endpoints
@@ -462,7 +462,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-030
-    status: READY
+    status: DONE
   - id: MCP-036
     phase: 3
     title: Run MCP protocol conformance test suite
@@ -476,7 +476,7 @@ tasks:
       - MCP-033
       - MCP-034
       - MCP-035
-    status: READY
+    status: DONE
   - id: MCP-040
     phase: 4
     title: Implement identity/token domain models
@@ -492,7 +492,7 @@ tasks:
     phase: 3
     title: Phase 3 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-030
       - MCP-031
@@ -506,7 +506,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Official mcp.server.Server is used instead of third-party wrappers to allow precise Starlette mounting.
+      - SSE transport mounted at /mcp and /mcp/messages.
+      - SecurityMiddleware automatically injects correlation IDs and checks Origin.
   - id: MCP-041
     phase: 4
     title: Implement client registration
@@ -596,6 +599,26 @@ tasks:
       - MCP-011
       - MCP-026
     status: READY
+  - id: REV-004
+    phase: 4
+    title: Phase 4 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-040
+      - MCP-041
+      - MCP-042
+      - MCP-043
+      - MCP-044
+      - MCP-045
+      - MCP-046
+      - MCP-047
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-051
     phase: 5
     title: Implement secret-manager adapter
