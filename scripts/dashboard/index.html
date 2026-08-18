@@ -648,8 +648,8 @@
     document.getElementById("result-count").textContent = `${visible} из ${totalTasks}`;
   }
 
+  window.openDetail = openDetail;
   function openDetail(id) {
-    window.openDetail = openDetail;
     const detail = document.getElementById("detail");
 
     if (id === "RULES") {
