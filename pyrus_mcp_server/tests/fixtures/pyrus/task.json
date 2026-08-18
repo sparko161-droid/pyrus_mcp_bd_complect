@@ -1,0 +1,26 @@
+{
+    "task": {
+        "id": 1234567,
+        "text": "Please review this document",
+        "create_date": "2023-10-01T12:00:00Z",
+        "last_modified_date": "2023-10-01T12:30:00Z",
+        "author": {
+            "id": 101,
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john.doe@example.com",
+            "type": "person"
+        },
+        "form_id": 999,
+        "fields": [
+            {
+                "id": 1,
+                "type": "text",
+                "name": "Subject",
+                "value": "Review Request"
+            }
+        ],
+        "approvals": [],
+        "comments": []
+    }
+}

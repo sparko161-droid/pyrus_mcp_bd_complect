@@ -27,7 +27,7 @@ waves:
       - 8
       - 9
     status: PLANNED
-    gate_status: PENDING
+    gate_status: APPROVED
   - id: W3
     name: Advanced Features & Production
     phases:
@@ -738,7 +738,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-058
-    status: READY
+    status: DONE
   - id: REV-005
     phase: 5
     title: Phase 5 Coherence Review & Sign-off
@@ -774,7 +774,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-060
-    status: READY
+    status: DONE
   - id: MCP-062
     phase: 6
     title: Implement catalog/list/member/role models
@@ -784,7 +784,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-060
-    status: READY
+    status: DONE
   - id: MCP-063
     phase: 6
     title: Implement announcement/KB/file/profile/calendar models
@@ -794,7 +794,7 @@ tasks:
       - chief-architect
     deps:
       - MCP-060
-    status: READY
+    status: DONE
   - id: MCP-064
     phase: 6
     title: Create recorded API fixtures for all recovered domains
@@ -807,7 +807,7 @@ tasks:
       - MCP-061
       - MCP-062
       - MCP-063
-    status: READY
+    status: DONE
   - id: MCP-070
     phase: 7
     title: Implement misc read-only tools
@@ -823,7 +823,7 @@ tasks:
     phase: 6
     title: Phase 6 Coherence Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - MCP-060
       - MCP-061
@@ -835,7 +835,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - Pydantic v2 used with extra=ignore to prevent server crashes if Pyrus adds new undocumented fields.
+      - Common models (PyrusBaseModel) introduced to standardize ConfigDict.
+      - API fixtures successfully generated for test mocking.
   - id: MCP-071
     phase: 7
     title: Implement form read-only tools
@@ -929,6 +932,26 @@ tasks:
       - MCP-072
       - MCP-077
     status: READY
+  - id: REV-007
+    phase: 7
+    title: Phase 7 Coherence Review & Sign-off
+    primary: chief-architect
+    status: PLANNED
+    deps:
+      - MCP-070
+      - MCP-071
+      - MCP-072
+      - MCP-073
+      - MCP-074
+      - MCP-075
+      - MCP-076
+      - MCP-077
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    discovery_links: []
+    blocked_reason: null
+    human_decisions: []
   - id: MCP-081
     phase: 8
     title: Implement list and catalog write tools
