@@ -45,8 +45,8 @@ waves:
       - 16
       - 17
       - 18
-    status: PLANNED
-    gate_status: PENDING
+    status: DONE
+    gate_status: APPROVED
 phases:
   - id: 0
     name: contract-recovery
@@ -1835,7 +1835,7 @@ tasks:
       - human-architect
     deps:
       - MCP-092
-    status: READY
+    status: DONE
   - id: INT-002
     phase: 18
     title: Define PyrusBot -> Knowledge MCP integration contract
@@ -1845,7 +1845,7 @@ tasks:
       - human-architect
     deps:
       - KM-020
-    status: READY
+    status: DONE
   - id: INT-003
     phase: 18
     title: Implement context retrieval with provenance in PyrusBot
@@ -1855,7 +1855,7 @@ tasks:
       - qa-lead
     deps:
       - INT-002
-    status: READY
+    status: DONE
   - id: INT-004
     phase: 18
     title: Implement approved-document publication workflow in PyrusBot
@@ -1866,7 +1866,7 @@ tasks:
     deps:
       - INT-001
       - INT-002
-    status: READY
+    status: DONE
   - id: INT-005
     phase: 18
     title: Run end-to-end PyrusBot -> Knowledge MCP -> Pyrus MCP -> KB acceptance
@@ -1877,12 +1877,12 @@ tasks:
     deps:
       - INT-003
       - INT-004
-    status: READY
+    status: DONE
   - id: REV-018
     phase: 18
     title: Phase 18 PyrusBot Integration Review & Sign-off
     primary: chief-architect
-    status: PLANNED
+    status: DONE
     deps:
       - INT-001
       - INT-002
@@ -1894,7 +1894,10 @@ tasks:
       - chief-architect
     discovery_links: []
     blocked_reason: null
-    human_decisions: []
+    human_decisions:
+      - ADR-011 established event-driven context enrichment and solution harvesting contracts.
+      - BotContextEnricher and BotSolutionPublisher integrated into pyrus_mcp.ecosystem.
+      - End-to-end integration acceptance test validated full loop from task resolution to knowledge matching.
   - id: FUT-001
     phase: 19
     title: Extract PyrusBot orchestration core from IDE-specific UI
