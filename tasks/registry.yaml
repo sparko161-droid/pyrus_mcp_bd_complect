@@ -14,7 +14,7 @@ waves:
       - 0
       - 1
       - 2
-    status: IN_PROGRESS
+    status: DONE
     gate_status: APPROVED
   - id: W2
     name: Core Protocol & Parity
@@ -26,7 +26,7 @@ waves:
       - 7
       - 8
       - 9
-    status: PLANNED
+    status: DONE
     gate_status: APPROVED
   - id: W3
     name: Advanced Features & Production
@@ -1907,7 +1907,7 @@ tasks:
       - human-architect
     deps:
       - INT-005
-    status: PLANNED
+    status: DONE
   - id: FUT-002
     phase: 19
     title: Define chat/CLI/web adapter contracts
@@ -1917,4 +1917,4 @@ tasks:
       - human-architect
     deps:
       - FUT-001
-    status: PLANNED
+    status: DONE
