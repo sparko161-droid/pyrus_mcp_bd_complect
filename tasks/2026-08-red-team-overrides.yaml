@@ -1,7 +1,22 @@
 version: 1
 status: ACTIVE
-purpose: "Executable overrides that reopen historical DONE claims contradicted by source-code evidence."
+purpose: "Executable overrides that reopen historical DONE claims contradicted by source-code or evidence review."
 task_overrides:
+  - id: LIVE-001
+    status: SECURITY_BLOCKED
+    reason: "Current repository does not contain reproducible live initialize evidence from an external egress runner."
+  - id: LIVE-002
+    status: SECURITY_BLOCKED
+    reason: "Live-vs-snapshot drift diff cannot be accepted without a valid live inventory artifact."
+  - id: LIVE-003
+    status: SECURITY_BLOCKED
+    reason: "Session/pagination behavior is not proven by a stored live protocol transcript."
+  - id: LIVE-004
+    status: SECURITY_BLOCKED
+    reason: "Safe read-only live tool probe and response-shape diff are not proven by executable evidence."
+  - id: LIVE-005
+    status: BLOCKED
+    reason: "Scheduled drift detection cannot be accepted while LIVE-001..004 are unproven."
   - id: MCP-005
     status: SECURITY_BLOCKED
     reason: "Current repository does not prove full legacy-to-official method mapping; live/API drift gates are stubs."
