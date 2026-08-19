@@ -607,6 +607,7 @@
     const discLinks = t.discovery_links || [];
     const depBadge = deps.length ? `<span class="badge" title="Зависимости">deps ${deps.length}</span>` : "";
     const discBadge = discLinks.length ? `<span class="badge warn" title="Discovery">disc ${discLinks.length}</span>` : "";
+    const overriddenBadge = t._overridden_by_audit ? `<span class="badge warn" title="Overridden by Audit">audit override</span>` : "";
     return `
       <button class="task" type="button" data-id="${t.id}" data-status="${t.status}" data-role="${t.primary}"
         data-search="${(t.id + " " + t.title).toLowerCase().replace(/"/g, "&quot;")}">
@@ -617,7 +618,7 @@
         <div class="task-title">${escapeHTML(t.title)}</div>
         <div class="task-bottom">
           <span class="role-badge">${t.primary}</span>
-          <span class="badges">${depBadge}${discBadge}</span>
+          <span class="badges">${depBadge}${discBadge}${overriddenBadge}</span>
         </div>
       </button>`;
   }

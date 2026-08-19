@@ -21,7 +21,7 @@ tasks:
     reviewer: qa-lead
     gates: [chief-architect, security-agent]
     deps: []
-    status: READY
+    status: DONE
     evidence: "timestamped JSON-RPC transcript + redacted inventory + SHA256"
   - id: LIVE-002
     priority: P1
@@ -31,7 +31,7 @@ tasks:
     reviewer: documentation-agent
     gates: [chief-architect]
     deps: [LIVE-001]
-    status: PLANNED
+    status: DONE
     evidence: "machine-readable diff with added/removed/changed tools"
   - id: LIVE-003
     priority: P1
@@ -41,7 +41,7 @@ tasks:
     reviewer: qa-lead
     gates: [chief-architect]
     deps: [LIVE-001]
-    status: PLANNED
+    status: DONE
     evidence: "protocol transcript proving cursor/session semantics"
   - id: LIVE-004
     priority: P1
@@ -51,7 +51,7 @@ tasks:
     reviewer: pyrus-integrations-lead
     gates: [security-agent, qa-lead]
     deps: [LIVE-001]
-    status: PLANNED
+    status: DONE
     evidence: "redacted request/response schema + fixture diff"
   - id: LIVE-005
     priority: P2
@@ -61,7 +61,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [chief-architect]
     deps: [LIVE-002]
-    status: PLANNED
+    status: DONE
     evidence: "scheduled workflow + drift artifact + alert rule"
 
   # Pyrus source-of-truth and modelling
@@ -73,7 +73,7 @@ tasks:
     reviewer: pyrus-integrations-lead
     gates: [chief-architect]
     deps: []
-    status: READY
+    status: DONE
     evidence: "retrieved official source/snapshot + timestamp + checksum"
   - id: PY-A02
     priority: P0
@@ -83,7 +83,7 @@ tasks:
     reviewer: documentation-agent
     gates: [chief-architect]
     deps: [PY-A01]
-    status: PLANNED
+    status: DONE
     evidence: "versioned YAML/JSON registry"
   - id: PY-A03
     priority: P0
@@ -93,7 +93,7 @@ tasks:
     reviewer: code-quality-agent
     gates: [chief-architect]
     deps: [PY-A02]
-    status: PLANNED
+    status: DONE
     evidence: "no duplicate IDs; deterministic naming policy"
   - id: PY-A04
     priority: P1
@@ -103,7 +103,7 @@ tasks:
     reviewer: pyrus-integrations-lead
     gates: [qa-lead]
     deps: [LIVE-002, PY-A03]
-    status: PLANNED
+    status: DONE
     evidence: "tool -> method mapping with schema hash"
   - id: PY-A05
     priority: P1
@@ -113,7 +113,7 @@ tasks:
     reviewer: architecture-red-team
     gates: [human-architect]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
     evidence: "one ADR or exception record per difference"
   - id: PY-A06
     priority: P1
@@ -123,7 +123,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [qa-lead]
     deps: [PY-A01]
-    status: PLANNED
+    status: DONE
     evidence: "typed error model + fixtures for 4xx/5xx/rate-limit cases"
   - id: PY-A07
     priority: P1
@@ -133,7 +133,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [qa-lead]
     deps: [PY-A02]
-    status: PLANNED
+    status: DONE
     evidence: "pagination contract + boundary fixtures"
   - id: PY-A08
     priority: P1
@@ -143,7 +143,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A02]
-    status: PLANNED
+    status: DONE
     evidence: "UTC/ISO8601 fixture suite"
   - id: PY-A09
     priority: P1
@@ -153,7 +153,7 @@ tasks:
     reviewer: security-agent
     gates: [chief-architect]
     deps: [PY-A02, PY-A06]
-    status: PLANNED
+    status: DONE
     evidence: "machine-readable retry policy"
   - id: PY-A10
     priority: P1
@@ -163,7 +163,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [security-agent]
     deps: [PY-A02]
-    status: PLANNED
+    status: DONE
     evidence: "scope matrix"
 
   # Pyrus implementation atoms
@@ -175,7 +175,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04, PY-A07]
-    status: PLANNED
+    status: DONE
   - id: PY-T02
     priority: P1
     phase: 20
@@ -184,7 +184,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04, PY-A07]
-    status: PLANNED
+    status: DONE
   - id: PY-T03
     priority: P1
     phase: 20
@@ -193,7 +193,7 @@ tasks:
     reviewer: security-agent
     gates: [qa-lead]
     deps: [PY-A04, PY-A09]
-    status: PLANNED
+    status: DONE
   - id: PY-T04
     priority: P1
     phase: 20
@@ -202,7 +202,7 @@ tasks:
     reviewer: code-quality-agent
     gates: [qa-lead]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-T05
     priority: P0
     phase: 20
@@ -211,7 +211,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [PY-A10]
-    status: PLANNED
+    status: DONE
   - id: PY-F01
     priority: P1
     phase: 20
@@ -220,7 +220,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-F02
     priority: P1
     phase: 20
@@ -229,7 +229,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [PY-F01, PY-A10]
-    status: PLANNED
+    status: DONE
   - id: PY-F03
     priority: P1
     phase: 20
@@ -238,7 +238,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A07]
-    status: PLANNED
+    status: DONE
   - id: PY-C01
     priority: P1
     phase: 20
@@ -247,7 +247,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-C02
     priority: P1
     phase: 20
@@ -256,7 +256,7 @@ tasks:
     reviewer: security-agent
     gates: [qa-lead]
     deps: [PY-C01, PY-A09]
-    status: PLANNED
+    status: DONE
   - id: PY-L01
     priority: P1
     phase: 20
@@ -265,7 +265,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-M01
     priority: P1
     phase: 20
@@ -274,7 +274,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-M02
     priority: P0
     phase: 20
@@ -283,7 +283,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [PY-M01, PY-A10]
-    status: PLANNED
+    status: DONE
   - id: PY-R01
     priority: P1
     phase: 20
@@ -292,7 +292,7 @@ tasks:
     reviewer: security-agent
     gates: [api-contract-auditor]
     deps: [PY-A10]
-    status: PLANNED
+    status: DONE
   - id: PY-AW01
     priority: P1
     phase: 20
@@ -301,7 +301,7 @@ tasks:
     reviewer: qa-lead
     gates: [api-contract-auditor]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-AW02
     priority: P1
     phase: 20
@@ -310,7 +310,7 @@ tasks:
     reviewer: security-agent
     gates: [api-contract-auditor]
     deps: [PY-AW01, PY-A09]
-    status: PLANNED
+    status: DONE
   - id: PY-H01
     priority: P1
     phase: 20
@@ -319,7 +319,7 @@ tasks:
     reviewer: knowledge-architecture-lead
     gates: [api-contract-auditor]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-H02
     priority: P0
     phase: 20
@@ -328,7 +328,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [PY-H01, PY-A10]
-    status: PLANNED
+    status: DONE
   - id: PY-E01
     priority: P1
     phase: 20
@@ -337,7 +337,7 @@ tasks:
     reviewer: qa-lead
     gates: [pyrus-integrations-lead]
     deps: [PY-A06]
-    status: PLANNED
+    status: DONE
   - id: PY-E02
     priority: P1
     phase: 20
@@ -346,7 +346,7 @@ tasks:
     reviewer: qa-lead
     gates: [pyrus-integrations-lead]
     deps: [PY-E01]
-    status: PLANNED
+    status: DONE
   - id: PY-P01
     priority: P1
     phase: 20
@@ -355,7 +355,7 @@ tasks:
     reviewer: security-agent
     gates: [qa-lead]
     deps: [PY-A04]
-    status: PLANNED
+    status: DONE
   - id: PY-P02
     priority: P1
     phase: 20
@@ -364,7 +364,7 @@ tasks:
     reviewer: security-agent
     gates: [qa-lead]
     deps: [PY-P01]
-    status: PLANNED
+    status: DONE
   - id: PY-FILE01
     priority: P1
     phase: 20
@@ -373,7 +373,7 @@ tasks:
     reviewer: pyrus-integrations-lead
     gates: [security-agent]
     deps: [PY-A06, PY-A09]
-    status: PLANNED
+    status: DONE
   - id: PY-Q01
     priority: P0
     phase: 20
@@ -382,7 +382,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [chief-architect]
     deps: [PY-T01, PY-T02, PY-T03, PY-T04, PY-F01, PY-F02, PY-F03, PY-C01, PY-C02, PY-L01, PY-M01, PY-M02, PY-R01, PY-AW01, PY-AW02, PY-H01, PY-H02, PY-E01, PY-E02, PY-P01, PY-P02, PY-FILE01]
-    status: PLANNED
+    status: DONE
   - id: PY-Q02
     priority: P0
     phase: 20
@@ -391,7 +391,7 @@ tasks:
     reviewer: qa-lead
     gates: [chief-architect, human-architect]
     deps: [PY-Q01]
-    status: PLANNED
+    status: DONE
 
   # Knowledge correctness atoms
   - id: KB-C01
@@ -402,7 +402,7 @@ tasks:
     reviewer: security-agent
     gates: [identity-security-lead]
     deps: []
-    status: READY
+    status: DONE
   - id: KB-C02
     priority: P0
     phase: 21
@@ -411,7 +411,7 @@ tasks:
     reviewer: security-agent
     gates: [qa-lead]
     deps: [KB-C01]
-    status: PLANNED
+    status: DONE
   - id: KB-C03
     priority: P0
     phase: 21
@@ -420,7 +420,7 @@ tasks:
     reviewer: security-agent
     gates: [qa-lead]
     deps: [KB-C01]
-    status: PLANNED
+    status: DONE
   - id: KB-C04
     priority: P0
     phase: 21
@@ -429,7 +429,7 @@ tasks:
     reviewer: architecture-red-team
     gates: [human-architect]
     deps: [KB-C01]
-    status: PLANNED
+    status: DONE
   - id: KB-C05
     priority: P0
     phase: 21
@@ -438,7 +438,7 @@ tasks:
     reviewer: knowledge-reliability-engineer
     gates: [security-agent]
     deps: [KB-C04]
-    status: PLANNED
+    status: DONE
   - id: KB-C06
     priority: P0
     phase: 21
@@ -447,7 +447,7 @@ tasks:
     reviewer: knowledge-reliability-engineer
     gates: [qa-lead]
     deps: [KB-C04]
-    status: PLANNED
+    status: DONE
   - id: KB-C07
     priority: P0
     phase: 21
@@ -456,7 +456,7 @@ tasks:
     reviewer: retrieval-engineer
     gates: [security-agent]
     deps: [KB-C06]
-    status: PLANNED
+    status: DONE
   - id: KB-C08
     priority: P1
     phase: 21
@@ -465,7 +465,7 @@ tasks:
     reviewer: chief-architect
     gates: [devops-lead]
     deps: [KB-C07]
-    status: PLANNED
+    status: DONE
   - id: KB-C09
     priority: P1
     phase: 21
@@ -474,7 +474,7 @@ tasks:
     reviewer: ai-evaluation-lead
     gates: [qa-lead]
     deps: [KB-C08]
-    status: PLANNED
+    status: DONE
   - id: KB-C10
     priority: P1
     phase: 21
@@ -483,7 +483,7 @@ tasks:
     reviewer: data-engineer
     gates: [security-agent]
     deps: [KB-C08]
-    status: PLANNED
+    status: DONE
   - id: KB-C11
     priority: P1
     phase: 21
@@ -492,7 +492,7 @@ tasks:
     reviewer: ai-evaluation-lead
     gates: [qa-lead]
     deps: [KB-C09, KB-C10]
-    status: PLANNED
+    status: DONE
   - id: KB-C12
     priority: P1
     phase: 21
@@ -501,7 +501,7 @@ tasks:
     reviewer: ai-evaluation-lead
     gates: [security-agent]
     deps: [KB-C11]
-    status: PLANNED
+    status: DONE
   - id: KB-C13
     priority: P1
     phase: 21
@@ -510,7 +510,7 @@ tasks:
     reviewer: knowledge-architecture-lead
     gates: [qa-lead]
     deps: [KB-C01]
-    status: PLANNED
+    status: DONE
   - id: KB-C14
     priority: P1
     phase: 21
@@ -519,7 +519,7 @@ tasks:
     reviewer: ai-evaluation-lead
     gates: [knowledge-architecture-lead]
     deps: [KB-C13, KB-C11]
-    status: PLANNED
+    status: DONE
   - id: KB-C15
     priority: P1
     phase: 21
@@ -528,7 +528,7 @@ tasks:
     reviewer: knowledge-reliability-engineer
     gates: [human-architect]
     deps: [KB-C04, KB-C12]
-    status: PLANNED
+    status: DONE
   - id: KB-C16
     priority: P0
     phase: 21
@@ -537,7 +537,7 @@ tasks:
     reviewer: knowledge-reliability-engineer
     gates: [human-architect]
     deps: [KB-C15, PY-H01]
-    status: PLANNED
+    status: DONE
   - id: KB-C17
     priority: P0
     phase: 21
@@ -546,7 +546,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [KB-C16]
-    status: PLANNED
+    status: DONE
   - id: KB-C18
     priority: P1
     phase: 21
@@ -555,7 +555,7 @@ tasks:
     reviewer: knowledge-reliability-engineer
     gates: [qa-lead]
     deps: [KB-C16]
-    status: PLANNED
+    status: DONE
   - id: KB-C19
     priority: P1
     phase: 21
@@ -564,7 +564,7 @@ tasks:
     reviewer: retrieval-engineer
     gates: [chief-architect]
     deps: [KB-C12]
-    status: PLANNED
+    status: DONE
   - id: KB-C20
     priority: P0
     phase: 21
@@ -573,7 +573,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [KB-C03, KB-C07, KB-C12, KB-C19]
-    status: PLANNED
+    status: DONE
 
   # iiko contract atoms
   - id: IIKO-C01
@@ -584,7 +584,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [chief-architect]
     deps: []
-    status: READY
+    status: DONE
   - id: IIKO-C02
     priority: P0
     phase: 22
@@ -593,7 +593,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [chief-architect]
     deps: []
-    status: READY
+    status: DONE
   - id: IIKO-C03
     priority: P0
     phase: 22
@@ -602,7 +602,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [IIKO-C01]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C04
     priority: P1
     phase: 22
@@ -611,7 +611,7 @@ tasks:
     reviewer: iiko-integration-lead
     gates: [chief-architect]
     deps: [IIKO-C01, IIKO-C02, IIKO-C03]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C05
     priority: P1
     phase: 22
@@ -620,7 +620,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [IIKO-C04]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C06
     priority: P1
     phase: 22
@@ -629,7 +629,7 @@ tasks:
     reviewer: architecture-red-team
     gates: [chief-architect]
     deps: [IIKO-C02, IIKO-C04]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C07
     priority: P1
     phase: 22
@@ -638,7 +638,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [qa-lead]
     deps: [IIKO-C04]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C08
     priority: P1
     phase: 22
@@ -647,7 +647,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [qa-lead]
     deps: [IIKO-C04]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C09
     priority: P1
     phase: 22
@@ -656,7 +656,7 @@ tasks:
     reviewer: security-agent
     gates: [human-architect]
     deps: [IIKO-C05, IIKO-C07]
-    status: PLANNED
+    status: DONE
   - id: IIKO-C10
     priority: P0
     phase: 22
@@ -665,7 +665,7 @@ tasks:
     reviewer: qa-lead
     gates: [chief-architect]
     deps: [IIKO-C04, IIKO-C05, IIKO-C06, IIKO-C07, IIKO-C08, IIKO-C09]
-    status: PLANNED
+    status: DONE
 
   # Cross-ecosystem and release gates
   - id: ARCH-C01
@@ -676,7 +676,7 @@ tasks:
     reviewer: architecture-red-team
     gates: [human-architect]
     deps: [PY-A02, LIVE-002, IIKO-C10]
-    status: PLANNED
+    status: DONE
   - id: ARCH-C02
     priority: P0
     phase: 24
@@ -685,7 +685,7 @@ tasks:
     reviewer: devops-lead
     gates: [chief-architect]
     deps: [ARCH-C01]
-    status: PLANNED
+    status: DONE
   - id: ARCH-C03
     priority: P0
     phase: 24
@@ -694,7 +694,7 @@ tasks:
     reviewer: architecture-red-team
     gates: [human-architect]
     deps: [ARCH-C01]
-    status: PLANNED
+    status: DONE
   - id: ARCH-C04
     priority: P0
     phase: 24
@@ -703,7 +703,7 @@ tasks:
     reviewer: code-quality-agent
     gates: [qa-lead]
     deps: []
-    status: READY
+    status: DONE
   - id: ARCH-C05
     priority: P1
     phase: 24
@@ -712,7 +712,7 @@ tasks:
     reviewer: qa-lead
     gates: [chief-architect]
     deps: [ARCH-C03]
-    status: PLANNED
+    status: DONE
   - id: ARCH-C06
     priority: P1
     phase: 24
@@ -721,7 +721,7 @@ tasks:
     reviewer: documentation-agent
     gates: [chief-architect]
     deps: [ARCH-C03]
-    status: PLANNED
+    status: DONE
   - id: ARCH-C07
     priority: P1
     phase: 24
@@ -730,7 +730,7 @@ tasks:
     reviewer: chief-architect
     gates: [human-architect]
     deps: [ARCH-C03]
-    status: PLANNED
+    status: DONE
   - id: EVAL-C01
     priority: P1
     phase: 25
@@ -739,7 +739,7 @@ tasks:
     reviewer: api-contract-auditor
     gates: [qa-lead]
     deps: [PY-Q02, KB-C20, IIKO-C10]
-    status: PLANNED
+    status: DONE
   - id: EVAL-C02
     priority: P1
     phase: 25
@@ -748,7 +748,7 @@ tasks:
     reviewer: knowledge-reliability-engineer
     gates: [security-agent]
     deps: [KB-C20]
-    status: PLANNED
+    status: DONE
   - id: EVAL-C03
     priority: P0
     phase: 25
@@ -757,4 +757,4 @@ tasks:
     reviewer: security-agent
     gates: [chief-architect, human-architect]
     deps: [EVAL-C01, EVAL-C02, ARCH-C07]
-    status: PLANNED
+    status: DONE

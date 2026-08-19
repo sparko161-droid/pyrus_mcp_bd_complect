@@ -1918,3 +1918,444 @@ tasks:
     deps:
       - FUT-001
     status: DONE
+  - id: TOOL-F04
+    phase: 7
+    title: Get form permissions
+    domain: forms
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-F05
+    phase: 8
+    title: Update form permissions
+    domain: forms
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-T04
+    phase: 8
+    title: Delete task
+    domain: tasks
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-N02
+    phase: 7
+    title: Get announcement
+    domain: announcements
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-N03
+    phase: 8
+    title: Create announcement
+    domain: announcements
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-N04
+    phase: 8
+    title: Comment announcement
+    domain: announcements
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-C01
+    phase: 7
+    title: Calendar
+    domain: calendar
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-D03
+    phase: 8
+    title: Create/sync catalog
+    domain: catalogs
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-D04
+    phase: 8
+    title: Sync catalog
+    domain: catalogs
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-D05
+    phase: 8
+    title: Diff catalog
+    domain: catalogs
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K01
+    phase: 7
+    title: Get KB object
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K02
+    phase: 8
+    title: Update KB object
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K03
+    phase: 8
+    title: Create KB object
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K04
+    phase: 7
+    title: Get KB structure
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K05
+    phase: 7
+    title: Get KB permissions
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K06
+    phase: 8
+    title: Update KB permissions
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-K07
+    phase: 8
+    title: Delete KB object
+    domain: knowledgebase
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-M01
+    phase: 7
+    title: Contacts
+    domain: members
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-M03
+    phase: 7
+    title: Member detail
+    domain: members
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-M04
+    phase: 8
+    title: Create member
+    domain: members
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-M05
+    phase: 8
+    title: Update member
+    domain: members
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-M06
+    phase: 8
+    title: Delete member
+    domain: members
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-AW01
+    phase: 8
+    title: Set award threshold
+    domain: awards
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-AW02
+    phase: 7
+    title: Get award threshold
+    domain: awards
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-AW03
+    phase: 7
+    title: Get member award counter
+    domain: awards
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-AW04
+    phase: 8
+    title: Increment award counter
+    domain: awards
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-AW05
+    phase: 8
+    title: Set award counter
+    domain: awards
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-R02
+    phase: 7
+    title: Get role
+    domain: roles
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-R03
+    phase: 8
+    title: Create role
+    domain: roles
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-R04
+    phase: 8
+    title: Update role
+    domain: roles
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-R05
+    phase: 8
+    title: Delete role
+    domain: roles
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-P01
+    phase: 7
+    title: Get profile
+    domain: profile
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-I01
+    phase: 7
+    title: List work lists
+    domain: lists
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-I02
+    phase: 7
+    title: Get list
+    domain: lists
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-I03
+    phase: 7
+    title: List tasks in list
+    domain: lists
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-I04
+    phase: 8
+    title: Update list
+    domain: lists
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+      - security-agent
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-I05
+    phase: 7
+    title: Inbox
+    domain: inbox
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-H01
+    phase: 7
+    title: Event history
+    domain: eventhistory
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-H02
+    phase: 7
+    title: File access history
+    domain: eventhistory
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-H03
+    phase: 7
+    title: Task access history
+    domain: eventhistory
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-H04
+    phase: 7
+    title: Task export history
+    domain: eventhistory
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+  - id: TOOL-H05
+    phase: 7
+    title: Registry download history
+    domain: eventhistory
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    status: DONE
+    blocked_reason: "Awaiting contract, schema, and fixture evidence"

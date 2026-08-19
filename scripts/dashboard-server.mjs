@@ -56,7 +56,10 @@ function applyAuditOverlay(base, overlay) {
   const taskById = new Map(result.tasks.map(t => [t.id, t]));
   for (const override of (overlay.task_overrides || [])) {
     const existing = taskById.get(override.id);
-    if (existing) Object.assign(existing, override);
+    if (existing) {
+        Object.assign(existing, override);
+        existing._overridden_by_audit = true;
+    }
     else result.tasks.push(override);
   }
   for (const task of (overlay.new_tasks || [])) {

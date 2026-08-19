@@ -37,7 +37,16 @@ jobs:
       run: uv run ruff format --check .
 
     - name: Run Mypy Type Checker
-      run: uv run mypy . || echo "Mypy checks passed or warnings ignored"
+      run: uv run mypy .
 
     - name: Run Pytest
-      run: uv run pytest tests/ || echo "No tests written yet, bypassing"
+      run: uv run pytest tests/
+
+    - name: Check API Contract Drift
+      run: python ../scripts/check-contract-drift.py
+
+    - name: Check DONE tasks evidence and deps
+      run: pip install pyyaml && python ../scripts/check-done-tasks.py
+
+    - name: Check Phase Exit and Red-Team Review
+      run: python ../scripts/check-phase-exit.py
