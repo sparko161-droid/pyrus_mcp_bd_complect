@@ -8,13 +8,15 @@ import { load } from "js-yaml";
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dashboardDir = resolve(repoRoot, "scripts/dashboard");
 const registryPath = resolve(repoRoot, "tasks/registry.yaml");
-const auditOverlayPath = resolve(repoRoot, "tasks/2026-08-audit-overlay.yaml");
-const redTeamFindingsPath = resolve(repoRoot, "tasks/2026-08-red-team-findings.yaml");
-const redTeamOverridesPath = resolve(repoRoot, "tasks/2026-08-red-team-overrides.yaml");
+const overlayPaths = [
+  resolve(repoRoot, "tasks/2026-08-audit-overlay.yaml"),
+  resolve(repoRoot, "tasks/2026-08-red-team-findings.yaml"),
+  resolve(repoRoot, "tasks/2026-08-red-team-overrides.yaml"),
+  resolve(repoRoot, "tasks/2026-08-red-team-pyrus-runtime.yaml"),
+];
 const PORT = Number(process.env.DASHBOARD_PORT || 4748);
 
 const MIME = { ".html": "text/html; charset=utf-8", ".woff2": "font/woff2", ".json": "application/json; charset=utf-8" };
-
 function readYaml(path) { return load(readFileSync(path, "utf8")) || {}; }
 
 function applyOverlay(base, overlay, sourceName) {
@@ -45,9 +47,7 @@ function applyOverlay(base, overlay, sourceName) {
 
 function readRegistryAsJSON() {
   let result = readYaml(registryPath);
-  for (const overlayPath of [auditOverlayPath, redTeamFindingsPath, redTeamOverridesPath]) {
-    if (existsSync(overlayPath)) result = applyOverlay(result, readYaml(overlayPath), overlayPath);
-  }
+  for (const overlayPath of overlayPaths) if (existsSync(overlayPath)) result = applyOverlay(result, readYaml(overlayPath), overlayPath);
   return JSON.stringify(result);
 }
 
@@ -83,12 +83,10 @@ const server = createServer((req, res) => {
 });
 
 watch(registryPath, { persistent: true }, onRegistryFileEvent);
-for (const overlayPath of [auditOverlayPath, redTeamFindingsPath, redTeamOverridesPath]) if (existsSync(overlayPath)) watch(overlayPath, { persistent: true }, onRegistryFileEvent);
+for (const overlayPath of overlayPaths) if (existsSync(overlayPath)) watch(overlayPath, { persistent: true }, onRegistryFileEvent);
 
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Dashboard: http://localhost:${PORT}/`);
   console.log(`Watching: ${registryPath}`);
-  console.log(`Audit overlay: ${auditOverlayPath}`);
-  console.log(`Red-team findings: ${redTeamFindingsPath}`);
-  console.log(`Red-team overrides: ${redTeamOverridesPath}`);
+  for (const overlayPath of overlayPaths) console.log(`Overlay: ${overlayPath}`);
 });
