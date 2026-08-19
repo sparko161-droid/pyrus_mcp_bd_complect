@@ -1,0 +1,93 @@
+version: 1
+status: ACTIVE
+purpose: "Pyrus runtime/client correctness findings from the 2026-08-19 red-team pass."
+completion_rule: "Each task requires source-code proof plus negative/integration tests; mocked happy-path tests alone are insufficient."
+tasks:
+  - id: RT-PYR-001
+    priority: P0
+    phase: 30
+    title: "Replace global Pyrus authenticator with authenticated tenant-bound credential context"
+    primary: identity-security-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: []
+  - id: RT-PYR-002
+    priority: P0
+    phase: 30
+    title: "Implement provider-driven Pyrus token expiry and concurrent refresh locking"
+    primary: pyrus-integrations-lead
+    reviewer: identity-security-lead
+    gates: [security-agent]
+    deps: [RT-PYR-001]
+  - id: RT-PYR-003
+    priority: P1
+    phase: 30
+    title: "Make Pyrus retry policy method-aware; no automatic unsafe mutation retry without idempotency"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [chief-architect]
+    deps: []
+  - id: RT-PYR-004
+    priority: P1
+    phase: 30
+    title: "Implement actual Pyrus circuit breaker or remove false resilience claim and replace with tracked policy"
+    primary: python-backend-lead
+    reviewer: devops-lead
+    gates: [qa-lead]
+    deps: []
+  - id: RT-PYR-005
+    priority: P1
+    phase: 30
+    title: "Replace Pyrus error-body logging with bounded redacted structured errors"
+    primary: security-agent
+    reviewer: code-quality-agent
+    gates: [qa-lead]
+    deps: []
+  - id: RT-PYR-006
+    priority: P1
+    phase: 30
+    title: "Implement actual streaming response-size enforcement in Pyrus client"
+    primary: python-backend-lead
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: []
+  - id: RT-PYR-007
+    priority: P1
+    phase: 30
+    title: "Prevent tool handlers from mutating caller-provided arguments"
+    primary: python-backend-lead
+    reviewer: code-quality-agent
+    gates: [qa-lead]
+    deps: []
+  - id: RT-PYR-008
+    priority: P1
+    phase: 30
+    title: "Implement full create_task MCP schema and official payload fields"
+    primary: pyrus-integrations-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: []
+  - id: RT-PYR-009
+    priority: P1
+    phase: 30
+    title: "Implement complete task action/comment schema including approval/reassignment/subscriber/list/field operations"
+    primary: pyrus-integrations-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: []
+  - id: RT-PYR-010
+    priority: P1
+    phase: 30
+    title: "Replace sequential batch task mutation with explicit partial-failure and idempotency contract"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [security-agent]
+    deps: [RT-PYR-003]
+  - id: RT-PYR-011
+    priority: P0
+    phase: 30
+    title: "Generate protocol-level tools/list snapshot proving exact Pyrus input schemas are exposed to MCP clients"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: [RT-PYR-008, RT-PYR-009]
