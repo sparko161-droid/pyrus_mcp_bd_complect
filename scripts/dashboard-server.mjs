@@ -1,17 +1,13 @@
 #!/usr/bin/env node
 // Persistent local dashboard server for tasks/registry.yaml.
 //
-// `pnpm run dashboard` (or `node scripts/dashboard-server.mjs`) serves
-// scripts/dashboard/index.html on a fixed local port, with the registry
-// data fetched live from tasks/registry.yaml on every request (never
-// baked into the HTML, unlike the one-off Artifact snapshot) and pushed to
-// the browser over Server-Sent Events the moment the file changes -- so
-// running any `task-registry` command that mutates the registry updates
-// the open dashboard tab within a second, no manual refresh.
+// The dashboard keeps the historical registry intact, then overlays the
+// executable 2026 audit correction layer from
+// tasks/2026-08-audit-overlay.yaml. This makes the dashboard an honest
+// execution view while preserving the original task history.
 //
-// Deliberately plain `node:http` + `fs.watch`, no framework and no new
-// runtime dependency beyond `js-yaml` (already a root devDependency) --
-// this is a single-user local tool, not a service.
+// `pnpm run dashboard` (or `node scripts/dashboard-server.mjs`) serves
+// scripts/dashboard/index.html and pushes updates over Server-Sent Events.
 
 import { createReadStream, existsSync, readFileSync, statSync, watch } from "node:fs";
 import { createServer } from "node:http";
@@ -22,6 +18,7 @@ import { load } from "js-yaml";
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dashboardDir = resolve(repoRoot, "scripts/dashboard");
 const registryPath = resolve(repoRoot, "tasks/registry.yaml");
+const overlayPath = resolve(repoRoot, "tasks/2026-08-audit-overlay.yaml");
 const PORT = Number(process.env.DASHBOARD_PORT || 4748);
 
 const MIME = {
@@ -30,13 +27,57 @@ const MIME = {
   ".json": "application/json; charset=utf-8",
 };
 
-function readRegistryAsJSON() {
-  const doc = load(readFileSync(registryPath, "utf8"));
-  return JSON.stringify(doc);
+function readYaml(path) {
+  return load(readFileSync(path, "utf8")) || {};
 }
 
-// SSE clients currently connected. A Set, not a single value, because
-// several browser tabs (or the same tab across reloads) can be open at once.
+function applyAuditOverlay(base, overlay) {
+  const result = JSON.parse(JSON.stringify(base));
+  result.meta = {
+    ...(result.meta || {}),
+    audit_overlay: "tasks/2026-08-audit-overlay.yaml",
+    audit_baseline_date: "2026-08-19",
+    state_model: "historical-registry + executable-audit-overlay",
+  };
+
+  result.phases = Array.isArray(result.phases) ? result.phases : [];
+  result.tasks = Array.isArray(result.tasks) ? result.tasks : [];
+
+  const phaseById = new Map(result.phases.map(p => [String(p.id), p]));
+  for (const phase of (overlay.phase_overrides || [])) {
+    const existing = phaseById.get(String(phase.id));
+    if (existing) Object.assign(existing, phase);
+    else {
+      result.phases.push({ id: phase.id, name: phase.name, exit: phase.exit });
+      phaseById.set(String(phase.id), result.phases[result.phases.length - 1]);
+    }
+  }
+
+  const taskById = new Map(result.tasks.map(t => [t.id, t]));
+  for (const override of (overlay.task_overrides || [])) {
+    const existing = taskById.get(override.id);
+    if (existing) Object.assign(existing, override);
+    else result.tasks.push(override);
+  }
+  for (const task of (overlay.new_tasks || [])) {
+    const existing = taskById.get(task.id);
+    if (existing) Object.assign(existing, task);
+    else {
+      result.tasks.push(task);
+      taskById.set(task.id, task);
+    }
+  }
+
+  result.version = `${base.version || "unknown"}+audit-2026-08`;
+  return result;
+}
+
+function readRegistryAsJSON() {
+  const base = readYaml(registryPath);
+  const overlay = existsSync(overlayPath) ? readYaml(overlayPath) : {};
+  return JSON.stringify(applyAuditOverlay(base, overlay));
+}
+
 const sseClients = new Set();
 
 function broadcastChange() {
@@ -50,10 +91,6 @@ function broadcastChange() {
   }
 }
 
-// fs.watch fires more than once per logical save on some platforms
-// (editors, and task-registry's own write-then-rename-free plain
-// writeFileSync can still trigger duplicate "change" events). Debounce so
-// one `task-registry claim` command doesn't fire the SSE event three times.
 let debounceTimer = null;
 function onRegistryFileEvent() {
   clearTimeout(debounceTimer);
@@ -81,7 +118,7 @@ const server = createServer((req, res) => {
       res.end(json);
     } catch (err) {
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end(`Failed to read tasks/registry.yaml: ${err instanceof Error ? err.message : String(err)}`);
+      res.end(`Failed to read roadmap data: ${err instanceof Error ? err.message : String(err)}`);
     }
     return;
   }
@@ -105,9 +142,6 @@ const server = createServer((req, res) => {
   }
 
   const fsPath = url.pathname === "/" ? "/index.html" : url.pathname;
-  // Prevent path traversal outside scripts/dashboard/ -- this is a local
-  // tool, but it still binds a real TCP port, so don't hand out arbitrary
-  // filesystem reads.
   const resolved = resolve(dashboardDir, `.${fsPath}`);
   if (!resolved.startsWith(dashboardDir)) {
     res.writeHead(403, { "Content-Type": "text/plain" });
@@ -118,8 +152,10 @@ const server = createServer((req, res) => {
 });
 
 watch(registryPath, { persistent: true }, onRegistryFileEvent);
+if (existsSync(overlayPath)) watch(overlayPath, { persistent: true }, onRegistryFileEvent);
 
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Dashboard: http://localhost:${PORT}/`);
   console.log(`Watching: ${registryPath}`);
+  console.log(`Overlay:  ${overlayPath}`);
 });

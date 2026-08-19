@@ -1,0 +1,448 @@
+version: 1
+status: ACTIVE
+base_registry: tasks/registry.yaml
+purpose: "Executable correction layer over historical registry; does not rewrite completed history."
+phase_overrides:
+  - id: 9
+    name: parity-gate-reopened
+    exit: "Pyrus official API v4 matrix is 100% mapped; every row is implemented/tested or has an approved ADR; no unverified parity claim remains."
+  - id: 17
+    name: knowledge-mcp-reopened
+    exit: "Knowledge MCP has tenant-safe immutable lifecycle, current-version indexing, hybrid retrieval, evidence, benchmark and verified Pyrus KB projection."
+  - id: 20
+    name: pyrus-api-compliance-2026
+    exit: "All official Pyrus v4 methods are mapped to MCP tools, schemas, scopes, fixtures and tests."
+  - id: 21
+    name: knowledge-learning-system
+    exit: "Cases continuously become evidence/candidates/approved knowledge, retrieval is measurable, stale data is suppressed and agent feedback returns to the bank."
+  - id: 22
+    name: iiko-api-contract-recovery
+    exit: "Official iiko Cloud/iikoServer snapshots, auth model and method matrix are versioned and reconciled."
+  - id: 23
+    name: iiko-mcp-foundation
+    exit: "iiko MCP client, domain model, scope/idempotency/error contracts and read surface are green."
+  - id: 24
+    name: cross-ecosystem-architecture-gates
+    exit: "Cross-MCP boundaries, documentation/code parity, versioning and operational gates pass for Pyrus, Knowledge and iiko."
+  - id: 25
+    name: agent-evaluation-and-release
+    exit: "Agent benchmarks prove retrieval usefulness, citation correctness, no tenant leakage and correct API tool selection."
+
+task_overrides:
+  - id: MCP-005
+    status: SECURITY_BLOCKED
+    title: "REOPEN — Map each legacy tool to Pyrus API endpoint and quirks"
+    primary: api-contract-auditor
+    reviewer: pyrus-integrations-lead
+    gate_owners: [chief-architect, qa-lead]
+  - id: MCP-006
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Approve compatibility catalogue only after official API reconciliation"
+    primary: chief-architect
+    reviewer: api-contract-auditor
+    gate_owners: [human-architect]
+  - id: MCP-016
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Complete ADR set and verify repository/code parity"
+    primary: documentation-agent
+    reviewer: architecture-red-team
+    gate_owners: [chief-architect]
+  - id: MCP-090
+    status: SECURITY_BLOCKED
+    title: "REOPEN — Generate evidence-backed compatibility report from official Pyrus v4 matrix"
+    primary: qa-lead
+    reviewer: api-contract-auditor
+    gate_owners: [chief-architect]
+  - id: MCP-092
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Freeze parity contract only after all official methods are green"
+    primary: human-architect
+    reviewer: chief-architect
+    gate_owners: [api-contract-auditor, qa-lead]
+  - id: KM-011
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Implement production Knowledge storage contract (PostgreSQL/pgvector target)"
+    primary: data-engineer
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [chief-architect, security-agent]
+  - id: KM-015
+    status: SECURITY_BLOCKED
+    title: "REOPEN — Implement real exact/FTS/vector/hybrid retrieval"
+    primary: knowledge-reliability-engineer
+    reviewer: retrieval-engineer
+    gate_owners: [qa-lead, security-agent]
+  - id: KM-017
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Implement immutable review workflow with reviewer identity and transition guards"
+    primary: knowledge-architecture-lead
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [human-architect]
+  - id: KM-018
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Replace announcement publication with verified Pyrus Knowledge Base projection"
+    primary: pyrus-integrations-lead
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [human-architect, security-agent]
+  - id: KM-020
+    status: SECURITY_BLOCKED
+    title: "REOPEN — Re-run Knowledge acceptance suite after lifecycle/index/publication fixes"
+    primary: qa-lead
+    reviewer: architecture-red-team
+    gate_owners: [human-architect]
+  - id: MCP-141
+    status: ARCHITECTURE_BLOCKED
+    title: "REOPEN — Staging acceptance must include official API matrix and Knowledge isolation gates"
+    primary: qa-lead
+    reviewer: api-contract-auditor
+    gate_owners: [chief-architect]
+
+new_tasks:
+  # Pyrus API compliance
+  - id: PY-001
+    phase: 20
+    title: "Capture official Pyrus v4 API snapshot and endpoint index"
+    primary: api-contract-auditor
+    reviewer: pyrus-integrations-lead
+    gate_owners: [chief-architect]
+    deps: []
+    status: READY
+  - id: PY-002
+    phase: 20
+    title: "Reconcile legacy MCP source provenance, commit/path/schema hashes"
+    primary: api-contract-auditor
+    reviewer: documentation-agent
+    gate_owners: [chief-architect]
+    deps: [PY-001]
+    status: READY
+  - id: PY-003
+    phase: 20
+    title: "Complete authorization/transport/rate-limit/error contract"
+    primary: pyrus-integrations-lead
+    reviewer: api-contract-auditor
+    gate_owners: [security-agent]
+    deps: [PY-001]
+    status: READY
+  - id: PY-004
+    phase: 20
+    title: "Implement missing form permissions methods and full registry query semantics"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners: [api-contract-auditor]
+    deps: [PY-003]
+    status: READY
+  - id: PY-005
+    phase: 20
+    title: "Complete task mutation/delete contract and typed action variants"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gate_owners: [qa-lead]
+    deps: [PY-003]
+    status: READY
+  - id: PY-006
+    phase: 20
+    title: "Complete announcements, calendar, contacts, profile and lists/inbox methods"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners: [api-contract-auditor]
+    deps: [PY-003]
+    status: READY
+  - id: PY-007
+    phase: 20
+    title: "Complete files/catalogs/Knowledge Base methods"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gate_owners: [api-contract-auditor]
+    deps: [PY-003]
+    status: READY
+  - id: PY-008
+    phase: 20
+    title: "Complete members/roles/awards/profile methods"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gate_owners: [api-contract-auditor]
+    deps: [PY-003]
+    status: READY
+  - id: PY-009
+    phase: 20
+    title: "Implement event-history CSV/binary streaming methods"
+    primary: python-backend-lead
+    reviewer: qa-lead
+    gate_owners: [pyrus-integrations-lead]
+    deps: [PY-003]
+    status: READY
+  - id: PY-010
+    phase: 20
+    title: "Implement telephony methods and webhook callback contract verification"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gate_owners: [qa-lead]
+    deps: [PY-003]
+    status: READY
+  - id: PY-011
+    phase: 20
+    title: "Complete field serialization/composite/table model coverage"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gate_owners: [api-contract-auditor]
+    deps: [PY-001]
+    status: READY
+  - id: PY-012
+    phase: 20
+    title: "Generate method-level fixtures and contract tests for every Pyrus row"
+    primary: qa-lead
+    reviewer: api-contract-auditor
+    gate_owners: [chief-architect]
+    deps: [PY-004, PY-005, PY-006, PY-007, PY-008, PY-009, PY-010, PY-011]
+    status: PLANNED
+  - id: PY-013
+    phase: 20
+    title: "Remove false parity sign-off and publish compliance scorecard"
+    primary: documentation-agent
+    reviewer: architecture-red-team
+    gate_owners: [human-architect]
+    deps: [PY-012]
+    status: PLANNED
+  # Knowledge reliability
+  - id: KB-001
+    phase: 21
+    title: "Add tenant-safe Knowledge access context to every read/write path"
+    primary: knowledge-reliability-engineer
+    reviewer: security-agent
+    gate_owners: [identity-security-lead]
+    deps: []
+    status: READY
+  - id: KB-002
+    phase: 21
+    title: "Implement immutable revision lifecycle, reviewer decisions and state guards"
+    primary: knowledge-architecture-lead
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [human-architect]
+    deps: [KB-001]
+    status: READY
+  - id: KB-003
+    phase: 21
+    title: "Rebuild revision chunk/index pipeline so current revision is always searchable"
+    primary: retrieval-engineer
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [qa-lead]
+    deps: [KB-002]
+    status: READY
+  - id: KB-004
+    phase: 21
+    title: "Implement FTS + vector + RRF hybrid retrieval with version/status filters"
+    primary: retrieval-engineer
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [qa-lead]
+    deps: [KB-003]
+    status: READY
+  - id: KB-005
+    phase: 21
+    title: "Add Evidence, Relation, ChangeSet, Publication and RetrievalEvent model"
+    primary: data-engineer
+    reviewer: knowledge-architecture-lead
+    gate_owners: [security-agent]
+    deps: [KB-001, KB-002]
+    status: READY
+  - id: KB-006
+    phase: 21
+    title: "Build case ingestion pipeline from resolved Pyrus tasks and feedback"
+    primary: evidence-case-curator
+    reviewer: knowledge-architecture-lead
+    gate_owners: [qa-lead]
+    deps: [KB-005]
+    status: READY
+  - id: KB-007
+    phase: 21
+    title: "Build candidate generation and duplicate/novelty detection"
+    primary: evidence-case-curator
+    reviewer: ai-evaluation-lead
+    gate_owners: [knowledge-architecture-lead]
+    deps: [KB-006]
+    status: PLANNED
+  - id: KB-008
+    phase: 21
+    title: "Implement evidence-backed get_context retrieval pack for agents"
+    primary: retrieval-engineer
+    reviewer: ai-evaluation-lead
+    gate_owners: [security-agent]
+    deps: [KB-004, KB-005]
+    status: PLANNED
+  - id: KB-009
+    phase: 21
+    title: "Replace announcement publication with Pyrus Knowledge Base publication records and conflict detection"
+    primary: pyrus-integrations-lead
+    reviewer: knowledge-reliability-engineer
+    gate_owners: [human-architect]
+    deps: [KB-002, PY-007]
+    status: PLANNED
+  - id: KB-010
+    phase: 21
+    title: "Create retrieval quality benchmark: recall@k, citation correctness, stale rate, tenant leakage"
+    primary: ai-evaluation-lead
+    reviewer: qa-lead
+    gate_owners: [chief-architect]
+    deps: [KB-008]
+    status: PLANNED
+  - id: KB-011
+    phase: 21
+    title: "Add retrieval feedback loop and knowledge usefulness metrics"
+    primary: knowledge-reliability-engineer
+    reviewer: ai-evaluation-lead
+    gate_owners: [devops-lead]
+    deps: [KB-008, KB-010]
+    status: PLANNED
+  # iiko contract recovery and implementation
+  - id: IIKO-001
+    phase: 22
+    title: "Capture official iiko Cloud API snapshot and hash"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gate_owners: [chief-architect]
+    deps: []
+    status: READY
+  - id: IIKO-002
+    phase: 22
+    title: "Capture iikoServer API snapshot and version/capability matrix"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gate_owners: [chief-architect]
+    deps: []
+    status: READY
+  - id: IIKO-003
+    phase: 22
+    title: "Verify current iiko authentication scheme and credential lifecycle from official docs"
+    primary: iiko-integration-lead
+    reviewer: security-agent
+    gate_owners: [human-architect]
+    deps: [IIKO-001]
+    status: READY
+  - id: IIKO-004
+    phase: 22
+    title: "Build complete method matrix with schemas, errors, limits and source evidence"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gate_owners: [qa-lead]
+    deps: [IIKO-001, IIKO-002, IIKO-003]
+    status: PLANNED
+  - id: IIKO-005
+    phase: 22
+    title: "Define Cloud vs iikoServer adapter boundary and capability negotiation"
+    primary: chief-architect
+    reviewer: iiko-integration-lead
+    gate_owners: [architecture-red-team]
+    deps: [IIKO-002]
+    status: PLANNED
+  - id: IIKO-010
+    phase: 23
+    title: "Implement iiko tenant/auth/client core"
+    primary: iiko-integration-lead
+    reviewer: identity-security-lead
+    gate_owners: [security-agent]
+    deps: [IIKO-003, IIKO-005]
+    status: PLANNED
+  - id: IIKO-011
+    phase: 23
+    title: "Implement reference/read surface: organizations, nomenclature, menu, stoplists"
+    primary: iiko-integration-lead
+    reviewer: qa-lead
+    gate_owners: [api-contract-auditor]
+    deps: [IIKO-004, IIKO-010]
+    status: PLANNED
+  - id: IIKO-012
+    phase: 23
+    title: "Implement terminals, employees and health methods"
+    primary: iiko-integration-lead
+    reviewer: qa-lead
+    gate_owners: [api-contract-auditor]
+    deps: [IIKO-004, IIKO-010]
+    status: PLANNED
+  - id: IIKO-013
+    phase: 23
+    title: "Implement order/delivery read models and bounded search"
+    primary: iiko-integration-lead
+    reviewer: qa-lead
+    gate_owners: [security-agent]
+    deps: [IIKO-011, IIKO-012]
+    status: PLANNED
+  - id: IIKO-014
+    phase: 23
+    title: "Implement reservations, loyalty and customer domains"
+    primary: iiko-integration-lead
+    reviewer: qa-lead
+    gate_owners: [api-contract-auditor]
+    deps: [IIKO-013]
+    status: PLANNED
+  - id: IIKO-015
+    phase: 23
+    title: "Implement write operations with idempotency and confirmation policy"
+    primary: iiko-integration-lead
+    reviewer: security-agent
+    gate_owners: [human-architect]
+    deps: [IIKO-013, IIKO-014]
+    status: PLANNED
+  - id: IIKO-016
+    phase: 23
+    title: "Implement webhook/event ingestion and durable idempotency"
+    primary: python-backend-lead
+    reviewer: iiko-integration-lead
+    gate_owners: [security-agent, devops-lead]
+    deps: [IIKO-010]
+    status: PLANNED
+  # Cross-system governance
+  - id: ARCH-001
+    phase: 24
+    title: "Create cross-MCP boundary map and dependency direction rules"
+    primary: chief-architect
+    reviewer: architecture-red-team
+    gate_owners: [human-architect]
+    deps: [PY-013, KB-011, IIKO-005]
+    status: PLANNED
+  - id: ARCH-002
+    phase: 24
+    title: "Create documentation/code parity gate executable in CI"
+    primary: architecture-red-team
+    reviewer: code-quality-agent
+    gate_owners: [chief-architect]
+    deps: [ARCH-001]
+    status: PLANNED
+  - id: ARCH-003
+    phase: 24
+    title: "Create API drift watcher for Pyrus and iiko official snapshots"
+    primary: api-contract-auditor
+    reviewer: devops-lead
+    gate_owners: [chief-architect]
+    deps: [PY-001, IIKO-001]
+    status: PLANNED
+  # Evaluation and release
+  - id: EVAL-001
+    phase: 25
+    title: "Build end-to-end agent benchmark for Pyrus tool selection and Knowledge retrieval"
+    primary: ai-evaluation-lead
+    reviewer: qa-lead
+    gate_owners: [human-architect]
+    deps: [PY-012, KB-010]
+    status: PLANNED
+  - id: EVAL-002
+    phase: 25
+    title: "Build iiko agent benchmark for read/write tool routing and safety confirmation"
+    primary: ai-evaluation-lead
+    reviewer: iiko-integration-lead
+    gate_owners: [security-agent]
+    deps: [IIKO-015]
+    status: PLANNED
+  - id: EVAL-003
+    phase: 25
+    title: "Run architecture red-team across all three MCPs and release-block P0/P1 findings"
+    primary: architecture-red-team
+    reviewer: chief-architect
+    gate_owners: [human-architect]
+    deps: [ARCH-002, EVAL-001, EVAL-002]
+    status: PLANNED
+  - id: EVAL-004
+    phase: 25
+    title: "Final ecosystem release gate and replace historical false-green dashboard state"
+    primary: release-manager
+    reviewer: chief-architect
+    gate_owners: [human-architect]
+    deps: [EVAL-003]
+    status: PLANNED

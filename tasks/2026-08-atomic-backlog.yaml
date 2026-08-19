@@ -1,0 +1,760 @@
+version: 1
+status: ACTIVE
+purpose: "Atomic executable backlog created by the 2026-08 deep audit. One task = one independently testable outcome."
+priority_policy:
+  P0: "Security/data-integrity/release-blocking. Must be resolved before production or merge of dependent implementation."
+  P1: "Parity/correctness/architecture blocker. Must be resolved before the dependent phase closes."
+  P2: "Quality/operability/maintainability improvement. May follow the blocking path only when explicitly accepted."
+ownership_policy:
+  primary: "single executor"
+  reviewer: "independent reviewer"
+  gates: "one or more explicit acceptance gates"
+  evidence: "code + test + source/fixture/provenance evidence as applicable"
+
+tasks:
+  # Live legacy MCP
+  - id: LIVE-001
+    priority: P1
+    phase: 19
+    title: "Run live legacy MCP initialize/tools-list audit from external egress runner"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect, security-agent]
+    deps: []
+    status: READY
+    evidence: "timestamped JSON-RPC transcript + redacted inventory + SHA256"
+  - id: LIVE-002
+    priority: P1
+    phase: 19
+    title: "Diff live legacy tool inventory against 2026-08-18 captured inventory"
+    primary: api-contract-auditor
+    reviewer: documentation-agent
+    gates: [chief-architect]
+    deps: [LIVE-001]
+    status: PLANNED
+    evidence: "machine-readable diff with added/removed/changed tools"
+  - id: LIVE-003
+    priority: P1
+    phase: 19
+    title: "Verify legacy MCP session/pagination behavior with tools/list"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: [LIVE-001]
+    status: PLANNED
+    evidence: "protocol transcript proving cursor/session semantics"
+  - id: LIVE-004
+    priority: P1
+    phase: 19
+    title: "Probe one safe read-only legacy tool and compare response shape to fixture"
+    primary: api-contract-auditor
+    reviewer: pyrus-integrations-lead
+    gates: [security-agent, qa-lead]
+    deps: [LIVE-001]
+    status: PLANNED
+    evidence: "redacted request/response schema + fixture diff"
+  - id: LIVE-005
+    priority: P2
+    phase: 19
+    title: "Re-run legacy MCP audit on a scheduled cadence and detect drift"
+    primary: devops-lead
+    reviewer: api-contract-auditor
+    gates: [chief-architect]
+    deps: [LIVE-002]
+    status: PLANNED
+    evidence: "scheduled workflow + drift artifact + alert rule"
+
+  # Pyrus source-of-truth and modelling
+  - id: PY-A01
+    priority: P0
+    phase: 20
+    title: "Freeze official Pyrus API source snapshot and checksum"
+    primary: api-contract-auditor
+    reviewer: pyrus-integrations-lead
+    gates: [chief-architect]
+    deps: []
+    status: READY
+    evidence: "retrieved official source/snapshot + timestamp + checksum"
+  - id: PY-A02
+    priority: P0
+    phase: 20
+    title: "Create machine-readable Pyrus method registry with one row per official method"
+    primary: api-contract-auditor
+    reviewer: documentation-agent
+    gates: [chief-architect]
+    deps: [PY-A01]
+    status: PLANNED
+    evidence: "versioned YAML/JSON registry"
+  - id: PY-A03
+    priority: P0
+    phase: 20
+    title: "Assign unique stable contract IDs to every official Pyrus method"
+    primary: api-contract-auditor
+    reviewer: code-quality-agent
+    gates: [chief-architect]
+    deps: [PY-A02]
+    status: PLANNED
+    evidence: "no duplicate IDs; deterministic naming policy"
+  - id: PY-A04
+    priority: P1
+    phase: 20
+    title: "Map legacy tool schemas to official Pyrus method contracts"
+    primary: api-contract-auditor
+    reviewer: pyrus-integrations-lead
+    gates: [qa-lead]
+    deps: [LIVE-002, PY-A03]
+    status: PLANNED
+    evidence: "tool -> method mapping with schema hash"
+  - id: PY-A05
+    priority: P1
+    phase: 20
+    title: "Record intentional legacy-to-official differences as ADR candidates"
+    primary: chief-architect
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [PY-A04]
+    status: PLANNED
+    evidence: "one ADR or exception record per difference"
+  - id: PY-A06
+    priority: P1
+    phase: 20
+    title: "Define Pyrus common error taxonomy and preserve upstream error fields"
+    primary: pyrus-integrations-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: [PY-A01]
+    status: PLANNED
+    evidence: "typed error model + fixtures for 4xx/5xx/rate-limit cases"
+  - id: PY-A07
+    priority: P1
+    phase: 20
+    title: "Define Pyrus pagination semantics separately for every paged method family"
+    primary: pyrus-integrations-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: [PY-A02]
+    status: PLANNED
+    evidence: "pagination contract + boundary fixtures"
+  - id: PY-A08
+    priority: P1
+    phase: 20
+    title: "Define Pyrus date/time/timezone normalization policy"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A02]
+    status: PLANNED
+    evidence: "UTC/ISO8601 fixture suite"
+  - id: PY-A09
+    priority: P1
+    phase: 20
+    title: "Define per-method idempotency/retry classification"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [chief-architect]
+    deps: [PY-A02, PY-A06]
+    status: PLANNED
+    evidence: "machine-readable retry policy"
+  - id: PY-A10
+    priority: P1
+    phase: 20
+    title: "Define per-method MCP authorization scope and write-risk classification"
+    primary: identity-security-lead
+    reviewer: api-contract-auditor
+    gates: [security-agent]
+    deps: [PY-A02]
+    status: PLANNED
+    evidence: "scope matrix"
+
+  # Pyrus implementation atoms
+  - id: PY-T01
+    priority: P1
+    phase: 20
+    title: "Implement get task contract including include selector"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04, PY-A07]
+    status: PLANNED
+  - id: PY-T02
+    priority: P1
+    phase: 20
+    title: "Implement multi-task retrieval contract and partial result handling"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04, PY-A07]
+    status: PLANNED
+  - id: PY-T03
+    priority: P1
+    phase: 20
+    title: "Implement create task full payload contract"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: [PY-A04, PY-A09]
+    status: PLANNED
+  - id: PY-T04
+    priority: P1
+    phase: 20
+    title: "Implement task comment/action contract without mutating caller arguments"
+    primary: pyrus-integrations-lead
+    reviewer: code-quality-agent
+    gates: [qa-lead]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-T05
+    priority: P0
+    phase: 20
+    title: "Implement explicit task delete policy and confirmation guard"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [PY-A10]
+    status: PLANNED
+  - id: PY-F01
+    priority: P1
+    phase: 20
+    title: "Implement form permissions read"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-F02
+    priority: P1
+    phase: 20
+    title: "Implement form permissions write with authorization guard"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [PY-F01, PY-A10]
+    status: PLANNED
+  - id: PY-F03
+    priority: P1
+    phase: 20
+    title: "Implement complete registry filtering operators and field predicates"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A07]
+    status: PLANNED
+  - id: PY-C01
+    priority: P1
+    phase: 20
+    title: "Implement catalogs list"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-C02
+    priority: P1
+    phase: 20
+    title: "Implement catalog create/full-sync/diff operations as separate contracts"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: [PY-C01, PY-A09]
+    status: PLANNED
+  - id: PY-L01
+    priority: P1
+    phase: 20
+    title: "Implement lists CRUD and task-list read"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-M01
+    priority: P1
+    phase: 20
+    title: "Implement members read/create/update"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-M02
+    priority: P0
+    phase: 20
+    title: "Implement member deactivation/delete semantics with explicit safety policy"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [PY-M01, PY-A10]
+    status: PLANNED
+  - id: PY-R01
+    priority: P1
+    phase: 20
+    title: "Implement roles CRUD"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [api-contract-auditor]
+    deps: [PY-A10]
+    status: PLANNED
+  - id: PY-AW01
+    priority: P1
+    phase: 20
+    title: "Implement awards threshold read/write"
+    primary: pyrus-integrations-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-AW02
+    priority: P1
+    phase: 20
+    title: "Implement awards counter read/increment/set"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [api-contract-auditor]
+    deps: [PY-AW01, PY-A09]
+    status: PLANNED
+  - id: PY-H01
+    priority: P1
+    phase: 20
+    title: "Implement Pyrus Knowledge Base entity CRUD"
+    primary: pyrus-integrations-lead
+    reviewer: knowledge-architecture-lead
+    gates: [api-contract-auditor]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-H02
+    priority: P0
+    phase: 20
+    title: "Implement Pyrus Knowledge Base permissions and deletion guard"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [PY-H01, PY-A10]
+    status: PLANNED
+  - id: PY-E01
+    priority: P1
+    phase: 20
+    title: "Implement event-history CSV download as bounded streaming response"
+    primary: python-backend-lead
+    reviewer: qa-lead
+    gates: [pyrus-integrations-lead]
+    deps: [PY-A06]
+    status: PLANNED
+  - id: PY-E02
+    priority: P1
+    phase: 20
+    title: "Implement file/task/registry history CSV downloads using a shared stream adapter"
+    primary: python-backend-lead
+    reviewer: qa-lead
+    gates: [pyrus-integrations-lead]
+    deps: [PY-E01]
+    status: PLANNED
+  - id: PY-P01
+    priority: P1
+    phase: 20
+    title: "Implement telephony call registration contract"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: [PY-A04]
+    status: PLANNED
+  - id: PY-P02
+    priority: P1
+    phase: 20
+    title: "Implement call-record attachment contract"
+    primary: pyrus-integrations-lead
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: [PY-P01]
+    status: PLANNED
+  - id: PY-FILE01
+    priority: P1
+    phase: 20
+    title: "Move file upload/download through shared Pyrus client policy"
+    primary: python-backend-lead
+    reviewer: pyrus-integrations-lead
+    gates: [security-agent]
+    deps: [PY-A06, PY-A09]
+    status: PLANNED
+  - id: PY-Q01
+    priority: P0
+    phase: 20
+    title: "Generate one contract fixture and test per official Pyrus method"
+    primary: qa-lead
+    reviewer: api-contract-auditor
+    gates: [chief-architect]
+    deps: [PY-T01, PY-T02, PY-T03, PY-T04, PY-F01, PY-F02, PY-F03, PY-C01, PY-C02, PY-L01, PY-M01, PY-M02, PY-R01, PY-AW01, PY-AW02, PY-H01, PY-H02, PY-E01, PY-E02, PY-P01, PY-P02, PY-FILE01]
+    status: PLANNED
+  - id: PY-Q02
+    priority: P0
+    phase: 20
+    title: "Run automated official-method coverage gate and fail on undocumented gaps"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect, human-architect]
+    deps: [PY-Q01]
+    status: PLANNED
+
+  # Knowledge correctness atoms
+  - id: KB-C01
+    priority: P0
+    phase: 21
+    title: "Add tenant_id to every Knowledge request context and repository method"
+    primary: knowledge-reliability-engineer
+    reviewer: security-agent
+    gates: [identity-security-lead]
+    deps: []
+    status: READY
+  - id: KB-C02
+    priority: P0
+    phase: 21
+    title: "Add tenant-filtered unique document lookup by id and slug"
+    primary: knowledge-reliability-engineer
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: [KB-C01]
+    status: PLANNED
+  - id: KB-C03
+    priority: P0
+    phase: 21
+    title: "Add tenant-filtered search and pre-return authorization checks"
+    primary: retrieval-engineer
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: [KB-C01]
+    status: PLANNED
+  - id: KB-C04
+    priority: P0
+    phase: 21
+    title: "Prevent direct state mutation without lifecycle transition validation"
+    primary: knowledge-architecture-lead
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [KB-C01]
+    status: PLANNED
+  - id: KB-C05
+    priority: P0
+    phase: 21
+    title: "Persist reviewer decision identity, decision time and review evidence"
+    primary: data-engineer
+    reviewer: knowledge-reliability-engineer
+    gates: [security-agent]
+    deps: [KB-C04]
+    status: PLANNED
+  - id: KB-C06
+    priority: P0
+    phase: 21
+    title: "Create chunks for every submitted revision before it can become searchable"
+    primary: retrieval-engineer
+    reviewer: knowledge-reliability-engineer
+    gates: [qa-lead]
+    deps: [KB-C04]
+    status: PLANNED
+  - id: KB-C07
+    priority: P0
+    phase: 21
+    title: "Mark indexing status per revision and prevent stale-version default retrieval"
+    primary: knowledge-reliability-engineer
+    reviewer: retrieval-engineer
+    gates: [security-agent]
+    deps: [KB-C06]
+    status: PLANNED
+  - id: KB-C08
+    priority: P1
+    phase: 21
+    title: "Implement PostgreSQL migration path with pgvector schema"
+    primary: data-engineer
+    reviewer: chief-architect
+    gates: [devops-lead]
+    deps: [KB-C07]
+    status: PLANNED
+  - id: KB-C09
+    priority: P1
+    phase: 21
+    title: "Implement lexical FTS retrieval and deterministic ranking"
+    primary: retrieval-engineer
+    reviewer: ai-evaluation-lead
+    gates: [qa-lead]
+    deps: [KB-C08]
+    status: PLANNED
+  - id: KB-C10
+    priority: P1
+    phase: 21
+    title: "Implement embedding generation job with model/version metadata"
+    primary: retrieval-engineer
+    reviewer: data-engineer
+    gates: [security-agent]
+    deps: [KB-C08]
+    status: PLANNED
+  - id: KB-C11
+    priority: P1
+    phase: 21
+    title: "Implement vector retrieval and RRF fusion with lexical candidates"
+    primary: retrieval-engineer
+    reviewer: ai-evaluation-lead
+    gates: [qa-lead]
+    deps: [KB-C09, KB-C10]
+    status: PLANNED
+  - id: KB-C12
+    priority: P1
+    phase: 21
+    title: "Return version/chunk/evidence/source refs in every agent retrieval result"
+    primary: knowledge-reliability-engineer
+    reviewer: ai-evaluation-lead
+    gates: [security-agent]
+    deps: [KB-C11]
+    status: PLANNED
+  - id: KB-C13
+    priority: P1
+    phase: 21
+    title: "Implement case intake from resolved tasks with explicit tenant/source provenance"
+    primary: evidence-case-curator
+    reviewer: knowledge-architecture-lead
+    gates: [qa-lead]
+    deps: [KB-C01]
+    status: PLANNED
+  - id: KB-C14
+    priority: P1
+    phase: 21
+    title: "Implement solution candidate deduplication and novelty scoring"
+    primary: evidence-case-curator
+    reviewer: ai-evaluation-lead
+    gates: [knowledge-architecture-lead]
+    deps: [KB-C13, KB-C11]
+    status: PLANNED
+  - id: KB-C15
+    priority: P1
+    phase: 21
+    title: "Implement approved-version-only publication candidate creation"
+    primary: knowledge-architecture-lead
+    reviewer: knowledge-reliability-engineer
+    gates: [human-architect]
+    deps: [KB-C04, KB-C12]
+    status: PLANNED
+  - id: KB-C16
+    priority: P0
+    phase: 21
+    title: "Implement Pyrus Knowledge Base publication adapter instead of announcements"
+    primary: pyrus-integrations-lead
+    reviewer: knowledge-reliability-engineer
+    gates: [human-architect]
+    deps: [KB-C15, PY-H01]
+    status: PLANNED
+  - id: KB-C17
+    priority: P0
+    phase: 21
+    title: "Detect remote Pyrus KB hash divergence and block destructive overwrite"
+    primary: knowledge-reliability-engineer
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [KB-C16]
+    status: PLANNED
+  - id: KB-C18
+    priority: P1
+    phase: 21
+    title: "Record publication source version, remote id/hash and verification result"
+    primary: data-engineer
+    reviewer: knowledge-reliability-engineer
+    gates: [qa-lead]
+    deps: [KB-C16]
+    status: PLANNED
+  - id: KB-C19
+    priority: P1
+    phase: 21
+    title: "Create benchmark set for exact identifiers, client scope, version and evidence queries"
+    primary: ai-evaluation-lead
+    reviewer: retrieval-engineer
+    gates: [chief-architect]
+    deps: [KB-C12]
+    status: PLANNED
+  - id: KB-C20
+    priority: P0
+    phase: 21
+    title: "Run tenant-leakage, stale-version and citation-correctness regression suite"
+    primary: qa-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [KB-C03, KB-C07, KB-C12, KB-C19]
+    status: PLANNED
+
+  # iiko contract atoms
+  - id: IIKO-C01
+    priority: P0
+    phase: 22
+    title: "Capture official iiko Cloud OpenAPI/Swagger or equivalent machine-readable snapshot"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gates: [chief-architect]
+    deps: []
+    status: READY
+  - id: IIKO-C02
+    priority: P0
+    phase: 22
+    title: "Capture official iikoServer documentation snapshot and supported version list"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gates: [chief-architect]
+    deps: []
+    status: READY
+  - id: IIKO-C03
+    priority: P0
+    phase: 22
+    title: "Verify current iiko authentication scheme from official source"
+    primary: iiko-integration-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [IIKO-C01]
+    status: PLANNED
+  - id: IIKO-C04
+    priority: P1
+    phase: 22
+    title: "Create one normalized iiko method registry with source URL and version evidence"
+    primary: api-contract-auditor
+    reviewer: iiko-integration-lead
+    gates: [chief-architect]
+    deps: [IIKO-C01, IIKO-C02, IIKO-C03]
+    status: PLANNED
+  - id: IIKO-C05
+    priority: P1
+    phase: 22
+    title: "Classify every iiko method as read, write, destructive or externally visible"
+    primary: iiko-operations-safety-reviewer
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [IIKO-C04]
+    status: PLANNED
+  - id: IIKO-C06
+    priority: P1
+    phase: 22
+    title: "Define iiko provider capability matrix for Cloud vs iikoServer"
+    primary: iiko-integration-lead
+    reviewer: architecture-red-team
+    gates: [chief-architect]
+    deps: [IIKO-C02, IIKO-C04]
+    status: PLANNED
+  - id: IIKO-C07
+    priority: P1
+    phase: 22
+    title: "Define iiko error taxonomy, retryability and rate/concurrency policy"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: [IIKO-C04]
+    status: PLANNED
+  - id: IIKO-C08
+    priority: P1
+    phase: 22
+    title: "Define iiko domain normalization for organization, nomenclature, menu and terminal entities"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: [IIKO-C04]
+    status: PLANNED
+  - id: IIKO-C09
+    priority: P1
+    phase: 22
+    title: "Define idempotency and confirmation requirements per iiko write method"
+    primary: iiko-operations-safety-reviewer
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [IIKO-C05, IIKO-C07]
+    status: PLANNED
+  - id: IIKO-C10
+    priority: P0
+    phase: 22
+    title: "Produce complete iiko method-by-method coverage report before implementation parity claim"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: [IIKO-C04, IIKO-C05, IIKO-C06, IIKO-C07, IIKO-C08, IIKO-C09]
+    status: PLANNED
+
+  # Cross-ecosystem and release gates
+  - id: ARCH-C01
+    priority: P0
+    phase: 24
+    title: "Define single source-of-truth hierarchy for official docs, legacy snapshots, code and generated dashboard"
+    primary: chief-architect
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [PY-A02, LIVE-002, IIKO-C10]
+    status: PLANNED
+  - id: ARCH-C02
+    priority: P0
+    phase: 24
+    title: "Define API contract drift detection as a mandatory CI gate"
+    primary: api-contract-auditor
+    reviewer: devops-lead
+    gates: [chief-architect]
+    deps: [ARCH-C01]
+    status: PLANNED
+  - id: ARCH-C03
+    priority: P0
+    phase: 24
+    title: "Define phase exit gate requiring code/tests/docs/dashboard agreement"
+    primary: chief-architect
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [ARCH-C01]
+    status: PLANNED
+  - id: ARCH-C04
+    priority: P0
+    phase: 24
+    title: "Make pytest and mypy failures blocking in CI"
+    primary: devops-lead
+    reviewer: code-quality-agent
+    gates: [qa-lead]
+    deps: []
+    status: READY
+  - id: ARCH-C05
+    priority: P1
+    phase: 24
+    title: "Add CI check that every DONE task has evidence links and no open P0/P1 dependencies"
+    primary: devops-lead
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: [ARCH-C03]
+    status: PLANNED
+  - id: ARCH-C06
+    priority: P1
+    phase: 24
+    title: "Add dashboard indicator for historical false-green tasks overridden by audit findings"
+    primary: python-backend-lead
+    reviewer: documentation-agent
+    gates: [chief-architect]
+    deps: [ARCH-C03]
+    status: PLANNED
+  - id: ARCH-C07
+    priority: P1
+    phase: 24
+    title: "Add architecture red-team review at every wave boundary"
+    primary: architecture-red-team
+    reviewer: chief-architect
+    gates: [human-architect]
+    deps: [ARCH-C03]
+    status: PLANNED
+  - id: EVAL-C01
+    priority: P1
+    phase: 25
+    title: "Build tool-selection benchmark across Pyrus, Knowledge and iiko namespaces"
+    primary: ai-evaluation-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: [PY-Q02, KB-C20, IIKO-C10]
+    status: PLANNED
+  - id: EVAL-C02
+    priority: P1
+    phase: 25
+    title: "Build agent benchmark for stale-data rejection and evidence citations"
+    primary: ai-evaluation-lead
+    reviewer: knowledge-reliability-engineer
+    gates: [security-agent]
+    deps: [KB-C20]
+    status: PLANNED
+  - id: EVAL-C03
+    priority: P0
+    phase: 25
+    title: "Define release gate that blocks on tenant leakage, unsafe mutation or unverified API parity"
+    primary: ai-evaluation-lead
+    reviewer: security-agent
+    gates: [chief-architect, human-architect]
+    deps: [EVAL-C01, EVAL-C02, ARCH-C07]
+    status: PLANNED
