@@ -1,0 +1,270 @@
+version: 1
+status: ACTIVE
+purpose: "Red-team remediation backlog. Every finding from the 2026-08-19 adversarial QA pass becomes an independently testable task."
+completion_rule: "DONE requires implementation + negative tests + boundary/integration evidence + independent review + gate evidence."
+
+tasks:
+  - id: RT-001
+    priority: P0
+    phase: 26
+    title: "Replace check-contract-drift.py stub with real contract diff engine"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: []
+  - id: RT-002
+    priority: P0
+    phase: 26
+    title: "Replace check-phase-exit.py stub with executable phase/wave gate"
+    primary: architecture-red-team
+    reviewer: code-quality-agent
+    gates: [chief-architect, human-architect]
+    deps: []
+  - id: RT-003
+    priority: P0
+    phase: 26
+    title: "Delete/quarantine mark_all_done.py and add status-forging deny rule"
+    primary: code-quality-agent
+    reviewer: architecture-red-team
+    gates: [chief-architect]
+    deps: []
+  - id: RT-004
+    priority: P0
+    phase: 26
+    title: "Replace benchmark pass/TODO tests with executable assertions and thresholds"
+    primary: ai-evaluation-lead
+    reviewer: qa-lead
+    gates: [human-architect]
+    deps: []
+  - id: RT-005
+    priority: P0
+    phase: 26
+    title: "Invalidate false-green final execution certification and regenerate evidence-backed report"
+    primary: documentation-agent
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [RT-001, RT-002, RT-004]
+  - id: RT-006
+    priority: P0
+    phase: 26
+    title: "Invalidate historical project-full-audit certification and generate code-derived audit"
+    primary: qa-lead
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [RT-005]
+  - id: RT-007
+    priority: P0
+    phase: 27
+    title: "Implement real Knowledge EmbeddingProvider; remove zero-vector fallback"
+    primary: retrieval-engineer
+    reviewer: knowledge-reliability-engineer
+    gates: [security-agent, qa-lead]
+    deps: []
+  - id: RT-008
+    priority: P0
+    phase: 27
+    title: "Implement Knowledge provenance/source_refs persistence and retrieval output"
+    primary: data-engineer
+    reviewer: retrieval-engineer
+    gates: [qa-lead]
+    deps: []
+  - id: RT-009
+    priority: P0
+    phase: 27
+    title: "Replace fabricated freshness/confidence values with measured metrics"
+    primary: knowledge-reliability-engineer
+    reviewer: ai-evaluation-lead
+    gates: [qa-lead]
+    deps: [RT-008]
+  - id: RT-010
+    priority: P0
+    phase: 27
+    title: "Bind Knowledge tenant context to authenticated principal; remove caller-controlled tenant trust"
+    primary: identity-security-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: []
+  - id: RT-011
+    priority: P0
+    phase: 27
+    title: "Expose and register the complete Knowledge MCP tool surface from the approved contract"
+    primary: knowledge-architecture-lead
+    reviewer: ai-evaluation-lead
+    gates: [chief-architect]
+    deps: []
+  - id: RT-012
+    priority: P0
+    phase: 28
+    title: "Create real iiko MCP server/namespace registration and protocol-level tools/list tests"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gates: [chief-architect]
+    deps: []
+  - id: RT-013
+    priority: P0
+    phase: 28
+    title: "Replace iiko stub methods with method-by-method official contract implementations"
+    primary: iiko-integration-lead
+    reviewer: qa-lead
+    gates: [api-contract-auditor]
+    deps: [RT-012]
+  - id: RT-014
+    priority: P0
+    phase: 28
+    title: "Remove hard-coded iiko webhook auth token and implement event_type contract"
+    primary: iiko-integration-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [RT-012]
+  - id: RT-015
+    priority: P1
+    phase: 26
+    title: "Preserve exact MCP input schemas during Pyrus tool registration"
+    primary: python-backend-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: [RT-001]
+  - id: RT-016
+    priority: P1
+    phase: 26
+    title: "Resolve SSE vs Streamable HTTP production transport contract"
+    primary: chief-architect
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: []
+  - id: RT-017
+    priority: P1
+    phase: 26
+    title: "Make readiness probe dependency-aware"
+    primary: python-backend-lead
+    reviewer: devops-lead
+    gates: [qa-lead]
+    deps: []
+  - id: RT-018
+    priority: P1
+    phase: 28
+    title: "Implement iiko method-aware retries, Retry-After handling and mutation idempotency policy"
+    primary: iiko-integration-lead
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [RT-012]
+  - id: RT-019
+    priority: P1
+    phase: 28
+    title: "Implement iiko provider-driven token expiry and concurrent refresh lock"
+    primary: iiko-integration-lead
+    reviewer: identity-security-lead
+    gates: [security-agent]
+    deps: [RT-012]
+  - id: RT-020
+    priority: P1
+    phase: 28
+    title: "Redact and bound iiko provider error bodies in logs"
+    primary: security-agent
+    reviewer: code-quality-agent
+    gates: [qa-lead]
+    deps: []
+  - id: RT-021
+    priority: P1
+    phase: 28
+    title: "Implement streaming body-size limit for iiko client without Content-Length reliance"
+    primary: python-backend-lead
+    reviewer: security-agent
+    gates: [qa-lead]
+    deps: []
+  - id: RT-022
+    priority: P1
+    phase: 27
+    title: "Replace English-only Knowledge FTS with validated Russian/multilingual strategy"
+    primary: retrieval-engineer
+    reviewer: ai-evaluation-lead
+    gates: [qa-lead]
+    deps: []
+  - id: RT-023
+    priority: P1
+    phase: 27
+    title: "Implement embedding model/generation registry and dimension migration policy"
+    primary: data-engineer
+    reviewer: retrieval-engineer
+    gates: [chief-architect]
+    deps: [RT-007]
+  - id: RT-024
+    priority: P1
+    phase: 27
+    title: "Add Knowledge service to deployable staging/production topology with health/readiness"
+    primary: devops-lead
+    reviewer: knowledge-reliability-engineer
+    gates: [release-manager]
+    deps: [RT-011]
+  - id: RT-025
+    priority: P1
+    phase: 26
+    title: "Replace simulated staging drill with executable deploy/migrate/fail/rollback/data-check drill"
+    primary: devops-lead
+    reviewer: qa-lead
+    gates: [release-manager]
+    deps: [RT-017, RT-024]
+  - id: RT-026
+    priority: P1
+    phase: 26
+    title: "Harden DONE validator to verify evidence artifacts, test reports, hashes and reviewer gates"
+    primary: qa-lead
+    reviewer: code-quality-agent
+    gates: [chief-architect]
+    deps: [RT-001, RT-002]
+  - id: RT-027
+    priority: P1
+    phase: 26
+    title: "Remove tracked node_modules, scratch debug dumps and generated runtime artifacts"
+    primary: code-quality-agent
+    reviewer: security-agent
+    gates: [chief-architect]
+    deps: []
+  - id: RT-028
+    priority: P1
+    phase: 26
+    title: "Remove committed workstation environment state and add generated-state denylist"
+    primary: security-agent
+    reviewer: code-quality-agent
+    gates: [chief-architect]
+    deps: []
+  - id: RT-029
+    priority: P2
+    phase: 27
+    title: "Harden Knowledge service packaging with tests/lint/type/benchmark configuration and operational README"
+    primary: devops-lead
+    reviewer: documentation-agent
+    gates: [qa-lead]
+    deps: [RT-011]
+  - id: RT-030
+    priority: P1
+    phase: 29
+    title: "Run evidence-backed full Pyrus parity re-audit after all remediation tasks"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [human-architect]
+    deps: [RT-015, RT-026]
+  - id: RT-031
+    priority: P1
+    phase: 29
+    title: "Run evidence-backed Knowledge security/retrieval re-audit"
+    primary: knowledge-reliability-engineer
+    reviewer: security-agent
+    gates: [human-architect]
+    deps: [RT-007, RT-008, RT-009, RT-010, RT-011, RT-022, RT-023]
+  - id: RT-032
+    priority: P1
+    phase: 29
+    title: "Run evidence-backed iiko method/transport/safety re-audit"
+    primary: iiko-integration-lead
+    reviewer: api-contract-auditor
+    gates: [human-architect]
+    deps: [RT-012, RT-013, RT-014, RT-018, RT-019, RT-020, RT-021]
+  - id: RT-033
+    priority: P0
+    phase: 29
+    title: "Final release gate: mechanically reject any remaining TODO/pass/mock/stub/fake-success in production or gate code"
+    primary: architecture-red-team
+    reviewer: release-manager
+    gates: [chief-architect, human-architect]
+    deps: [RT-030, RT-031, RT-032]
