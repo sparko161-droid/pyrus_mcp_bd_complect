@@ -81,7 +81,7 @@ function readRegistryAsJSON() {
 const sseClients = new Set();
 
 function broadcastChange() {
-  const payload = `event: registry-changed\\ndata: ${Date.now()}\\n\\n`;
+  const payload = `event: registry-changed\ndata: ${Date.now()}\n\n`;
   for (const res of sseClients) {
     try {
       res.write(payload);
@@ -129,7 +129,7 @@ const server = createServer((req, res) => {
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
     });
-    res.write(": connected\\n\\n");
+    res.write(": connected\n\n");
     sseClients.add(res);
     req.on("close", () => sseClients.delete(res));
     return;
