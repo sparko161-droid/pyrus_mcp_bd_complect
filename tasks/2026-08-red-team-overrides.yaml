@@ -1,0 +1,79 @@
+version: 1
+status: ACTIVE
+purpose: "Executable overrides that reopen historical DONE claims contradicted by source-code evidence."
+task_overrides:
+  - id: MCP-005
+    status: SECURITY_BLOCKED
+    reason: "Current repository does not prove full legacy-to-official method mapping; live/API drift gates are stubs."
+  - id: MCP-006
+    status: ARCHITECTURE_BLOCKED
+    reason: "Compatibility catalogue cannot be accepted while implementation and contract validators are non-operative."
+  - id: MCP-090
+    status: SECURITY_BLOCKED
+    reason: "Evidence-backed parity report is contradicted by current code and false-green validators."
+  - id: MCP-092
+    status: ARCHITECTURE_BLOCKED
+    reason: "Parity freeze is invalid while required methods, schemas and executable gates are unverified."
+  - id: MCP-141
+    status: SECURITY_BLOCKED
+    reason: "Staging acceptance depends on simulated drill and guaranteed-pass phase gate."
+  - id: KM-011
+    status: ARCHITECTURE_BLOCKED
+    reason: "Knowledge production service is not integrated into deployment topology and lifecycle is incomplete."
+  - id: KM-015
+    status: SECURITY_BLOCKED
+    reason: "Hybrid retrieval contains mock zero-vector fallback, fake confidence/freshness and missing provenance."
+  - id: KM-017
+    status: ARCHITECTURE_BLOCKED
+    reason: "Knowledge MCP public surface is incomplete versus the approved lifecycle contract."
+  - id: KM-018
+    status: ARCHITECTURE_BLOCKED
+    reason: "Publication implementation must be verified against actual Pyrus KB projection/conflict semantics."
+  - id: KM-020
+    status: SECURITY_BLOCKED
+    reason: "Historical acceptance is invalidated by placeholder benchmarks and mock retrieval paths."
+  - id: EVAL-001
+    status: SECURITY_BLOCKED
+    reason: "Benchmark source contains TODO/pass placeholders."
+  - id: EVAL-002
+    status: SECURITY_BLOCKED
+    reason: "iiko agent benchmark cannot pass while iiko tools are not mounted as MCP tools."
+  - id: EVAL-003
+    status: SECURITY_BLOCKED
+    reason: "Red-team certification is contradicted by guaranteed-pass gates and incomplete implementations."
+  - id: EVAL-004
+    status: SECURITY_BLOCKED
+    reason: "Final release gate is invalid while evidence and benchmark checks are placeholders."
+  - id: IIKO-001
+    status: ARCHITECTURE_BLOCKED
+    reason: "Official snapshot claim requires reproducible source evidence."
+  - id: IIKO-003
+    status: SECURITY_BLOCKED
+    reason: "Implemented auth uses guessed expiry/global credentials and must be reconciled against current official contract."
+  - id: IIKO-010
+    status: SECURITY_BLOCKED
+    reason: "iiko module is not mounted into an MCP server and uses global tenantless credentials."
+  - id: IIKO-011
+    status: ARCHITECTURE_BLOCKED
+    reason: "Reference/read surface is not registered as MCP tools and contains stub mappings."
+  - id: IIKO-012
+    status: ARCHITECTURE_BLOCKED
+    reason: "Terminal/employee/health surface is not implemented as the claimed MCP contract."
+  - id: IIKO-013
+    status: SECURITY_BLOCKED
+    reason: "Order/delivery reads lack proven official contract mapping and are not exposed through MCP."
+  - id: IIKO-014
+    status: ARCHITECTURE_BLOCKED
+    reason: "Reservations/loyalty/customer domains are not implemented in current iiko tool module."
+  - id: IIKO-015
+    status: SECURITY_BLOCKED
+    reason: "Write safety/idempotency contract is not present in current iiko implementation."
+  - id: IIKO-016
+    status: SECURITY_BLOCKED
+    reason: "Webhook/event ingestion and durable idempotency are not implemented by current code."
+  - id: ARCH-002
+    status: SECURITY_BLOCKED
+    reason: "Documentation/code parity gate is currently represented by a placeholder script."
+  - id: ARCH-003
+    status: SECURITY_BLOCKED
+    reason: "API drift watcher is a guaranteed-pass stub."
