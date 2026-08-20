@@ -5,6 +5,7 @@ from starlette.applications import Starlette
 from starlette.routing import Route
 from starlette.responses import JSONResponse
 from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 from mcp.server import Server
 from mcp.server.sse import SseServerTransport
 # removed InitializationOptions
@@ -96,6 +97,7 @@ app = Starlette(
         Route("/metrics", metrics_endpoint, methods=["GET"]),
     ],
     middleware=[
+        Middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'], allow_headers=['*']),
         Middleware(SecurityMiddleware)
     ]
 )
@@ -119,4 +121,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
