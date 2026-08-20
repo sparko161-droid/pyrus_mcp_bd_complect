@@ -1,0 +1,49 @@
+version: 1
+status: ACTIVE
+purpose: "Executable round-2 overrides for false-green 61-tool verification claims."
+task_overrides:
+  - id: RT-005
+    status: SECURITY_BLOCKED
+    reason: "False-green verification claim remains unresolved until the round-2 61-tool harness exists."
+  - id: RT-006
+    status: SECURITY_BLOCKED
+    reason: "Round-2 evidence contradicts the release-style 61-tool certification."
+  - id: RT2-001
+    status: SECURITY_BLOCKED
+    reason: "New Streamable HTTP runtime has no /health route while existing production smoke test requires /health."
+  - id: RT2-002
+    status: ARCHITECTURE_BLOCKED
+    reason: "Session manager is hard-coded stateless=True; claimed stateful mode is not implemented."
+  - id: RT2-003
+    status: SECURITY_BLOCKED
+    reason: "check_tools.py does not import all production legacy tool modules and therefore cannot be authoritative."
+  - id: RT2-004
+    status: SECURITY_BLOCKED
+    reason: "Proof log contains summaries only and cannot independently reproduce any PASS."
+  - id: RT2-005
+    status: SECURITY_BLOCKED
+    reason: "No executable 61-tool oracle has been proven against tools/list and real fixtures."
+  - id: RT2-006
+    status: SECURITY_BLOCKED
+    reason: "61-tool report is not reconciled with an immutable generated registry snapshot."
+  - id: RT2-007
+    status: ARCHITECTURE_BLOCKED
+    reason: "Smoke tests target stale /health contract and only assert a 15-tool core subset."
+  - id: RT2-008
+    status: SECURITY_BLOCKED
+    reason: "Wildcard CORS with credentials requires explicit security review and regression coverage."
+  - id: RT2-009
+    status: SECURITY_BLOCKED
+    reason: "Middleware rewrites malformed client headers instead of enforcing protocol correctness."
+  - id: RT2-010
+    status: ARCHITECTURE_BLOCKED
+    reason: "Production compose bind-mounts source code, invalidating immutable image verification."
+  - id: RT2-012
+    status: SECURITY_BLOCKED
+    reason: "Created tenant resources lack complete deterministic cleanup evidence."
+  - id: RT2-013
+    status: SECURITY_BLOCKED
+    reason: "No immutable CI evidence attached to the exact verification commit."
+  - id: RT2-014
+    status: ARCHITECTURE_BLOCKED
+    reason: "main branch protection and required status checks are disabled."
