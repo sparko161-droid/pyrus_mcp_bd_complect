@@ -9,7 +9,7 @@ from ..pyrus.client import pyrus_client
     inputSchema={
         "type": "object",
         "properties": {
-            "kb_id": {"type": "integer", "description": "The ID of the KB object"}
+            "kb_id": {"type": "string", "description": "The ID of the KB object"}
         },
         "required": ["kb_id"]
     }
@@ -26,14 +26,14 @@ async def get_kb_object(arguments: dict) -> list[TextContent]:
         "type": "object",
         "properties": {
             "title": {"type": "string"},
-            "content": {"type": "string", "description": "Markdown content"},
+            "body": {"type": "string", "description": "Markdown/HTML content"},
             "parent_id": {"type": "integer", "description": "Optional parent folder ID"}
         },
-        "required": ["title", "content"]
+        "required": ["title", "body"]
     }
 )
 async def create_kb_object(arguments: dict) -> list[TextContent]:
-    payload = {"title": arguments["title"], "content": arguments["content"]}
+    payload = {"title": arguments["title"], "body": arguments["body"]}
     if "parent_id" in arguments:
         payload["parent_id"] = arguments["parent_id"]
     data = await pyrus_client.post("/knowledgebase", json=payload)
@@ -45,9 +45,9 @@ async def create_kb_object(arguments: dict) -> list[TextContent]:
     inputSchema={
         "type": "object",
         "properties": {
-            "kb_id": {"type": "integer"},
+            "kb_id": {"type": "string"},
             "title": {"type": "string"},
-            "content": {"type": "string"}
+            "body": {"type": "string"}
         },
         "required": ["kb_id"]
     }
@@ -77,7 +77,7 @@ async def get_kb_structure(arguments: dict) -> list[TextContent]:
     inputSchema={
         "type": "object",
         "properties": {
-            "kb_id": {"type": "integer"}
+            "kb_id": {"type": "string"}
         },
         "required": ["kb_id"]
     }
@@ -93,7 +93,7 @@ async def get_kb_permissions(arguments: dict) -> list[TextContent]:
     inputSchema={
         "type": "object",
         "properties": {
-            "kb_id": {"type": "integer"},
+            "kb_id": {"type": "string"},
             "permissions": {"type": "array", "items": {"type": "object"}}
         },
         "required": ["kb_id", "permissions"]
@@ -110,7 +110,7 @@ async def update_kb_permissions(arguments: dict) -> list[TextContent]:
     inputSchema={
         "type": "object",
         "properties": {
-            "kb_id": {"type": "integer"},
+            "kb_id": {"type": "string"},
             "delete_with_children": {"type": "boolean", "default": False}
         },
         "required": ["kb_id"]
@@ -123,3 +123,5 @@ async def delete_kb_object(arguments: dict) -> list[TextContent]:
     param = "true" if delete_with_children else "false"
     data = await pyrus_client.delete(f"/knowledgebase/{kb_id}?delete_with_children={param}")
     return [TextContent(type="text", text=json.dumps(data))]
+
+

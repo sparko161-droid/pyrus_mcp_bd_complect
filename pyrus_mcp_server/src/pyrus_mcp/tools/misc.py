@@ -24,7 +24,7 @@ async def get_announcements(arguments: dict) -> list[TextContent]:
     inputSchema={
         "type": "object",
         "properties": {
-            "file_id": {"type": "integer", "description": "The ID of the file to download"}
+            "file_id": {"type": "integer", "description": "The ID of the attached file to download (not the GUID, but the integer ID from task attachments)"}
         },
         "required": ["file_id"]
     }
@@ -62,4 +62,5 @@ async def upload_file(arguments: dict) -> list[TextContent]:
         
     guid = data.get("guid")
     return [TextContent(type="text", text=f"File uploaded successfully. GUID: {guid}")]
+
 

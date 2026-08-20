@@ -14,7 +14,7 @@ class PyrusAuthenticator:
         
         # Tenant specific routing returned by /auth
         self.api_url: str = settings.pyrus_api_url
-        self.files_url: str = ""
+        self.files_url: str = settings.pyrus_api_url
         import asyncio
         self._lock = asyncio.Lock()
 
@@ -88,4 +88,5 @@ class PyrusAuthenticator:
 
 # Global authenticator instance
 pyrus_auth = PyrusAuthenticator()
+
 
