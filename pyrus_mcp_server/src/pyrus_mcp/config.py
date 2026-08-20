@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     pyrus_api_url: str = "https://api.pyrus.com/v4"
     
     # Server configuration
+    server_auth_token: str = ''
     mcp_transport: Literal["stdio", "sse"] = "stdio"
     host: str = "0.0.0.0"
     port: int = 8000
@@ -23,5 +24,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 settings = Settings()
+
 
 

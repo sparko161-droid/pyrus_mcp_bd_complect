@@ -1,42 +1,21 @@
-# Use the official Python slim image
-FROM python:3.12-slim AS builder
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+﻿FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install uv for fast dependency resolution
-RUN pip install --no-cache-dir uv
+# Устанавливаем зависимости для сборки (если нужно для pydantic и пр.)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency files
+# Копируем метаданные проекта
 COPY pyproject.toml README.md ./
-
-# Sync production dependencies into a virtual environment
-RUN uv venv /opt/venv && \
-    VIRTUAL_ENV=/opt/venv uv pip install -e .
-
-# --- Final hardened stage ---
-FROM python:3.12-slim
-ENV PYTHONUNBUFFERED=1 \
-    PATH="/opt/venv/bin:$PATH"
-
-# Create a non-root user and group
-RUN groupadd -r pyrus && useradd -r -g pyrus -s /sbin/nologin pyrus
-
-WORKDIR /app
-
-# Copy the virtual environment from the builder
-COPY --from=builder /opt/venv /opt/venv
-
-# Copy application source
+# Копируем исходники
 COPY src/ ./src/
 
-# Chown application files to the non-root user
-RUN chown -R pyrus:pyrus /app
+# Устанавливаем проект
+RUN pip install --no-cache-dir -e .
 
-USER pyrus
+EXPOSE 8000
 
-# FastMCP typically binds to a port or uses stdio. 
-# We'll use stdio for the MCP standard, or an HTTP port if specified.
-# Assuming standard MCP (stdio):
-ENTRYPOINT ["pyrus-mcp"]
+# Запускаем сервер
+CMD ["python", "-m", "pyrus_mcp.server"]

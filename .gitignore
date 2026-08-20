@@ -49,3 +49,15 @@ build/
 Thumbs.db
 .idea/
 .vscode/
+
+# Logs & Binaries
+*.log
+*.log.*
+*.exe
+PyrusMCPService*
+data/
+antigravity_req.txt
+start
+stop
+query
+.vscode/

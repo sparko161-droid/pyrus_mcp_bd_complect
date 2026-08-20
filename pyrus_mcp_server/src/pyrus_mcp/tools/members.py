@@ -1,4 +1,5 @@
-﻿from mcp.types import TextContent
+import json
+from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.members import Person, Role

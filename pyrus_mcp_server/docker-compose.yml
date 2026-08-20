@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  pyrus-mcp:
+    build: .
+    container_name: pyrus-mcp
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    env_file:
+      - .env
+    # Проброс sqlite базы, чтобы она переживала перезапуск контейнера
+    volumes:
+      - ./data:/app/data
+      - ./src:/app/src

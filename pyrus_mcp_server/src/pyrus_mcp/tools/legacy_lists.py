@@ -1,4 +1,4 @@
-﻿import json
+import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -19,7 +19,7 @@ def register_legacy_lists():
 
     @tool_registry.register(name="create_list", description="Create a list.", inputSchema={"type": "object", "properties": {"name": {"type": "string"}, "steps": {"type": "array", "items": {"type": "integer"}}}, "required": ["name"]})
     async def create_list(args: dict) -> list[TextContent]:
-        return [TextContent(type="text", text=json.dumps(await pyrus_client.post("/lists", json=args)))]
+        return [TextContent(type="text", text=json.dumps(await pyrus_client.put("/lists", json=args)))]
 
     @tool_registry.register(name="update_list", description="Update a list.", inputSchema={"type": "object", "properties": {"id": {"type": "integer"}, "name": {"type": "string"}, "steps": {"type": "array", "items": {"type": "integer"}}, "added_task_ids": {"type": "array", "items": {"type": "integer"}}, "removed_task_ids": {"type": "array", "items": {"type": "integer"}}}, "required": ["id"]})
     async def update_list(args: dict) -> list[TextContent]:

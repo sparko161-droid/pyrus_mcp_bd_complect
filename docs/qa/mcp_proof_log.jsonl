@@ -1,0 +1,61 @@
+{"tool": "get_profile", "status": "PASS", "result_summary": "person_id: 1238106, organization: Демо Кабинет"}
+{"tool": "get_members", "status": "PASS", "result_summary": "1 active member (admin@standartmaster.ru)"}
+{"tool": "get_member", "status": "PASS", "result_summary": "ID 1238106, roles: [1314346, 1314347, 1314348, 1314349, 1315967, 1315968, 1315970, 1315994]"}
+{"tool": "get_roles", "status": "PASS", "result_summary": "16 roles loaded"}
+{"tool": "get_role", "status": "PASS", "result_summary": "Role 1316000 (Бухгалтерия), 10 members"}
+{"tool": "get_contacts", "status": "PASS", "result_summary": "Contacts list retrieved"}
+{"tool": "get_bots", "status": "PASS", "result_summary": "Bots list retrieved (0 bots)"}
+{"tool": "get_catalogs", "status": "PASS", "result_summary": "38 catalogs loaded"}
+{"tool": "get_catalog", "status": "PASS", "result_summary": "Catalog 307148 loaded with items"}
+{"tool": "create_catalog", "status": "PASS", "result_summary": "Created catalog 307155"}
+{"tool": "sync_catalog", "status": "PASS", "result_summary": "Synced 2 items into catalog 307155"}
+{"tool": "update_catalog_items", "status": "PASS", "result_summary": "Updated item 181469958 in catalog 307155"}
+{"tool": "get_forms", "status": "PASS", "result_summary": "Forms list loaded (CRM, Tasks, Approvals)"}
+{"tool": "get_form", "status": "PASS", "result_summary": "Form 2375190 (Карточка клиента) structure loaded"}
+{"tool": "get_form_permissions", "status": "PASS", "result_summary": "Permissions loaded for form 2375190"}
+{"tool": "get_inbox", "status": "PASS", "result_summary": "Inbox tasks loaded (has_more: true)"}
+{"tool": "create_task", "status": "PASS", "result_summary": "Created simple task 374345614 & form task 374345908"}
+{"tool": "get_task", "status": "PASS", "result_summary": "Task 374345614 full details loaded"}
+{"tool": "add_comment", "status": "PASS", "result_summary": "Comment added to task 374345614"}
+{"tool": "assign_task", "status": "PASS", "result_summary": "Task 374345614 reassigned to 1238106"}
+{"tool": "add_subscribers", "status": "PASS", "result_summary": "Subscriber 1238106 added to task 374345614"}
+{"tool": "add_approvers", "status": "PASS", "result_summary": "Approver 1238106 added to task 374345614"}
+{"tool": "update_task_fields", "status": "PASS", "result_summary": "Field 1 updated in task 374345908"}
+{"tool": "close_task", "status": "PASS", "result_summary": "Task 374345614 closed"}
+{"tool": "reopen_task", "status": "PASS", "result_summary": "Task 374345614 reopened"}
+{"tool": "get_registry", "status": "PASS", "result_summary": "Registry for form 2375190 loaded"}
+{"tool": "get_tasks", "status": "PASS", "result_summary": "Batch retrieved tasks [374345614, 374345908]"}
+{"tool": "search_tasks", "status": "PASS", "result_summary": "Search in form 2375190 completed"}
+{"tool": "get_calendar_tasks", "status": "PASS", "result_summary": "Calendar tasks for August 2026 loaded"}
+{"tool": "get_overdue_tasks", "status": "PASS", "result_summary": "Overdue tasks queried"}
+{"tool": "get_tasks_due_soon", "status": "PASS", "result_summary": "Tasks due soon queried"}
+{"tool": "batch_update_tasks", "status": "PASS", "result_summary": "Batch comment on [374345614] succeeded"}
+{"tool": "batch_close_tasks", "status": "PASS", "result_summary": "Batch close on [374345614] succeeded"}
+{"tool": "delete_task", "status": "PASS", "result_summary": "Legacy contract validated (Not supported by Pyrus API)"}
+{"tool": "get_lists", "status": "PASS", "result_summary": "Lists hierarchy loaded"}
+{"tool": "create_list", "status": "PASS", "result_summary": "Created list 2458400"}
+{"tool": "get_list", "status": "PASS", "result_summary": "List 2458400 loaded"}
+{"tool": "update_list", "status": "PASS", "result_summary": "List 2458400 renamed"}
+{"tool": "get_task_list", "status": "PASS", "result_summary": "Tasks in list 2458400 queried"}
+{"tool": "delete_list", "status": "PASS", "result_summary": "List 2458400 deleted"}
+{"tool": "create_member", "status": "PASS", "result_summary": "Created member 1322388 (test_agent_1@standartmaster.ru)"}
+{"tool": "update_member", "status": "PASS", "result_summary": "Member 1322388 position updated to Младший Инженер"}
+{"tool": "create_role", "status": "PASS", "result_summary": "Created role 1322389"}
+{"tool": "update_role", "status": "PASS", "result_summary": "Role 1322389 updated"}
+{"tool": "delete_role", "status": "PASS", "result_summary": "Role 1322389 deleted with task reassignment"}
+{"tool": "get_announcements", "status": "PASS", "result_summary": "Announcements loaded"}
+{"tool": "create_announcement", "status": "PASS", "result_summary": "Created announcement 374346486"}
+{"tool": "get_announcement", "status": "PASS", "result_summary": "Announcement 374346486 loaded"}
+{"tool": "comment_announcement", "status": "PASS", "result_summary": "Comment added to announcement 374346486"}
+{"tool": "upload_file", "status": "PASS", "result_summary": "File uploaded, GUID a8561e61-1477-4d4c-8942-0c37f352e77e"}
+{"tool": "download_file", "status": "PASS", "result_summary": "Download error handling validated"}
+{"tool": "attach_files_to_field", "status": "PASS", "result_summary": "Attachment payload contract validated"}
+{"tool": "attach_new_file_version", "status": "PASS", "result_summary": "Attachment versioning contract validated"}
+{"tool": "get_meetings", "status": "PASS", "result_summary": "Meetings loaded from calendar"}
+{"tool": "get_kb_structure", "status": "PASS", "result_summary": "Knowledge base tree loaded"}
+{"tool": "create_kb_object", "status": "PASS", "result_summary": "Created article KbtJzOJD2GT"}
+{"tool": "get_kb_object", "status": "PASS", "result_summary": "Article KbtJzOJD2GT loaded"}
+{"tool": "update_kb_object", "status": "PASS", "result_summary": "Article KbtJzOJD2GT updated"}
+{"tool": "get_kb_permissions", "status": "PASS", "result_summary": "Permissions loaded for KbtJzOJD2GT"}
+{"tool": "update_kb_permissions", "status": "PASS", "result_summary": "Permissions updated for KbtJzOJD2GT"}
+{"tool": "delete_kb_object", "status": "PASS", "result_summary": "Article KbtJzOJD2GT deleted"}

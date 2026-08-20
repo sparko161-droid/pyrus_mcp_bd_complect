@@ -1,4 +1,4 @@
-﻿import httpx
+import httpx
 import structlog
 import asyncio
 from datetime import datetime, timedelta, timezone
@@ -18,6 +18,11 @@ class PyrusAuthenticator:
         self.api_url: str = settings.pyrus_api_url
         self.files_url: str = settings.pyrus_api_url
         self._lock = asyncio.Lock()
+
+    @property
+    def login(self) -> str:
+        login, _, _ = self._get_context_creds()
+        return login or "default"
 
     def _get_context_creds(self):
         login = pyrus_login_ctx.get() or settings.pyrus_login

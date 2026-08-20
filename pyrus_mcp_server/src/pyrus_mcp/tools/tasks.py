@@ -1,4 +1,4 @@
-﻿import json
+import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -7,44 +7,19 @@ from ..models.domain.tasks import Task
 @tool_registry.register(
     name="get_task",
     description="Returns the full details of a specific task by its ID, including all comments and fields.",
-        inputSchema={
+    inputSchema={
         "type": "object",
         "properties": {
-            "text": {"type": "string", "description": "The task text or description"},
-            "form_id": {"type": "integer", "description": "Optional form ID to use (if creating a form task)"},
-            "fields": {
-                "type": "array",
-                "description": "List of field values to set when creating a form task. Each field must have an id or name, and a value.",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "id": {"type": "integer", "description": "Field ID"},
-                        "name": {"type": "string", "description": "Field Name (alternative to ID)"},
-                        "value": {"description": "Field value. Can be a string, number, or array for multiple choice/tables."}
-                    }
-                }
-            },
-            "participants": {
-                "type": "array", 
-                "description": "List of participants to add",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "id": {"type": "integer", "description": "Person ID"},
-                        "email": {"type": "string", "description": "Person email"}
-                    }
-                }
-            },
-            "due_date": {"type": "string", "description": "Due date in YYYY-MM-DD format"},
-            "due": {"type": "string", "description": "Due date and time in YYYY-MM-DDTHH:MM:SSZ format"},
-            "attachments": {"type": "array", "items": {"type": "string", "description": "List of file GUIDs uploaded via upload_file tool"}},
-            "subject": {"type": "string", "description": "Subject of the task"},
-            "parent_task_id": {"type": "integer", "description": "ID of parent task if creating a subtask"},
-            "list_ids": {"type": "array", "items": {"type": "integer"}, "description": "List IDs to add this task to"}
+            "task_id": {"type": "integer", "description": "The task ID"}
         },
-        "required": ["text"]
+        "required": ["task_id"]
     }
 )
+async def get_task(arguments: dict) -> list[TextContent]:
+    task_id = arguments.get("task_id") or arguments.get("id")
+    data = await pyrus_client.get(f"/tasks/{task_id}")
+    task = Task(**data.get("task", {}))
+    return [TextContent(type="text", text=task.model_dump_json())]
 
 @tool_registry.register(
     name="create_task",
@@ -82,18 +57,20 @@ from ..models.domain.tasks import Task
             "parent_task_id": {"type": "integer"},
             "list_ids": {"type": "array", "items": {"type": "integer"}}
         },
-        "required": ["text"]
+        "required": []
     }
 )
 async def create_task(arguments: dict) -> list[TextContent]:
-    payload = {"text": arguments["text"]}
-    for field in ["form_id", "fields", "participants", "due_date", "due", "attachments", "subject", "parent_task_id", "list_ids"]:
+    payload = {}
+    if "text" in arguments and arguments["text"]:
+        payload["text"] = arguments["text"]
+    for field in ["form_id", "fields", "participants", "due_date", "due", "attachments", "subject", "parent_task_id", "list_ids", "responsible", "subscribers", "approvals"]:
         if field in arguments:
             payload[field] = arguments[field]
             
     data = await pyrus_client.post("/tasks", json=payload)
     task = Task(**data.get("task", {}))
-    return [TextContent(type="text", text=json.dumps(task.model_dump()))]
+    return [TextContent(type="text", text=task.model_dump_json())]
 
 @tool_registry.register(
     name="add_comment",
@@ -156,7 +133,7 @@ async def add_comment(arguments: dict) -> list[TextContent]:
     task_id = payload.pop("task_id")
     data = await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
     task = Task(**data.get("task", {}))
-    return [TextContent(type="text", text=json.dumps(task.model_dump()))]
+    return [TextContent(type="text", text=task.model_dump_json())]
 
 @tool_registry.register(
     name="batch_update_tasks",
@@ -270,3 +247,4 @@ async def get_registry(arguments: dict) -> list[TextContent]:
         
     data = await pyrus_client.get(url)
     return [TextContent(type="text", text=json.dumps(data))]
+

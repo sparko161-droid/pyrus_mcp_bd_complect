@@ -1,4 +1,4 @@
-﻿import json
+import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -39,7 +39,7 @@ def register_legacy_contacts_roles():
     @tool_registry.register(name="delete_role", description="Delete a role.", inputSchema={"type": "object", "properties": {"id": {"type": "integer"}, "task_receiver_id": {"type": "integer"}}, "required": ["id"]})
     async def delete_role(args: dict) -> list[TextContent]:
         id = args.pop("id")
-        return [TextContent(type="text", text=json.dumps(await pyrus_client.delete(f"/roles/{id}", params=args)))]
+        return [TextContent(type="text", text=json.dumps(await pyrus_client.delete(f"/roles/{id}", json=args)))]
 
     @tool_registry.register(name="get_role", description="Get a role.", inputSchema={"type": "object", "properties": {"id": {"type": "integer"}}, "required": ["id"]})
     async def get_role(args: dict) -> list[TextContent]:
