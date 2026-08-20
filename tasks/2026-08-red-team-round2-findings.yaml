@@ -1,0 +1,117 @@
+version: 1
+status: ACTIVE
+purpose: "Round-2 adversarial QA findings against commit a4438ce67638158f735cc4770046e1d9de919f3c."
+completion_rule: "DONE requires executable test, negative/boundary coverage, reproducible evidence artifact, independent review, and gate evidence."
+tasks:
+  - id: RT2-001
+    priority: P0
+    phase: 30
+    title: "Restore or redesign health/readiness endpoints to match the new Streamable HTTP server and CI smoke contract"
+    primary: python-backend-lead
+    reviewer: qa-lead
+    gates: [release-manager]
+    deps: []
+  - id: RT2-002
+    priority: P0
+    phase: 30
+    title: "Implement real stateful/stateless transport configuration; remove unconditional stateless=True claim"
+    primary: chief-architect
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [RT2-001]
+  - id: RT2-003
+    priority: P0
+    phase: 30
+    title: "Make 61-tool inventory checker import and enumerate the exact production registration surface"
+    primary: qa-lead
+    reviewer: api-contract-auditor
+    gates: [chief-architect]
+    deps: []
+  - id: RT2-004
+    priority: P0
+    phase: 30
+    title: "Replace proof-log summaries with reproducible evidence records containing commit, timestamp, request, response/error, transport envelope, and artifact hash"
+    primary: qa-lead
+    reviewer: documentation-agent
+    gates: [human-architect]
+    deps: []
+  - id: RT2-005
+    priority: P0
+    phase: 30
+    title: "Build executable 61-tool harness that fails on any missing tool, schema mismatch, routing error, or placeholder result"
+    primary: ai-evaluation-lead
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: [RT2-003, RT2-004]
+  - id: RT2-006
+    priority: P0
+    phase: 30
+    title: "Reconcile the 61-tool report against actual server tools/list output and generated registry snapshot"
+    primary: api-contract-auditor
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [RT2-005]
+  - id: RT2-007
+    priority: P1
+    phase: 30
+    title: "Restore production smoke tests for the new transport and update them to test actual health/readiness/tool protocol endpoints"
+    primary: python-backend-lead
+    reviewer: qa-lead
+    gates: [release-manager]
+    deps: [RT2-001, RT2-002]
+  - id: RT2-008
+    priority: P1
+    phase: 30
+    title: "Remove or explicitly constrain wildcard CORS with credentials and add browser/security regression coverage"
+    primary: security-agent
+    reviewer: architecture-red-team
+    gates: [security-agent]
+    deps: []
+  - id: RT2-009
+    priority: P1
+    phase: 30
+    title: "Stop mutating inbound Accept/Content-Type headers silently; reject invalid client envelopes with explicit protocol errors"
+    primary: python-backend-lead
+    reviewer: api-contract-auditor
+    gates: [qa-lead]
+    deps: []
+  - id: RT2-010
+    priority: P1
+    phase: 30
+    title: "Remove production source bind mount from Docker Compose or formally justify immutable-image exception with deployment tests"
+    primary: devops-lead
+    reviewer: security-agent
+    gates: [release-manager]
+    deps: []
+  - id: RT2-011
+    priority: P1
+    phase: 30
+    title: "Verify claimed fixes in create_task, legacy_lists, delete_role and auth-context imports against official contract tests and negative cases"
+    primary: api-contract-auditor
+    reviewer: qa-lead
+    gates: [chief-architect]
+    deps: [RT2-005]
+  - id: RT2-012
+    priority: P1
+    phase: 30
+    title: "Prove cleanup/rollback of all test-created Pyrus objects or make fixture cleanup mandatory"
+    primary: qa-lead
+    reviewer: devops-lead
+    gates: [security-agent]
+    deps: [RT2-005]
+  - id: RT2-013
+    priority: P1
+    phase: 30
+    title: "Run CI on the exact verification commit and attach immutable workflow evidence; no manual PASS statements accepted"
+    primary: release-manager
+    reviewer: architecture-red-team
+    gates: [human-architect]
+    deps: [RT2-007, RT2-011]
+  - id: RT2-014
+    priority: P0
+    phase: 30
+    title: "Enable protected main branch with required CI checks before another release-style verification claim"
+    primary: devops-lead
+    reviewer: chief-architect
+    gates: [human-architect]
+    deps: [RT2-013]
