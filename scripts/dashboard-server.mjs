@@ -13,6 +13,8 @@ const overlayPaths = [
   resolve(repoRoot, "tasks/2026-08-red-team-findings.yaml"),
   resolve(repoRoot, "tasks/2026-08-red-team-overrides.yaml"),
   resolve(repoRoot, "tasks/2026-08-red-team-pyrus-runtime.yaml"),
+  resolve(repoRoot, "tasks/2026-08-red-team-round2-findings.yaml"),
+  resolve(repoRoot, "tasks/2026-08-red-team-round2-overrides.yaml"),
 ];
 const PORT = Number(process.env.DASHBOARD_PORT || 4748);
 
