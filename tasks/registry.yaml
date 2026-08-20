@@ -45,8 +45,26 @@ waves:
       - 16
       - 17
       - 18
+      - 19
     status: DONE
     gate_status: APPROVED
+  - id: W5
+    name: API Compliance & Red Team Fixes
+    phases:
+      - 20
+      - 21
+      - 22
+      - 23
+    status: IN_PROGRESS
+    gate_status: PENDING
+  - id: W6
+    name: Final Architecture & Release
+    phases:
+      - 24
+      - 25
+      - 26
+    status: IN_PROGRESS
+    gate_status: PENDING
 phases:
   - id: 0
     name: contract-recovery
@@ -108,6 +126,27 @@ phases:
   - id: 19
     name: future-interface
     exit: PyrusBot orchestration can be exposed through UI-neutral adapters.
+  - id: 20
+    name: pyrus-api-compliance-2026
+    exit: Official Pyrus API endpoints used for all methods.
+  - id: 21
+    name: knowledge-learning-system
+    exit: Real Knowledge Base API implemented.
+  - id: 22
+    name: iiko-api-contract-recovery
+    exit: iiko contract recovered.
+  - id: 23
+    name: iiko-mcp-foundation
+    exit: iiko module mounted into MCP.
+  - id: 24
+    name: cross-ecosystem-architecture-gates
+    exit: Architecture gates fixed.
+  - id: 25
+    name: agent-evaluation-and-release
+    exit: Benchmarks and evaluations use real data.
+  - id: 26
+    name: live-evidence
+    exit: Live testing and reporting completed.
 tasks:
   - id: MCP-001
     phase: 0
@@ -1927,7 +1966,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-F05
     phase: 8
     title: Update form permissions
@@ -1938,7 +1977,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-T04
     phase: 8
     title: Delete task
@@ -1949,7 +1988,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-N02
     phase: 7
     title: Get announcement
@@ -1959,7 +1998,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-N03
     phase: 8
     title: Create announcement
@@ -1970,7 +2009,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-N04
     phase: 8
     title: Comment announcement
@@ -1981,7 +2020,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-C01
     phase: 7
     title: Calendar
@@ -1991,7 +2030,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-D03
     phase: 8
     title: Create/sync catalog
@@ -2002,7 +2041,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-D04
     phase: 8
     title: Sync catalog
@@ -2013,7 +2052,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-D05
     phase: 8
     title: Diff catalog
@@ -2024,7 +2063,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K01
     phase: 7
     title: Get KB object
@@ -2034,7 +2073,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K02
     phase: 8
     title: Update KB object
@@ -2045,7 +2084,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K03
     phase: 8
     title: Create KB object
@@ -2056,7 +2095,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K04
     phase: 7
     title: Get KB structure
@@ -2066,7 +2105,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K05
     phase: 7
     title: Get KB permissions
@@ -2076,7 +2115,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K06
     phase: 8
     title: Update KB permissions
@@ -2087,7 +2126,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-K07
     phase: 8
     title: Delete KB object
@@ -2098,7 +2137,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-M01
     phase: 7
     title: Contacts
@@ -2108,7 +2147,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-M03
     phase: 7
     title: Member detail
@@ -2118,7 +2157,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-M04
     phase: 8
     title: Create member
@@ -2129,7 +2168,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-M05
     phase: 8
     title: Update member
@@ -2140,7 +2179,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-M06
     phase: 8
     title: Delete member
@@ -2151,7 +2190,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-AW01
     phase: 8
     title: Set award threshold
@@ -2162,7 +2201,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-AW02
     phase: 7
     title: Get award threshold
@@ -2172,7 +2211,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-AW03
     phase: 7
     title: Get member award counter
@@ -2182,7 +2221,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-AW04
     phase: 8
     title: Increment award counter
@@ -2193,7 +2232,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-AW05
     phase: 8
     title: Set award counter
@@ -2204,7 +2243,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-R02
     phase: 7
     title: Get role
@@ -2214,7 +2253,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-R03
     phase: 8
     title: Create role
@@ -2225,7 +2264,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-R04
     phase: 8
     title: Update role
@@ -2236,7 +2275,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-R05
     phase: 8
     title: Delete role
@@ -2247,7 +2286,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-P01
     phase: 7
     title: Get profile
@@ -2257,7 +2296,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-I01
     phase: 7
     title: List work lists
@@ -2267,7 +2306,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-I02
     phase: 7
     title: Get list
@@ -2277,7 +2316,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-I03
     phase: 7
     title: List tasks in list
@@ -2287,7 +2326,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-I04
     phase: 8
     title: Update list
@@ -2298,7 +2337,7 @@ tasks:
       - chief-architect
       - security-agent
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-I05
     phase: 7
     title: Inbox
@@ -2308,7 +2347,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-H01
     phase: 7
     title: Event history
@@ -2318,7 +2357,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-H02
     phase: 7
     title: File access history
@@ -2328,7 +2367,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-H03
     phase: 7
     title: Task access history
@@ -2338,7 +2377,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-H04
     phase: 7
     title: Task export history
@@ -2348,7 +2387,7 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
   - id: TOOL-H05
     phase: 7
     title: Registry download history
@@ -2358,4 +2397,4 @@ tasks:
     gate_owners:
       - chief-architect
     status: DONE
-    blocked_reason: "Awaiting contract, schema, and fixture evidence"
+    blocked_reason: Awaiting contract, schema, and fixture evidence
