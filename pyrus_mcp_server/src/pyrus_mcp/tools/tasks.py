@@ -45,6 +45,46 @@ from ..models.domain.tasks import Task
         "required": ["text"]
     }
 )
+
+@tool_registry.register(
+    name="create_task",
+    description="Create a new task. Pass either text (simple task) or form_id (form task). responsible/participants/subscribers are person dicts (id/email/first_name/last_name). fields are dicts (id/name/type/value/code). approvals is list of lists of person dicts. attachments is list of uploaded file GUIDs.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "text": {"type": "string", "description": "Text of the task"},
+            "form_id": {"type": "integer", "description": "Form template ID"},
+            "fields": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "name": {"type": "string"},
+                        "value": {"type": ["string", "number", "array"]}
+                    }
+                }
+            },
+            "participants": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "email": {"type": "string"}
+                    }
+                }
+            },
+            "due_date": {"type": "string"},
+            "due": {"type": "string"},
+            "attachments": {"type": "array", "items": {"type": "string"}},
+            "subject": {"type": "string"},
+            "parent_task_id": {"type": "integer"},
+            "list_ids": {"type": "array", "items": {"type": "integer"}}
+        },
+        "required": ["text"]
+    }
+)
 async def create_task(arguments: dict) -> list[TextContent]:
     payload = {"text": arguments["text"]}
     for field in ["form_id", "fields", "participants", "due_date", "due", "attachments", "subject", "parent_task_id", "list_ids"]:
@@ -201,3 +241,32 @@ async def batch_close_tasks(arguments: dict) -> list[TextContent]:
 
 
 
+
+
+@tool_registry.register(
+    name="get_registry",
+    description="Get tasks register for a form template. IMPORTANT: by default returns only OPEN tasks; pass include_archived=true for full history/counts (closed set = full minus open, no is_closed field exists). field_filters keys must be the field's NUMERIC id (not name/code) e.g. {\"6\": 958621}; unrecognized keys are silently ignored by Pyrus (non-numeric keys rejected locally). steps filters by workflow current_step, not a form field. Registers can be very large (measured 16MB/year for one form) — use field_ids to narrow columns, item_count to cap rows, created_after/created_before to shorten period; oversized results are refused with guidance rather than silently truncated. To page a large register, walk by date windows (created_after/created_before) since there is no offset/cursor.",
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "form_id": {"type": "integer", "description": "The ID of the form template"},
+            "item_count": {"type": "integer", "description": "Limit returned tasks"},
+            "include_archived": {"type": "boolean", "description": "Include closed tasks (default false)"},
+            "created_before": {"type": "string", "description": "YYYY-MM-DD"},
+            "created_after": {"type": "string", "description": "YYYY-MM-DD"}
+        },
+        "required": ["form_id"]
+    }
+)
+async def get_registry(arguments: dict) -> list[TextContent]:
+    form_id = arguments.pop("form_id")
+    url = f"/forms/{form_id}/register"
+    params = []
+    for k, v in arguments.items():
+        if v is not None:
+            params.append(f"{k}={v}")
+    if params:
+        url += "?" + "&".join(params)
+        
+    data = await pyrus_client.get(url)
+    return [TextContent(type="text", text=json.dumps(data))]

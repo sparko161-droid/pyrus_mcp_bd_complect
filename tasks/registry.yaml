@@ -857,7 +857,7 @@ tasks:
     deps:
       - MCP-064
       - MCP-044
-    status: DONE
+    status: IN_PROGRESS
   - id: REV-006
     phase: 6
     title: Phase 6 Coherence Review & Sign-off
@@ -888,7 +888,7 @@ tasks:
     deps:
       - MCP-061
       - MCP-064
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-072
     phase: 7
     title: Implement member/role read-only tools
@@ -899,7 +899,7 @@ tasks:
     deps:
       - MCP-062
       - MCP-064
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-073
     phase: 7
     title: Implement list/catalog read-only tools
@@ -910,7 +910,7 @@ tasks:
     deps:
       - MCP-062
       - MCP-064
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-074
     phase: 7
     title: Implement announcement/KB read-only tools
@@ -921,7 +921,7 @@ tasks:
     deps:
       - MCP-063
       - MCP-064
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-075
     phase: 7
     title: Implement basic task read tools
@@ -943,7 +943,7 @@ tasks:
     deps:
       - MCP-075
       - MCP-007
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-077
     phase: 7
     title: Run read-only compatibility tests against recovered fixtures
@@ -970,12 +970,12 @@ tasks:
     deps:
       - MCP-072
       - MCP-077
-    status: DONE
+    status: IN_PROGRESS
   - id: REV-007
     phase: 7
     title: Phase 7 Coherence Review & Sign-off
     primary: chief-architect
-    status: DONE
+    status: PENDING
     deps:
       - MCP-070
       - MCP-071
@@ -1004,7 +1004,7 @@ tasks:
     deps:
       - MCP-073
       - MCP-077
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-082
     phase: 8
     title: Implement announcement and KB write tools
@@ -1015,7 +1015,7 @@ tasks:
     deps:
       - MCP-074
       - MCP-077
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-083
     phase: 8
     title: Implement create/update/assign task tools
@@ -1026,7 +1026,7 @@ tasks:
     deps:
       - MCP-075
       - MCP-077
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-084
     phase: 8
     title: Implement approvals/subscribers/comments task tools
@@ -1036,7 +1036,7 @@ tasks:
       - security-agent
     deps:
       - MCP-083
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-085
     phase: 8
     title: Implement task close/reopen/delete tools
@@ -1046,7 +1046,7 @@ tasks:
       - qa-lead
     deps:
       - MCP-083
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-086
     phase: 8
     title: Implement file attachment/version tools
@@ -1057,7 +1057,7 @@ tasks:
     deps:
       - MCP-054
       - MCP-083
-    status: DONE
+    status: IN_PROGRESS
   - id: MCP-087
     phase: 8
     title: Perform idempotency and partial-failure analysis for all write tools
@@ -1099,7 +1099,7 @@ tasks:
     phase: 8
     title: Phase 8 Coherence Review & Sign-off
     primary: chief-architect
-    status: DONE
+    status: PENDING
     deps:
       - MCP-080
       - MCP-081
@@ -1965,8 +1965,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-F05
     phase: 8
     title: Update form permissions
@@ -1976,8 +1978,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-T04
     phase: 8
     title: Delete task
@@ -1987,8 +1991,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-N02
     phase: 7
     title: Get announcement
@@ -1997,8 +2003,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-N03
     phase: 8
     title: Create announcement
@@ -2008,8 +2016,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-N04
     phase: 8
     title: Comment announcement
@@ -2019,8 +2029,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-C01
     phase: 7
     title: Calendar
@@ -2029,8 +2041,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-D03
     phase: 8
     title: Create/sync catalog
@@ -2040,8 +2054,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-D04
     phase: 8
     title: Sync catalog
@@ -2051,8 +2067,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-D05
     phase: 8
     title: Diff catalog
@@ -2062,8 +2080,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-K01
     phase: 7
     title: Get KB object
@@ -2146,8 +2166,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-M03
     phase: 7
     title: Member detail
@@ -2156,8 +2178,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-M04
     phase: 8
     title: Create member
@@ -2167,8 +2191,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-M05
     phase: 8
     title: Update member
@@ -2178,8 +2204,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-M06
     phase: 8
     title: Delete member
@@ -2189,8 +2217,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-AW01
     phase: 8
     title: Set award threshold
@@ -2200,8 +2230,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-AW02
     phase: 7
     title: Get award threshold
@@ -2210,8 +2242,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-AW03
     phase: 7
     title: Get member award counter
@@ -2220,8 +2254,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-AW04
     phase: 8
     title: Increment award counter
@@ -2231,8 +2267,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-AW05
     phase: 8
     title: Set award counter
@@ -2242,8 +2280,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-R02
     phase: 7
     title: Get role
@@ -2252,8 +2292,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-R03
     phase: 8
     title: Create role
@@ -2263,8 +2305,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-R04
     phase: 8
     title: Update role
@@ -2274,8 +2318,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-R05
     phase: 8
     title: Delete role
@@ -2285,8 +2331,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-P01
     phase: 7
     title: Get profile
@@ -2295,8 +2343,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-I01
     phase: 7
     title: List work lists
@@ -2305,8 +2355,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-I02
     phase: 7
     title: Get list
@@ -2315,8 +2367,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-I03
     phase: 7
     title: List tasks in list
@@ -2325,8 +2379,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-I04
     phase: 8
     title: Update list
@@ -2336,8 +2392,10 @@ tasks:
     gate_owners:
       - chief-architect
       - security-agent
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-I05
     phase: 7
     title: Inbox
@@ -2346,8 +2404,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-H01
     phase: 7
     title: Event history
@@ -2356,8 +2416,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-H02
     phase: 7
     title: File access history
@@ -2366,8 +2428,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-H03
     phase: 7
     title: Task access history
@@ -2376,8 +2440,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-H04
     phase: 7
     title: Task export history
@@ -2386,8 +2452,10 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
   - id: TOOL-H05
     phase: 7
     title: Registry download history
@@ -2396,5 +2464,27 @@ tasks:
     reviewer: qa-lead
     gate_owners:
       - chief-architect
-    status: DONE
+    status: PLANNED
     blocked_reason: Awaiting contract, schema, and fixture evidence
+    human_decisions:
+      - Reverted from false DONE - tool not actually implemented.
+  - id: MCP-FIX-01
+    phase: 8
+    title: Restore missing create_task and get_registry tools
+    primary: python-backend-lead
+    reviewer: qa-lead
+    gate_owners:
+      - chief-architect
+    deps: []
+    status: DONE
+  - id: MCP-FIX-02
+    phase: 8
+    title: Apply legacy specification quirks to all tool descriptions
+    primary: documentation-agent
+    reviewer: chief-architect
+    gate_owners:
+      - security-agent
+    deps: []
+    status: DONE
+    human_decisions:
+      - Applied in commit b546efc
