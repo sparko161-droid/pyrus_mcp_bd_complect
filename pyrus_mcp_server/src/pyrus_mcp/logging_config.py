@@ -1,4 +1,4 @@
-"""
+﻿"""
 Centralized structlog configuration for the Pyrus MCP Server.
 Outputs JSON logs with automatic secret redaction and context injection.
 """
@@ -48,7 +48,7 @@ def configure_logging(json_logs: bool = True) -> None:
     """
     shared_processors = [
         structlog.stdlib.add_log_level,
-        structlog.stdlib.add_logger_name,
+        
         structlog.processors.TimeStamper(fmt="iso"),
         _inject_context,
         _redact_sensitive,
@@ -71,3 +71,4 @@ def configure_logging(json_logs: bool = True) -> None:
         logger_factory=structlog.PrintLoggerFactory(),
         cache_logger_on_first_use=True,
     )
+

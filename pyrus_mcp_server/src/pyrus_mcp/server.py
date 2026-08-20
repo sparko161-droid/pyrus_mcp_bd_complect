@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import structlog
 from typing import Any
 from starlette.applications import Starlette
@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 from starlette.middleware import Middleware
 from mcp.server import Server
 from mcp.server.sse import SseServerTransport
-from mcp.types import InitializationOptions
+# removed InitializationOptions
 
 from .config import settings
 from .middleware import SecurityMiddleware
@@ -119,3 +119,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

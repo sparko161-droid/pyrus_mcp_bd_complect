@@ -52,7 +52,7 @@ class PyrusAuthenticator:
         
         logger.info("Authenticating with Pyrus API", url=auth_url, login=settings.pyrus_login)
         
-                async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient() as client:
             auth_payload = {
                 "login": settings.pyrus_login,
                 "security_key": settings.pyrus_security_key
@@ -88,5 +88,6 @@ class PyrusAuthenticator:
 
 # Global authenticator instance
 pyrus_auth = PyrusAuthenticator()
+
 
 

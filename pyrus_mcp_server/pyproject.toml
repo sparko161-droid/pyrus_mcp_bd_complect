@@ -51,3 +51,7 @@ ignore_missing_imports = true
 minversion = "8.0"
 addopts = "-ra -q --asyncio-mode=auto"
 testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ['src/pyrus_mcp']
+

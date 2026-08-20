@@ -2497,7 +2497,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-add_subscribers
     phase: 8
     title: 'Implement legacy tool: add_subscribers'
@@ -2507,7 +2507,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-assign_task
     phase: 8
     title: 'Implement legacy tool: assign_task'
@@ -2517,7 +2517,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-attach_files_to_field
     phase: 8
     title: 'Implement legacy tool: attach_files_to_field'
@@ -2527,7 +2527,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-attach_new_file_version
     phase: 8
     title: 'Implement legacy tool: attach_new_file_version'
@@ -2537,7 +2537,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-close_task
     phase: 8
     title: 'Implement legacy tool: close_task'
@@ -2547,7 +2547,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-comment_announcement
     phase: 8
     title: 'Implement legacy tool: comment_announcement'
@@ -2557,7 +2557,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-create_announcement
     phase: 8
     title: 'Implement legacy tool: create_announcement'
@@ -2567,7 +2567,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-create_catalog
     phase: 8
     title: 'Implement legacy tool: create_catalog'
@@ -2577,7 +2577,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-create_list
     phase: 8
     title: 'Implement legacy tool: create_list'
@@ -2587,7 +2587,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-create_member
     phase: 8
     title: 'Implement legacy tool: create_member'
@@ -2597,7 +2597,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-create_role
     phase: 8
     title: 'Implement legacy tool: create_role'
@@ -2607,7 +2607,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-delete_list
     phase: 8
     title: 'Implement legacy tool: delete_list'
@@ -2617,7 +2617,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-delete_role
     phase: 8
     title: 'Implement legacy tool: delete_role'
@@ -2627,7 +2627,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-delete_task
     phase: 8
     title: 'Implement legacy tool: delete_task'
@@ -2637,7 +2637,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_announcement
     phase: 7
     title: 'Implement legacy tool: get_announcement'
@@ -2647,7 +2647,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_bots
     phase: 7
     title: 'Implement legacy tool: get_bots'
@@ -2657,7 +2657,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_calendar_tasks
     phase: 7
     title: 'Implement legacy tool: get_calendar_tasks'
@@ -2667,7 +2667,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_contacts
     phase: 7
     title: 'Implement legacy tool: get_contacts'
@@ -2677,7 +2677,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_form_permissions
     phase: 7
     title: 'Implement legacy tool: get_form_permissions'
@@ -2687,7 +2687,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_inbox
     phase: 7
     title: 'Implement legacy tool: get_inbox'
@@ -2697,7 +2697,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_list
     phase: 7
     title: 'Implement legacy tool: get_list'
@@ -2707,7 +2707,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_lists
     phase: 7
     title: 'Implement legacy tool: get_lists'
@@ -2717,7 +2717,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_meetings
     phase: 7
     title: 'Implement legacy tool: get_meetings'
@@ -2727,7 +2727,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_member
     phase: 7
     title: 'Implement legacy tool: get_member'
@@ -2737,7 +2737,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_overdue_tasks
     phase: 7
     title: 'Implement legacy tool: get_overdue_tasks'
@@ -2747,7 +2747,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_profile
     phase: 7
     title: 'Implement legacy tool: get_profile'
@@ -2757,7 +2757,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_role
     phase: 7
     title: 'Implement legacy tool: get_role'
@@ -2767,7 +2767,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_task_list
     phase: 7
     title: 'Implement legacy tool: get_task_list'
@@ -2777,7 +2777,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_tasks
     phase: 7
     title: 'Implement legacy tool: get_tasks'
@@ -2787,7 +2787,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-get_tasks_due_soon
     phase: 7
     title: 'Implement legacy tool: get_tasks_due_soon'
@@ -2797,7 +2797,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-reopen_task
     phase: 8
     title: 'Implement legacy tool: reopen_task'
@@ -2807,7 +2807,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-search_tasks
     phase: 7
     title: 'Implement legacy tool: search_tasks'
@@ -2817,7 +2817,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-sync_catalog
     phase: 8
     title: 'Implement legacy tool: sync_catalog'
@@ -2827,7 +2827,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-update_catalog_items
     phase: 8
     title: 'Implement legacy tool: update_catalog_items'
@@ -2837,7 +2837,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-update_list
     phase: 8
     title: 'Implement legacy tool: update_list'
@@ -2847,7 +2847,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-update_member
     phase: 8
     title: 'Implement legacy tool: update_member'
@@ -2857,7 +2857,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-update_role
     phase: 8
     title: 'Implement legacy tool: update_role'
@@ -2867,7 +2867,7 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
   - id: LEGACY-update_task_fields
     phase: 8
     title: 'Implement legacy tool: update_task_fields'
@@ -2877,4 +2877,4 @@ tasks:
       - chief-architect
       - security-agent
     deps: []
-    status: PLANNED
+    status: DONE
