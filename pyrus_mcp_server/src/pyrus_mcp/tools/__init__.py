@@ -22,5 +22,6 @@ def register_tools(server: Server):
             
         server.tool()(
             name=tool.name,
-            description=tool.description
+            description=tool.description,
+            inputSchema=tool.inputSchema
         )(make_handler(tool.name))

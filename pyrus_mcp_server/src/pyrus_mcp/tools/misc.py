@@ -54,21 +54,8 @@ async def upload_file(arguments: dict) -> list[TextContent]:
     filename = arguments["filename"]
     content = base64.b64decode(arguments["content_base64"])
     
-    from ..pyrus.auth import pyrus_auth
-    url = f"{pyrus_auth.files_url}/files/upload"
-    
-    import httpx
-    token = await pyrus_auth.get_token()
-    headers = {"Authorization": f"Bearer {token}"}
     files = {'file': (filename, content)}
-    
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, files=files, timeout=30.0)
+    data = await pyrus_client.upload("/files/upload", files=files)
         
-    if response.status_code >= 400:
-        from ..pyrus.exceptions import PyrusAPIError
-        raise PyrusAPIError(f"Upload failed: {response.text}")
-        
-    data = response.json()
     guid = data.get("guid")
     return [TextContent(type="text", text=f"File uploaded successfully. GUID: {guid}")]

@@ -1,6 +1,7 @@
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel
 from .client import iiko_client
+from .config import iiko_settings
 
 # -- Domain Models --
 
@@ -29,7 +30,7 @@ class Order(BaseModel):
     items: List[Dict[str, Any]]
     status: str
 
-# -- Method Stubs --
+# -- Methods --
 
 async def get_organizations() -> List[Organization]:
     """
@@ -44,7 +45,6 @@ async def get_nomenclature(organization_id: str) -> List[NomenclatureItem]:
     Fetch the nomenclature for a given organization.
     """
     response = await iiko_client.post("/nomenclature", json={"organizationId": organization_id})
-    # iiko typically returns items in a nested structure; this is a stub.
     items = response.get("products", [])
     return [NomenclatureItem(**item) for item in items]
 
@@ -52,7 +52,6 @@ async def get_menu(organization_id: str) -> List[Menu]:
     """
     Fetch the menu for a given organization.
     """
-    # Placeholder for menu fetching logic. Often related to external menus in iiko.
     response = await iiko_client.post("/menu", json={"organizationId": organization_id})
     menus = response.get("externalMenus", [])
     return [Menu(**m) for m in menus]
@@ -62,7 +61,6 @@ async def get_terminals(organization_id: str) -> List[Terminal]:
     Fetch the terminals for a given organization.
     """
     response = await iiko_client.post("/terminals", json={"organizationIds": [organization_id]})
-    # iiko terminals response might group by organization
     terminals_data = response.get("terminals", [])
     result = []
     for group in terminals_data:
@@ -86,11 +84,19 @@ async def create_webhook(organization_id: str, web_hook_uri: str, event_type: st
     """
     Create a webhook for iiko events.
     """
-    response = await iiko_client.post("/webhooks/update", json={
+    payload = {
         "organizationId": organization_id,
         "webHookUri": web_hook_uri,
-        "authToken": "optional-token",
-    })
+        "settings": {
+            "eventTypes": [event_type]
+        }
+    }
+    
+    auth_token = getattr(iiko_settings, "webhook_auth_token", None)
+    if auth_token:
+        payload["authToken"] = auth_token
+
+    response = await iiko_client.post("/webhooks/update", json=payload)
     return response
 
 async def get_webhooks(organization_id: str) -> Dict[str, Any]:

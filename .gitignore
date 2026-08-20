@@ -34,6 +34,16 @@ htmlcov/
 *.dump.json
 *.dump.yaml
 
+# Deny: status-forging utilities
+**/mark_all_done*
+**/force_done*
+**/forge_status*
+
+# Build / dist
+dist/
+build/
+*.egg-info/
+
 # OS/editor
 .DS_Store
 Thumbs.db

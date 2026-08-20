@@ -77,7 +77,12 @@ async def health_check(request):
     })
 
 async def ready_check(request):
-    return JSONResponse({"status": "ready"})
+    try:
+        from .pyrus.auth import pyrus_auth
+        await pyrus_auth.get_token()
+        return JSONResponse({"status": "ready"})
+    except Exception as e:
+        return JSONResponse({"status": "not ready", "error": str(e)}, status_code=503)
 
 # Construct the HTTP App
 app = Starlette(

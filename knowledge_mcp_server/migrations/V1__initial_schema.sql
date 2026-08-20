@@ -26,14 +26,23 @@ CREATE TABLE knowledge_revisions (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+CREATE TABLE embedding_models (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    model_name TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    dimensions INTEGER NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
 CREATE TABLE knowledge_chunks (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     revision_id UUID NOT NULL REFERENCES knowledge_revisions(id) ON DELETE CASCADE,
     tenant_id UUID NOT NULL,
     chunk_index INT NOT NULL,
     content TEXT NOT NULL,
-    fts_vector tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED,
+    fts_vector tsvector GENERATED ALWAYS AS (to_tsvector('russian', content)) STORED,
     embedding vector(1536), -- Example dimension size
+    embedding_model_id UUID REFERENCES embedding_models(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -59,3 +68,4 @@ CREATE TABLE publications (
     verification_result TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+

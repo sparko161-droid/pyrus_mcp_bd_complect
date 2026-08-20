@@ -15,6 +15,8 @@ class PyrusAuthenticator:
         # Tenant specific routing returned by /auth
         self.api_url: str = settings.pyrus_api_url
         self.files_url: str = ""
+        import asyncio
+        self._lock = asyncio.Lock()
 
     async def get_token(self) -> str:
         """
@@ -27,11 +29,17 @@ class PyrusAuthenticator:
         if self._access_token and self._expires_at and now < (self._expires_at - timedelta(minutes=5)):
             return self._access_token
             
-        await self._authenticate()
-        if not self._access_token:
-            raise PyrusAuthError("Failed to retrieve access token")
-            
-        return self._access_token
+        async with self._lock:
+            # Double check within the lock
+            now = datetime.now(timezone.utc)
+            if self._access_token and self._expires_at and now < (self._expires_at - timedelta(minutes=5)):
+                return self._access_token
+
+            await self._authenticate()
+            if not self._access_token:
+                raise PyrusAuthError("Failed to retrieve access token")
+                
+            return self._access_token
 
     async def _authenticate(self) -> None:
         """

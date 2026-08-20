@@ -51,18 +51,24 @@ async def get_registry(arguments: dict) -> list[TextContent]:
             "fields": {
                 "type": "array",
                 "items": {"type": "object"}
-            }
+            },
+            "participants": {"type": "array", "items": {"type": "object"}},
+            "due_date": {"type": "string"},
+            "due": {"type": "string"},
+            "attachments": {"type": "array", "items": {"type": "string"}},
+            "subject": {"type": "string"},
+            "parent_task_id": {"type": "integer"},
+            "list_ids": {"type": "array", "items": {"type": "integer"}}
         },
         "required": ["text"]
     }
 )
 async def create_task(arguments: dict) -> list[TextContent]:
     payload = {"text": arguments["text"]}
-    if "form_id" in arguments:
-        payload["form_id"] = arguments["form_id"]
-    if "fields" in arguments:
-        payload["fields"] = arguments["fields"]
-        
+    for field in ["form_id", "fields", "participants", "due_date", "due", "attachments", "subject", "parent_task_id", "list_ids"]:
+        if field in arguments:
+            payload[field] = arguments[field]
+            
     data = await pyrus_client.post("/tasks", json=payload)
     task = Task(**data.get("task", {}))
     return [TextContent(type="text", text=json.dumps(task.model_dump()))]
@@ -75,14 +81,23 @@ async def create_task(arguments: dict) -> list[TextContent]:
         "properties": {
             "task_id": {"type": "integer", "description": "The task ID"},
             "text": {"type": "string", "description": "Comment text"},
-            "approval_choice": {"type": "string", "enum": ["approved", "rejected", "acknowledged"]}
+            "approval_choice": {"type": "string", "enum": ["approved", "rejected", "acknowledged"]},
+            "field_updates": {"type": "array", "items": {"type": "object"}},
+            "reassign_to": {"type": "object"},
+            "subscribers_added": {"type": "array"},
+            "subscribers_removed": {"type": "array"},
+            "due_date": {"type": "string"},
+            "due": {"type": "string"},
+            "attachments": {"type": "array", "items": {"type": "string"}},
+            "scheduled_date": {"type": "string"},
+            "subject": {"type": "string"}
         },
         "required": ["task_id"]
     }
 )
 async def add_comment(arguments: dict) -> list[TextContent]:
-    task_id = arguments.pop("task_id")
-    payload = arguments
+    payload = arguments.copy()
+    task_id = payload.pop("task_id")
     data = await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
     task = Task(**data.get("task", {}))
     return [TextContent(type="text", text=json.dumps(task.model_dump()))]
