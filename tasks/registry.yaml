@@ -2488,3 +2488,393 @@ tasks:
     status: DONE
     human_decisions:
       - Applied in commit b546efc
+  - id: LEGACY-add_approvers
+    phase: 8
+    title: 'Implement legacy tool: add_approvers'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-add_subscribers
+    phase: 8
+    title: 'Implement legacy tool: add_subscribers'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-assign_task
+    phase: 8
+    title: 'Implement legacy tool: assign_task'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-attach_files_to_field
+    phase: 8
+    title: 'Implement legacy tool: attach_files_to_field'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-attach_new_file_version
+    phase: 8
+    title: 'Implement legacy tool: attach_new_file_version'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-close_task
+    phase: 8
+    title: 'Implement legacy tool: close_task'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-comment_announcement
+    phase: 8
+    title: 'Implement legacy tool: comment_announcement'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-create_announcement
+    phase: 8
+    title: 'Implement legacy tool: create_announcement'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-create_catalog
+    phase: 8
+    title: 'Implement legacy tool: create_catalog'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-create_list
+    phase: 8
+    title: 'Implement legacy tool: create_list'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-create_member
+    phase: 8
+    title: 'Implement legacy tool: create_member'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-create_role
+    phase: 8
+    title: 'Implement legacy tool: create_role'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-delete_list
+    phase: 8
+    title: 'Implement legacy tool: delete_list'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-delete_role
+    phase: 8
+    title: 'Implement legacy tool: delete_role'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-delete_task
+    phase: 8
+    title: 'Implement legacy tool: delete_task'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_announcement
+    phase: 7
+    title: 'Implement legacy tool: get_announcement'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_bots
+    phase: 7
+    title: 'Implement legacy tool: get_bots'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_calendar_tasks
+    phase: 7
+    title: 'Implement legacy tool: get_calendar_tasks'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_contacts
+    phase: 7
+    title: 'Implement legacy tool: get_contacts'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_form_permissions
+    phase: 7
+    title: 'Implement legacy tool: get_form_permissions'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_inbox
+    phase: 7
+    title: 'Implement legacy tool: get_inbox'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_list
+    phase: 7
+    title: 'Implement legacy tool: get_list'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_lists
+    phase: 7
+    title: 'Implement legacy tool: get_lists'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_meetings
+    phase: 7
+    title: 'Implement legacy tool: get_meetings'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_member
+    phase: 7
+    title: 'Implement legacy tool: get_member'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_overdue_tasks
+    phase: 7
+    title: 'Implement legacy tool: get_overdue_tasks'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_profile
+    phase: 7
+    title: 'Implement legacy tool: get_profile'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_role
+    phase: 7
+    title: 'Implement legacy tool: get_role'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_task_list
+    phase: 7
+    title: 'Implement legacy tool: get_task_list'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_tasks
+    phase: 7
+    title: 'Implement legacy tool: get_tasks'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-get_tasks_due_soon
+    phase: 7
+    title: 'Implement legacy tool: get_tasks_due_soon'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-reopen_task
+    phase: 8
+    title: 'Implement legacy tool: reopen_task'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-search_tasks
+    phase: 7
+    title: 'Implement legacy tool: search_tasks'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-sync_catalog
+    phase: 8
+    title: 'Implement legacy tool: sync_catalog'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-update_catalog_items
+    phase: 8
+    title: 'Implement legacy tool: update_catalog_items'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-update_list
+    phase: 8
+    title: 'Implement legacy tool: update_list'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-update_member
+    phase: 8
+    title: 'Implement legacy tool: update_member'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-update_role
+    phase: 8
+    title: 'Implement legacy tool: update_role'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
+  - id: LEGACY-update_task_fields
+    phase: 8
+    title: 'Implement legacy tool: update_task_fields'
+    primary: python-backend-lead
+    reviewer: red-team-auditor
+    gate_owners:
+      - chief-architect
+      - security-agent
+    deps: []
+    status: PLANNED
