@@ -1,0 +1,52 @@
+version: 1
+status: ACTIVE
+purpose: "Round-2 security and test-harness findings discovered after inspecting committed verification runners."
+tasks:
+  - id: RT2-015
+    priority: P0
+    phase: 30
+    title: "Immediately revoke/rotate the exposed Pyrus security credential and remove secrets from repository history"
+    primary: security-agent
+    reviewer: chief-architect
+    gates: [human-architect]
+    deps: []
+  - id: RT2-016
+    priority: P0
+    phase: 30
+    title: "Remove hard-coded account identifiers from verification runners and move all credentials to ephemeral secret injection"
+    primary: security-agent
+    reviewer: code-quality-agent
+    gates: [security-agent]
+    deps: [RT2-015]
+  - id: RT2-017
+    priority: P0
+    phase: 30
+    title: "Make integration_runner and mcp_proof_runner fail non-zero on any failed/empty/invalid MCP response"
+    primary: qa-lead
+    reviewer: ai-evaluation-lead
+    gates: [chief-architect]
+    deps: []
+  - id: RT2-018
+    priority: P0
+    phase: 30
+    title: "Replace partial scenario runners with a canonical manifest-driven 61-tool execution harness"
+    primary: ai-evaluation-lead
+    reviewer: api-contract-auditor
+    gates: [human-architect]
+    deps: [RT2-003, RT2-017]
+  - id: RT2-019
+    priority: P1
+    phase: 30
+    title: "Add assertions for expected semantic outcomes, negative cases, and response schemas to every tool fixture"
+    primary: qa-lead
+    reviewer: code-quality-agent
+    gates: [qa-lead]
+    deps: [RT2-018]
+  - id: RT2-020
+    priority: P1
+    phase: 30
+    title: "Make test-created resource cleanup transactional and record deletion/cleanup proof for every created Pyrus object"
+    primary: devops-lead
+    reviewer: security-agent
+    gates: [release-manager]
+    deps: [RT2-018]
