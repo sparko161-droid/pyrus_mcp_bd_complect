@@ -1,4 +1,4 @@
-import httpx
+﻿import httpx
 import structlog
 import json
 from typing import Any, Dict, Optional
@@ -135,6 +135,51 @@ class PyrusClient:
                         logger.warning("Retrying upload on network error", endpoint=endpoint, error=str(e))
                     raise
 
+
+    async def download(self, endpoint: str, **kwargs) -> bytes:
+        """Downloads a file from files_url and returns raw bytes."""
+        token = await pyrus_auth.get_token()
+        headers = kwargs.pop("headers", {})
+        headers["Authorization"] = f"Bearer {token}"
+        headers["User-Agent"] = "Pyrus-FastMCP-Server/0.1.0"
+        
+        url = f"{pyrus_auth.files_url.rstrip('/')}{endpoint}"
+        
+        async for attempt in AsyncRetrying(
+            stop=stop_after_attempt(3),
+            wait=wait_exponential(multiplier=1, min=2, max=10),
+            retry=retry_if_exception_type((httpx.NetworkError, httpx.TimeoutException, PyrusRateLimitError)),
+            reraise=True
+        ):
+            with attempt:
+                try:
+                    logger.debug("Executing Pyrus API download", endpoint=endpoint)
+                    req = self._client.build_request("GET", url, headers=headers, **kwargs)
+                    response = await self._client.send(req, stream=True)
+                    
+                    if response.status_code == 429:
+                        logger.warning("Pyrus Rate Limit Hit", endpoint=endpoint)
+                        raise PyrusRateLimitError("Rate limit exceeded (429)")
+                        
+                    if response.status_code >= 400:
+                        await response.aread()
+                        error_body = response.text[:200].replace('\n', ' ')
+                        logger.error("Pyrus API Error", status_code=response.status_code, text=error_body)
+                        raise PyrusAPIError(f"Pyrus API returned {response.status_code}: {error_body}")
+                        
+                    size = 0
+                    chunks = []
+                    async for chunk in response.aiter_bytes():
+                        size += len(chunk)
+                        if size > MAX_RESPONSE_BYTES:
+                            raise PyrusSizeLimitError(f"Response size exceeds limit of {MAX_RESPONSE_BYTES}")
+                        chunks.append(chunk)
+                        
+                    return b"".join(chunks)
+                except Exception as e:
+                    if isinstance(e, (httpx.NetworkError, httpx.TimeoutException)):
+                        logger.warning("Retrying download on network error", endpoint=endpoint, error=str(e))
+                    raise
     # Convenience methods
     async def get(self, endpoint: str, **kwargs) -> Dict[str, Any]:
         return await self.request("GET", endpoint, **kwargs)
@@ -150,3 +195,4 @@ class PyrusClient:
 
 # Global client instance
 pyrus_client = PyrusClient()
+

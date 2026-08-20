@@ -71,13 +71,13 @@
 
 | ID | Method | Endpoint | Current status | Required action |
 |---|---|---|---|---|
-| PY-K01 | Get KB object | `GET /knowledgebase/{id}` | missing | add exact Markdown/structured response model |
-| PY-K02 | Update KB object | `PUT /knowledgebase/{id}` | missing | add safe version-aware mutation |
-| PY-K03 | Create KB object | `POST /knowledgebase` | missing | add |
-| PY-K04 | Get KB structure | `GET /knowledgebase/structure` | missing | add structure retrieval |
-| PY-K05 | Get KB permissions | `GET /knowledgebase/{id}/permissions` | missing | add |
-| PY-K06 | Update KB permissions | `PUT /knowledgebase/{id}/permissions` | missing | add guarded mutation |
-| PY-K07 | Delete KB object | `DELETE /knowledgebase/{id}` | missing | support `delete_with_children` and destructive confirmation |
+| PY-K01 | Get KB object | `GET /knowledgebase/{id}` | implemented | - |
+| PY-K02 | Update KB object | `PUT /knowledgebase/{id}` | implemented | - |
+| PY-K03 | Create KB object | `POST /knowledgebase` | implemented | - |
+| PY-K04 | Get KB structure | `GET /knowledgebase/structure` | implemented | - |
+| PY-K05 | Get KB permissions | `GET /knowledgebase/{id}/permissions` | implemented | - |
+| PY-K06 | Update KB permissions | `PUT /knowledgebase/{id}/permissions` | implemented | - |
+| PY-K07 | Delete KB object | `DELETE /knowledgebase/{id}` | implemented | - |
 
 ## Contacts / staff / members
 

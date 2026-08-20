@@ -1,4 +1,4 @@
-services:
+﻿services:
   pyrus-mcp-server:
     build:
       context: ./pyrus_mcp_server
@@ -22,7 +22,7 @@ services:
     volumes:
       - prod_data:/app/data
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      test: ["CMD-SHELL", "python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')""]
       interval: 15s
       timeout: 5s
       retries: 3
@@ -35,6 +35,42 @@ services:
         reservations:
           cpus: '0.5'
           memory: 256M
+    networks:
+      - pyrus-prod-net
+
+  knowledge-mcp-server:
+    build:
+      context: ./knowledge_mcp_server
+    image: knowledge-mcp-server:1.0.0
+    container_name: knowledge-mcp-production
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=${KNOWLEDGE_DB_URL}
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-}
+      - HOST=0.0.0.0
+      - PORT=8001
+      - LOG_LEVEL=INFO
+    networks:
+      - pyrus-prod-net
+
+  iiko-mcp-server:
+    build:
+      context: ./pyrus_mcp_server
+      dockerfile: Dockerfile
+    image: iiko-mcp-server:1.0.0
+    container_name: iiko-mcp-production
+    command: ["python", "-m", "iiko_mcp.server"]
+    restart: always
+    ports:
+      - "8002:8002"
+    environment:
+      - IIKO_WEBHOOK_AUTH_TOKEN=${IIKO_WEBHOOK_AUTH_TOKEN}
+      - IIKO_API_LOGIN=${IIKO_API_LOGIN}
+      - HOST=0.0.0.0
+      - PORT=8002
+      - LOG_LEVEL=INFO
     networks:
       - pyrus-prod-net
 

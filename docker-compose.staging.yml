@@ -1,4 +1,4 @@
-services:
+﻿services:
   pyrus-mcp-server:
     build:
       context: ./pyrus_mcp_server
@@ -20,11 +20,56 @@ services:
     volumes:
       - staging_data:/app/data
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      test: ["CMD-SHELL", "python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')""]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 5s
+    networks:
+      - pyrus-staging-net
+
+  knowledge-mcp-server:
+    build:
+      context: ./knowledge_mcp_server
+    container_name: knowledge-mcp-staging
+    restart: unless-stopped
+    ports:
+      - "8081:8001"
+    environment:
+      - DATABASE_URL=${KNOWLEDGE_DB_URL:-postgresql://postgres:postgres@db:5432/knowledge_staging}
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-}
+      - HOST=0.0.0.0
+      - PORT=8001
+      - LOG_LEVEL=DEBUG
+    networks:
+      - pyrus-staging-net
+
+  iiko-mcp-server:
+    build:
+      context: ./pyrus_mcp_server
+      dockerfile: Dockerfile
+    container_name: iiko-mcp-staging
+    command: ["python", "-m", "iiko_mcp.server"]
+    restart: unless-stopped
+    ports:
+      - "8082:8002"
+    environment:
+      - IIKO_WEBHOOK_AUTH_TOKEN=${IIKO_WEBHOOK_AUTH_TOKEN:-test-token}
+      - IIKO_API_LOGIN=${IIKO_API_LOGIN:-test-login}
+      - HOST=0.0.0.0
+      - PORT=8002
+      - LOG_LEVEL=DEBUG
+    networks:
+      - pyrus-staging-net
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: knowledge_staging
+    ports:
+      - "5432:5432"
     networks:
       - pyrus-staging-net
 

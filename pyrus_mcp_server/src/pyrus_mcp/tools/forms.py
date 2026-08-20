@@ -1,4 +1,4 @@
-import time
+﻿import time
 import json
 from mcp.types import TextContent
 from .registry import tool_registry
@@ -36,11 +36,14 @@ async def get_forms(arguments: dict) -> list[TextContent]:
 )
 async def get_form(arguments: dict) -> list[TextContent]:
     form_id = arguments["form_id"]
+    from ..pyrus.auth import pyrus_auth
+    tenant_key = pyrus_auth.login
+    cache_key = f"{tenant_key}:{form_id}"
     
     # Check cache
     now = time.time()
-    if form_id in _form_cache:
-        cached_form, timestamp = _form_cache[form_id]
+    if cache_key in _form_cache:
+        cached_form, timestamp = _form_cache[cache_key]
         if now - timestamp < CACHE_TTL:
             return [TextContent(type="text", text=json.dumps(cached_form.model_dump()))]
             
@@ -48,6 +51,7 @@ async def get_form(arguments: dict) -> list[TextContent]:
     form = FormTemplate(**data)
     
     # Save to cache
-    _form_cache[form_id] = (form, now)
+    _form_cache[cache_key] = (form, now)
     
     return [TextContent(type="text", text=json.dumps(form.model_dump()))]
+

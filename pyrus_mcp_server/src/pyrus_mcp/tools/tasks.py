@@ -1,4 +1,4 @@
-import json
+﻿import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -116,23 +116,30 @@ async def add_comment(arguments: dict) -> list[TextContent]:
     }
 )
 async def batch_update_tasks(arguments: dict) -> list[TextContent]:
+    import asyncio
     task_ids = arguments["task_ids"]
     fields = arguments.get("fields", [])
     comment_text = arguments.get("comment_text", "")
     
     results = {"success": [], "failed": []}
-    for task_id in task_ids:
+    
+    async def _update_task(task_id):
         payload = {}
-        if fields: payload["fields"] = fields
+        if fields: payload["field_updates"] = fields
         if comment_text: payload["text"] = comment_text
-        try:
-            await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
-            results["success"].append(task_id)
-        except Exception as e:
-            results["failed"].append({"task_id": task_id, "error": str(e)})
+        await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
+        return task_id
+
+    coroutines = [_update_task(tid) for tid in task_ids]
+    completed = await asyncio.gather(*coroutines, return_exceptions=True)
+    
+    for i, res in enumerate(completed):
+        if isinstance(res, Exception):
+            results["failed"].append({"task_id": task_ids[i], "error": str(res)})
+        else:
+            results["success"].append(res)
             
     return [TextContent(type="text", text=json.dumps(results))]
-
 @tool_registry.register(
     name="batch_close_tasks",
     description="Closes multiple tasks at once.",
@@ -146,16 +153,33 @@ async def batch_update_tasks(arguments: dict) -> list[TextContent]:
     }
 )
 async def batch_close_tasks(arguments: dict) -> list[TextContent]:
+    import asyncio
     task_ids = arguments["task_ids"]
     comment_text = arguments.get("comment_text", "Closed automatically by MCP Agent")
     
-    results = {"success": [], "failed": []}
-    for task_id in task_ids:
+    results = {"success": [], "failed": [], "skipped_already_closed": []}
+    
+    async def _close_task(task_id):
+        # Idempotency check: is it already closed?
+        task_data = await pyrus_client.get(f"/tasks/{task_id}")
+        if task_data.get("task", {}).get("is_closed", False):
+            return {"task_id": task_id, "status": "skipped"}
+        
         payload = {"action": "finished", "text": comment_text}
-        try:
-            await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
-            results["success"].append(task_id)
-        except Exception as e:
-            results["failed"].append({"task_id": task_id, "error": str(e)})
+        await pyrus_client.post(f"/tasks/{task_id}/comments", json=payload)
+        return {"task_id": task_id, "status": "success"}
+
+    coroutines = [_close_task(tid) for tid in task_ids]
+    completed = await asyncio.gather(*coroutines, return_exceptions=True)
+    
+    for i, res in enumerate(completed):
+        if isinstance(res, Exception):
+            results["failed"].append({"task_id": task_ids[i], "error": str(res)})
+        elif res["status"] == "skipped":
+            results["skipped_already_closed"].append(res["task_id"])
+        else:
+            results["success"].append(res["task_id"])
             
     return [TextContent(type="text", text=json.dumps(results))]
+
+

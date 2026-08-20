@@ -1,4 +1,4 @@
-import json
+﻿import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -31,11 +31,14 @@ async def get_announcements(arguments: dict) -> list[TextContent]:
 )
 async def download_file(arguments: dict) -> list[TextContent]:
     file_id = arguments["file_id"]
-    # The /files/download endpoint returns the raw file, or we can construct the URL
-    # For MCP text interface, we just return the URL or metadata
-    from ..pyrus.auth import pyrus_auth
-    url = f"{pyrus_auth.files_url}/files/download/{file_id}"
-    return [TextContent(type="text", text=f"Download URL: {url}")]
+    
+    try:
+        data = await pyrus_client.download(f"/files/download/{file_id}")
+        import base64
+        b64_content = base64.b64encode(data).decode('utf-8')
+        return [TextContent(type="text", text=f"File downloaded successfully. Base64:\n{b64_content}")]
+    except Exception as e:
+        return [TextContent(type="text", text=f"Failed to download file: {str(e)}")]
 
 @tool_registry.register(
     name="upload_file",
@@ -59,3 +62,4 @@ async def upload_file(arguments: dict) -> list[TextContent]:
         
     guid = data.get("guid")
     return [TextContent(type="text", text=f"File uploaded successfully. GUID: {guid}")]
+

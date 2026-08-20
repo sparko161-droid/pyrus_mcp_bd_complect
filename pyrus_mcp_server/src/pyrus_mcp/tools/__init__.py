@@ -1,4 +1,4 @@
-from mcp.server import Server
+﻿from mcp.server import Server
 from .registry import tool_registry
 
 # Import to trigger registration decorators
@@ -7,7 +7,7 @@ import pyrus_mcp.tools.catalogs
 import pyrus_mcp.tools.forms
 import pyrus_mcp.tools.tasks
 import pyrus_mcp.tools.misc
-import pyrus_mcp.tools.knowledge
+import pyrus_mcp.tools.pyrus_kb
 
 def register_tools(server: Server):
     """
@@ -25,3 +25,4 @@ def register_tools(server: Server):
             description=tool.description,
             inputSchema=tool.inputSchema
         )(make_handler(tool.name))
+
