@@ -1,4 +1,4 @@
-import json
+﻿import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -21,16 +21,20 @@ async def get_catalogs(arguments: dict) -> list[TextContent]:
 @tool_registry.register(
     name="get_catalog",
     description="Returns the full contents (items) of a specific catalog by its ID.",
-    inputSchema={
+        inputSchema={
         "type": "object",
         "properties": {
-            "catalog_id": {"type": "integer", "description": "The ID of the catalog to fetch"}
+            "catalog_id": {"type": "integer", "description": "The ID of the catalog to fetch"},
+            "include_deleted": {"type": "boolean", "description": "Admin only: include deleted items"}
         },
         "required": ["catalog_id"]
     }
 )
 async def get_catalog(arguments: dict) -> list[TextContent]:
     catalog_id = arguments["catalog_id"]
-    data = await pyrus_client.get(f"/catalogs/{catalog_id}")
-    catalog = Catalog(**data)
-    return [TextContent(type="text", text=json.dumps(catalog.model_dump()))]
+    url = f"/catalogs/{catalog_id}"
+    if arguments.get("include_deleted"):
+        url += "?include_deleted=y"
+    data = await pyrus_client.get(url)
+    return [TextContent(type="text", text=json.dumps(data))]
+

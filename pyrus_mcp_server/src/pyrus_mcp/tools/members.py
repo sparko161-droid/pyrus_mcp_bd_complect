@@ -1,4 +1,4 @@
-from mcp.types import TextContent
+﻿from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
 from ..models.domain.members import Person, Role
@@ -6,19 +6,20 @@ from ..models.domain.members import Person, Role
 @tool_registry.register(
     name="get_members",
     description="Returns the list of all members (persons/bots) in the organization.",
-    inputSchema={
+        inputSchema={
         "type": "object",
-        "properties": {},
+        "properties": {
+            "include_inactive": {"type": "boolean", "description": "Include blocked/inactive members"}
+        },
         "required": []
     }
 )
 async def get_members(arguments: dict) -> list[TextContent]:
-    data = await pyrus_client.get("/members")
-    # Validate and serialize
-    persons = [Person(**p) for p in data.get("members", [])]
-    # For MCP, we return text content (usually JSON stringified for AI to parse)
-    import json
-    return [TextContent(type="text", text=json.dumps([p.model_dump() for p in persons]))]
+    url = "/members"
+    if arguments.get("include_inactive"):
+        url += "?include_inactive=y"
+    data = await pyrus_client.get(url)
+    return [TextContent(type="text", text=json.dumps(data))]))]
 
 @tool_registry.register(
     name="get_roles",
@@ -34,3 +35,4 @@ async def get_roles(arguments: dict) -> list[TextContent]:
     roles = [Role(**r) for r in data.get("roles", [])]
     import json
     return [TextContent(type="text", text=json.dumps([r.model_dump() for r in roles]))]
+

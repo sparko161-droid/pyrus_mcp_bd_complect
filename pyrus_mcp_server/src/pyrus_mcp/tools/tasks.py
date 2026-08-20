@@ -7,58 +7,40 @@ from ..models.domain.tasks import Task
 @tool_registry.register(
     name="get_task",
     description="Returns the full details of a specific task by its ID, including all comments and fields.",
-    inputSchema={
-        "type": "object",
-        "properties": {
-            "task_id": {"type": "integer", "description": "The ID of the task to fetch"}
-        },
-        "required": ["task_id"]
-    }
-)
-async def get_task(arguments: dict) -> list[TextContent]:
-    task_id = arguments["task_id"]
-    data = await pyrus_client.get(f"/tasks/{task_id}")
-    task = Task(**data.get("task", {}))
-    return [TextContent(type="text", text=json.dumps(task.model_dump()))]
-
-@tool_registry.register(
-    name="get_registry",
-    description="Returns a list of tasks that belong to a specific form (registry).",
-    inputSchema={
-        "type": "object",
-        "properties": {
-            "form_id": {"type": "integer", "description": "The ID of the form to get tasks for"},
-            "item_count": {"type": "integer", "description": "Number of items to return, max 20000", "default": 50}
-        },
-        "required": ["form_id"]
-    }
-)
-async def get_registry(arguments: dict) -> list[TextContent]:
-    form_id = arguments["form_id"]
-    item_count = arguments.get("item_count", 50)
-    data = await pyrus_client.get(f"/forms/{form_id}/register?item_count={item_count}")
-    tasks = [Task(**t) for t in data.get("tasks", [])]
-    return [TextContent(type="text", text=json.dumps([t.model_dump() for t in tasks]))]
-
-@tool_registry.register(
-    name="create_task",
-    description="Creates a new task in Pyrus, optionally based on a form template.",
-    inputSchema={
+        inputSchema={
         "type": "object",
         "properties": {
             "text": {"type": "string", "description": "The task text or description"},
-            "form_id": {"type": "integer", "description": "Optional form ID to use"},
+            "form_id": {"type": "integer", "description": "Optional form ID to use (if creating a form task)"},
             "fields": {
                 "type": "array",
-                "items": {"type": "object"}
+                "description": "List of field values to set when creating a form task. Each field must have an id or name, and a value.",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer", "description": "Field ID"},
+                        "name": {"type": "string", "description": "Field Name (alternative to ID)"},
+                        "value": {"description": "Field value. Can be a string, number, or array for multiple choice/tables."}
+                    }
+                }
             },
-            "participants": {"type": "array", "items": {"type": "object"}},
-            "due_date": {"type": "string"},
-            "due": {"type": "string"},
-            "attachments": {"type": "array", "items": {"type": "string"}},
-            "subject": {"type": "string"},
-            "parent_task_id": {"type": "integer"},
-            "list_ids": {"type": "array", "items": {"type": "integer"}}
+            "participants": {
+                "type": "array", 
+                "description": "List of participants to add",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer", "description": "Person ID"},
+                        "email": {"type": "string", "description": "Person email"}
+                    }
+                }
+            },
+            "due_date": {"type": "string", "description": "Due date in YYYY-MM-DD format"},
+            "due": {"type": "string", "description": "Due date and time in YYYY-MM-DDTHH:MM:SSZ format"},
+            "attachments": {"type": "array", "items": {"type": "string", "description": "List of file GUIDs uploaded via upload_file tool"}},
+            "subject": {"type": "string", "description": "Subject of the task"},
+            "parent_task_id": {"type": "integer", "description": "ID of parent task if creating a subtask"},
+            "list_ids": {"type": "array", "items": {"type": "integer"}, "description": "List IDs to add this task to"}
         },
         "required": ["text"]
     }
@@ -76,21 +58,55 @@ async def create_task(arguments: dict) -> list[TextContent]:
 @tool_registry.register(
     name="add_comment",
     description="Adds a comment, approval, or updates fields in an existing task.",
-    inputSchema={
+        inputSchema={
         "type": "object",
         "properties": {
             "task_id": {"type": "integer", "description": "The task ID"},
             "text": {"type": "string", "description": "Comment text"},
-            "approval_choice": {"type": "string", "enum": ["approved", "rejected", "acknowledged"]},
-            "field_updates": {"type": "array", "items": {"type": "object"}},
-            "reassign_to": {"type": "object"},
-            "subscribers_added": {"type": "array"},
-            "subscribers_removed": {"type": "array"},
-            "due_date": {"type": "string"},
-            "due": {"type": "string"},
-            "attachments": {"type": "array", "items": {"type": "string"}},
-            "scheduled_date": {"type": "string"},
-            "subject": {"type": "string"}
+            "action": {"type": "string", "enum": ["finished", "reopened"], "description": "Action to perform on the task"},
+            "approval_choice": {"type": "string", "enum": ["approved", "rejected", "acknowledged"], "description": "Approval decision"},
+            "field_updates": {
+                "type": "array",
+                "description": "List of field values to update. Each field must have an id or name, and a value.",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer", "description": "Field ID"},
+                        "name": {"type": "string", "description": "Field Name (alternative to ID)"},
+                        "value": {"description": "Field value. Can be a string, number, or array for multiple choice/tables."}
+                    }
+                }
+            },
+            "reassign_to": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "email": {"type": "string"}
+                }
+            },
+            "subscribers_added": {
+                "type": "array", 
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "email": {"type": "string"}
+                    }
+                }
+            },
+            "subscribers_removed": {
+                "type": "array", 
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "email": {"type": "string"}
+                    }
+                }
+            },
+            "due_date": {"type": "string", "description": "Due date in YYYY-MM-DD format"},
+            "due": {"type": "string", "description": "Due date and time in YYYY-MM-DDTHH:MM:SSZ format"},
+            "attachments": {"type": "array", "items": {"type": "string", "description": "List of file GUIDs uploaded via upload_file tool"}}
         },
         "required": ["task_id"]
     }
@@ -181,5 +197,7 @@ async def batch_close_tasks(arguments: dict) -> list[TextContent]:
             results["success"].append(res["task_id"])
             
     return [TextContent(type="text", text=json.dumps(results))]
+
+
 
 

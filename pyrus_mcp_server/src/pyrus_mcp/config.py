@@ -1,12 +1,13 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+﻿from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Literal
 
 class Settings(BaseSettings):
     # Pyrus Credentials (Phase 5: Auth v4)
     pyrus_login: str = ""
-    pyrus_security_key: str = ""
+    pyrus_security_key: str = "
+    pyrus_person_id: str = "
     pyrus_webhook_secret: str = ""
-    redis_url: str = ""  # Optional — if set, enables Redis cache adapter
+    redis_url: str = ""  # Optional вЂ” if set, enables Redis cache adapter
     pyrus_api_url: str = "https://api.pyrus.com/v4"
     
     # Server configuration
@@ -22,3 +23,4 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 settings = Settings()
+
