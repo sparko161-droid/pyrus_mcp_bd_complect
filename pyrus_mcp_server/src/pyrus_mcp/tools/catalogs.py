@@ -20,7 +20,7 @@ async def get_catalogs(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="get_catalog",
-    description="Returns the full contents (items) of a specific catalog by its ID.",
+    description="Get a catalog by id.",
         inputSchema={
         "type": "object",
         "properties": {

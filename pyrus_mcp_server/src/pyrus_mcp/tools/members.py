@@ -5,7 +5,7 @@ from ..models.domain.members import Person, Role
 
 @tool_registry.register(
     name="get_members",
-    description="Returns the list of all members (persons/bots) in the organization.",
+    description="Get all organization members.",
         inputSchema={
         "type": "object",
         "properties": {
@@ -23,7 +23,7 @@ async def get_members(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="get_roles",
-    description="Returns the list of all roles in the organization.",
+    description="Get all roles.",
     inputSchema={
         "type": "object",
         "properties": {},

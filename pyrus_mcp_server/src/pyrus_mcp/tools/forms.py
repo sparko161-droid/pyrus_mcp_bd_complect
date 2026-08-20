@@ -11,7 +11,7 @@ CACHE_TTL = 3600
 
 @tool_registry.register(
     name="get_forms",
-    description="Returns the list of all form templates available in the organization.",
+    description="Get all available form templates.",
     inputSchema={
         "type": "object",
         "properties": {},
@@ -25,7 +25,7 @@ async def get_forms(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="get_form",
-    description="Returns the detailed template of a specific form, including all its fields.",
+    description="Get a single form template by id. Fields can be nested in title groups. flatten=true returns every field in one list with a 'depth'.",
     inputSchema={
         "type": "object",
         "properties": {

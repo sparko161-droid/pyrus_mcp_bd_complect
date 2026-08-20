@@ -20,7 +20,7 @@ async def get_announcements(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="download_file",
-    description="Returns a direct download URL for a file stored in Pyrus.",
+    description="Get a download URL for a file without transferring its contents. Caller fetches URL themselves with header 'Authorization: Bearer <access_token>'.",
     inputSchema={
         "type": "object",
         "properties": {
@@ -42,7 +42,7 @@ async def download_file(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="upload_file",
-    description="Uploads a file to Pyrus and returns a GUID that can be used to attach the file to tasks or comments.",
+    description="Get URL and token for uploading a file to Pyrus directly (caller uploads, not routed through this server). POST multipart/form-data field 'file', header 'Authorization: Bearer <access_token>'. Pyrus responds with a guid to pass to create_task/comment_task or attach_new_file_version. Target belongs to whichever environment the call is authenticated against — for customer environments pass that same access_token/api_url here.",
     inputSchema={
         "type": "object",
         "properties": {

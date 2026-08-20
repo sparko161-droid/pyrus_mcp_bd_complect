@@ -5,7 +5,7 @@ from ..pyrus.client import pyrus_client
 
 @tool_registry.register(
     name="get_kb_object",
-    description="Returns the content and metadata of a Pyrus Knowledge Base object.",
+    description="Get a knowledge base entity (article or topic).",
     inputSchema={
         "type": "object",
         "properties": {
@@ -21,7 +21,7 @@ async def get_kb_object(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="create_kb_object",
-    description="Creates a new object in the Pyrus Knowledge Base.",
+    description="Create a knowledge base entity. type: 'article' or 'topic'. Body required for articles.",
     inputSchema={
         "type": "object",
         "properties": {
@@ -41,7 +41,7 @@ async def create_kb_object(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="update_kb_object",
-    description="Updates an existing Pyrus Knowledge Base object.",
+    description="Update a knowledge base entity. title must be passed with any change (Pyrus rejects update without it). Moving: pass parent_topic_id (parent_topic_id_changed flag auto-set; override only if needed).",
     inputSchema={
         "type": "object",
         "properties": {
@@ -59,7 +59,7 @@ async def update_kb_object(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="get_kb_structure",
-    description="Returns the tree structure of the Pyrus Knowledge Base.",
+    description="Get knowledge base structure (tree of topics and articles).",
     inputSchema={
         "type": "object",
         "properties": {},
@@ -73,7 +73,7 @@ async def get_kb_structure(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="get_kb_permissions",
-    description="Returns the permissions of a Pyrus Knowledge Base object.",
+    description="Get knowledge base entity permissions.",
     inputSchema={
         "type": "object",
         "properties": {
@@ -89,7 +89,7 @@ async def get_kb_permissions(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="update_kb_permissions",
-    description="Updates the permissions of a Pyrus Knowledge Base object.",
+    description="Update knowledge base entity permissions.",
     inputSchema={
         "type": "object",
         "properties": {
@@ -106,7 +106,7 @@ async def update_kb_permissions(arguments: dict) -> list[TextContent]:
 
 @tool_registry.register(
     name="delete_kb_object",
-    description="Deletes a Pyrus Knowledge Base object.",
+    description="Delete a knowledge base entity.",
     inputSchema={
         "type": "object",
         "properties": {
