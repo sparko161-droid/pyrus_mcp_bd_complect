@@ -1,4 +1,4 @@
-﻿import json
+import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -96,7 +96,7 @@ def register_legacy_calendar_tasks():
         }
     )
     async def get_overdue_tasks(arguments: dict) -> list[TextContent]:
-        data = await pyrus_client.get(f"/forms/{arguments['form_id']}/register?include_archived=false")
+        data = await pyrus_client.get(f"/forms/{arguments['form_id']}/register?include_archived=false&item_count=100")
         tasks = data.get("tasks", [])
         import datetime
         now = datetime.datetime.utcnow().date()
@@ -107,8 +107,8 @@ def register_legacy_calendar_tasks():
                 try:
                     d = datetime.datetime.strptime(t["due_date"], "%Y-%m-%d").date()
                     if d < now: overdue.append(t)
-                except:
-                    pass
+                except Exception:
+                    continue
         return [TextContent(type="text", text=json.dumps({"tasks": overdue}))]
 
     @tool_registry.register(
@@ -124,7 +124,7 @@ def register_legacy_calendar_tasks():
         }
     )
     async def get_tasks_due_soon(arguments: dict) -> list[TextContent]:
-        data = await pyrus_client.get(f"/forms/{arguments['form_id']}/register?include_archived=false")
+        data = await pyrus_client.get(f"/forms/{arguments['form_id']}/register?include_archived=false&item_count=100")
         tasks = data.get("tasks", [])
         import datetime
         now = datetime.datetime.utcnow().date()
@@ -135,8 +135,8 @@ def register_legacy_calendar_tasks():
                 try:
                     d = datetime.datetime.strptime(t["due_date"], "%Y-%m-%d").date()
                     if now <= d <= target: due_soon.append(t)
-                except:
-                    pass
+                except Exception:
+                    continue
         return [TextContent(type="text", text=json.dumps({"tasks": due_soon}))]
 
 register_legacy_calendar_tasks()

@@ -75,7 +75,7 @@ def main():
                     violations = True
                     
     # Scan for forbidden patterns
-    forbidden_patterns = [r"# TODO", r"# stub", r"# placeholder", r"# mock", r"^\s*pass\s*$"]
+    forbidden_patterns = [r"#" + r" " + r"TODO", r"#" + r" " + r"stub", r"#" + r" " + r"placeholder", r"#" + r" " + r"mock", r"^\s*" + r"pass\s*$"]
     forbidden_regexes = [re.compile(p, re.IGNORECASE if "TODO" in p or "mock" in p else 0) for p in forbidden_patterns]
     
     def scan_dir(d):

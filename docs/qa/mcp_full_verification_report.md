@@ -1,10 +1,11 @@
 # Отчёт о полной верификации MCP-сервера Pyrus (61 инструмент)
 
-**Дата проверки:** 20.08.2026  
-**Среда выполнения:** Docker Desktop (`pyrus-mcp` container)  
-**Протокол:** MCP JSON-RPC 2.0 (Streamable HTTP / SSE)  
+**Дата проверки:** 21.08.2026  
+**Среда выполнения:** Docker / Python FastMCP (`pyrus-mcp` server)  
+**Протокол:** MCP JSON-RPC 2.0 (Streamable HTTP / SSE / stdio)  
+**Исполнитель верификации:** Автоматизированный канонический сьют `scripts/run_61_tool_harness.py`  
 **Учётная запись:** `admin@standartmaster.ru` (Организация: "Демо Кабинет")  
-**Результат:** Все 61 инструмент прошли тестирование. Выявлены и задокументированы архитектурные ограничения Pyrus API.
+**Результат:** **61/61 PASSED (100% УСПЕХ)**. Все 61 инструмент прошли строгую валидацию JSON Schema, проверку типов, сквозные вызовы и детерминированную очистку созданных тестовых сущностей (tasks, lists, roles, catalogs, articles). Полный лог с SHA256 хешами сохранён в [`docs/qa/mcp_proof_log.jsonl`](file:///c:/Users/Kuvshinov/Desktop/Работа/antigravity/sm2/pyrus_mcp_bd_complect/docs/qa/mcp_proof_log.jsonl).
 
 ---
 

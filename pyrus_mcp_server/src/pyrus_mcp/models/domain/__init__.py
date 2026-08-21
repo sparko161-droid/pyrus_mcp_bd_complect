@@ -1,4 +1,4 @@
-﻿from .common import PyrusBaseModel, PyrusErrorResponse, PyrusListResponse
+from .common import PyrusBaseModel, PyrusErrorResponse, PyrusListResponse
 from .members import Person, Role, Department
 from .catalogs import Catalog, CatalogHeader, CatalogItem
 from .forms import FormField, FormTemplate
@@ -23,10 +23,5 @@ __all__ = [
     "Approval",
     "File",
     "Announcement",
-    "KnowledgeDocument",
-    "KnowledgeRevision",
-    "KnowledgeChunk",
-    "KnowledgeEvidence",
-    "KnowledgeSearchResult"
 ]
 

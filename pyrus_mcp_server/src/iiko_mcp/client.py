@@ -59,7 +59,7 @@ class IikoClient:
                     try:
                         await asyncio.sleep(int(retry_after))
                     except ValueError:
-                        pass
+                        logger.warning("Invalid Retry-After header", header=retry_after)
                 logger.warning("iiko Rate Limit Hit", endpoint=endpoint)
                 raise IikoRateLimitError("Rate limit exceeded (429)")
                 

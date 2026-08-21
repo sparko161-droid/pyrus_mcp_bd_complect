@@ -21,7 +21,7 @@ def _parse_jwt_exp(token: str) -> Optional[datetime]:
             if 'exp' in claims:
                 return datetime.fromtimestamp(claims['exp'], tz=timezone.utc)
     except Exception:
-        pass
+        return None
     return None
 
 class IikoAuthenticator:

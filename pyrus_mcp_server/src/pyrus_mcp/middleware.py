@@ -1,4 +1,4 @@
-﻿import uuid
+import uuid
 import structlog
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -10,7 +10,7 @@ from .config import settings
 
 logger = structlog.get_logger()
 
-WEBHOOK_BYPASS_PATHS = {"/webhook", "/metrics"}
+UNAUTHENTICATED_PATHS = {"/health", "/ready", "/webhook", "/metrics"}
 
 class SecurityMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
@@ -34,7 +34,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                 AuditLogger.log_security_event("origin_rejected", success=False, reason="Forbidden Origin")
                 return JSONResponse({"error": "Forbidden Origin"}, status_code=403)
 
-            if request.url.path in WEBHOOK_BYPASS_PATHS:
+            if request.url.path in UNAUTHENTICATED_PATHS:
                 response = await call_next(request)
                 response.headers["x-request-id"] = req_id
                 return response

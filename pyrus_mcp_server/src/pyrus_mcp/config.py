@@ -1,4 +1,4 @@
-﻿from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Literal
 
 class Settings(BaseSettings):
@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     # Server configuration
     server_auth_token: str = ''
     mcp_transport: Literal["stdio", "sse"] = "stdio"
+    mcp_stateless: bool = True
+    cors_origins: list[str] = ["http://localhost", "http://127.0.0.1", "http://localhost:3000", "http://localhost:8000"]
+    cors_allow_all: bool = False
     host: str = "0.0.0.0"
     port: int = 8000
     log_level: str = "INFO"

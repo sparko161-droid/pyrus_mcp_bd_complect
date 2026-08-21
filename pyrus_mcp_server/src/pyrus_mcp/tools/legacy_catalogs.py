@@ -1,4 +1,4 @@
-﻿import json
+import json
 from mcp.types import TextContent
 from .registry import tool_registry
 from ..pyrus.client import pyrus_client
@@ -13,9 +13,13 @@ def register_legacy_catalogs():
         id = args.pop("id")
         return [TextContent(type="text", text=json.dumps(await pyrus_client.post(f"/catalogs/{id}", json=args)))]
 
-    @tool_registry.register(name="update_catalog_items", description="Update items in a catalog.", inputSchema={"type": "object", "properties": {"id": {"type": "integer"}, "added": {"type": "array", "items": {"type": "object"}}, "deleted": {"type": "array", "items": {"type": "string"}}, "updated": {"type": "array", "items": {"type": "object"}}}, "required": ["id"]})
+    @tool_registry.register(name="update_catalog_items", description="Update items in a catalog.", inputSchema={"type": "object", "properties": {"id": {"type": "integer"}, "catalog_headers": {"type": "array", "items": {"type": "string"}}, "added": {"type": "array", "items": {"type": "object"}}, "deleted": {"type": "array", "items": {"type": "string"}}, "updated": {"type": "array", "items": {"type": "object"}}}, "required": ["id"]})
     async def update_catalog_items(args: dict) -> list[TextContent]:
         id = args.pop("id")
+        if "catalog_headers" not in args:
+            cat = await pyrus_client.get(f"/catalogs/{id}")
+            headers = cat.get("catalog_headers", [])
+            args["catalog_headers"] = [h.get("name", str(h)) if isinstance(h, dict) else str(h) for h in headers]
         return [TextContent(type="text", text=json.dumps(await pyrus_client.post(f"/catalogs/{id}", json=args)))]
 
 register_legacy_catalogs()

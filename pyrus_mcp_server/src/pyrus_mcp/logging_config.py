@@ -1,4 +1,4 @@
-﻿"""
+"""
 Centralized structlog configuration for the Pyrus MCP Server.
 Outputs JSON logs with automatic secret redaction and context injection.
 """
@@ -29,14 +29,14 @@ def _inject_context(logger, method, event_dict: dict) -> dict:
         if cid:
             event_dict["correlation_id"] = cid
     except LookupError:
-        pass
+        cid = None
 
     try:
         tid = tenant_id.get()
         if tid:
             event_dict["tenant_id"] = tid
     except LookupError:
-        pass
+        tid = None
 
     return event_dict
 

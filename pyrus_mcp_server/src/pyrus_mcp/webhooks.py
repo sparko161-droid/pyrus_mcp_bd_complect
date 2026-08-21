@@ -55,7 +55,7 @@ async def webhook_handler(request: Request):
     )
 
     if is_new:
-        logger.info("Webhook event persisted", event=event_type, task_id=task_id, event_id=event_id)
+        logger.info("Webhook event persisted", event_type=event_type, task_id=task_id, event_id=event_id)
     else:
         logger.info("Webhook event duplicate, skipped", event_id=event_id)
 

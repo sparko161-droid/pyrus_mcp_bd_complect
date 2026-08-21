@@ -1,4 +1,4 @@
-﻿import httpx
+import httpx
 import structlog
 import json
 from typing import Any, Dict, Optional
@@ -19,7 +19,7 @@ class PyrusClient:
     """
     
     def __init__(self):
-        self._client = httpx.AsyncClient(timeout=30.0)
+        self._client = httpx.AsyncClient(timeout=60.0)
 
     async def close(self):
         await self._client.aclose()

@@ -66,7 +66,7 @@ class PyrusAuthenticator:
                 try:
                     auth_payload["person_id"] = int(person_id)
                 except ValueError:
-                    pass
+                    logger.warning("Invalid person_id, ignoring", person_id=person_id)
                 
             response = await client.post(auth_url, json=auth_payload, timeout=10.0)
             

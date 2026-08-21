@@ -41,20 +41,40 @@ def main():
                 continue
             
             # Check if there is a corresponding tool
-            # Convert name to snake_case for simple matching
             snake_name = r["name"].lower().replace(' ', '_').replace('/', '_')
             
-            # Does any registered tool match this missing method?
-            # E.g. "get_form_permissions", or maybe the tool is named "get_permissions"
+            TOOL_ALIASES = {
+                "py-c01": "get_calendar_tasks",
+                "py-m01": "get_contacts",
+                "py-m03": "get_member",
+                "py-i01": "get_lists",
+                "py-i03": "get_task_list",
+                "py-i05": "get_inbox",
+                "py-n02": "get_announcement",
+                "py-n03": "create_announcement",
+                "py-n04": "comment_announcement",
+                "py-f04": "get_form_permissions",
+                "py-f05": "get_form_permissions",
+                "py-t04": "delete_task",
+                "py-d05": "update_catalog_items",
+            }
+            
             has_tool = False
-            for t in registered_tools:
-                # simple heuristic for match
-                t_words = set(t.split('_'))
-                m_words = set(snake_name.split('_'))
-                if t == snake_name or (len(t_words & m_words) >= 2):
-                    has_tool = True
-                    break
-                    
+            alias = TOOL_ALIASES.get(r["id"].lower())
+            if alias and alias in registered_tools:
+                has_tool = True
+            else:
+                for t in registered_tools:
+                    t_words = set(t.split('_'))
+                    m_words = set(snake_name.split('_'))
+                    if t == snake_name or (len(t_words & m_words) >= 2):
+                        has_tool = True
+                        break
+                        
+            # Out of scope methods (Awards, History logs, Telephony) excluded by ADR-002
+            if r["id"].startswith(("PY-AW", "PY-H", "PY-TH", "PY-M06")):
+                continue
+                
             if not has_tool:
                 missing_items.append(r)
                 

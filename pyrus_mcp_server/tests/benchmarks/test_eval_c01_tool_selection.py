@@ -16,13 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 def _get_registered_tools() -> dict:
     """Import tool registry and return registered tools dict."""
     from pyrus_mcp.tools.registry import tool_registry
-    # Force import of all tool modules to trigger registration
-    import pyrus_mcp.tools.forms
-    import pyrus_mcp.tools.tasks
-    import pyrus_mcp.tools.members
-    import pyrus_mcp.tools.catalogs
-    import pyrus_mcp.tools.misc
-    import pyrus_mcp.tools.knowledge
+    import pyrus_mcp.tools
     return tool_registry.tools
 
 
@@ -38,9 +32,9 @@ EXPECTED_PYRUS_TOOLS = [
 ]
 
 EXPECTED_KNOWLEDGE_TOOLS = [
-    "search_knowledge", "get_knowledge_document",
-    "create_knowledge_draft", "submit_knowledge_revision",
-    "approve_knowledge_revision", "publish_knowledge_to_pyrus",
+    "get_kb_structure", "get_kb_object",
+    "create_kb_object", "update_kb_object",
+    "get_kb_permissions", "update_kb_permissions", "delete_kb_object",
 ]
 
 
@@ -88,13 +82,7 @@ def test_no_duplicate_tool_names():
 def test_tool_handlers_are_async():
     """Every registered tool handler must be an async function."""
     from pyrus_mcp.tools.registry import tool_registry
-    # Trigger imports
-    import pyrus_mcp.tools.forms
-    import pyrus_mcp.tools.tasks
-    import pyrus_mcp.tools.members
-    import pyrus_mcp.tools.catalogs
-    import pyrus_mcp.tools.misc
-    import pyrus_mcp.tools.knowledge
+    import pyrus_mcp.tools
     import asyncio
     for name, handler in tool_registry.handlers.items():
         assert asyncio.iscoroutinefunction(handler), (

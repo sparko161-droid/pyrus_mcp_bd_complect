@@ -1,11 +1,13 @@
-﻿import sys, json, asyncio, subprocess, os
+import sys, json, asyncio, subprocess, os
 from datetime import datetime
 
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "pyrus_mcp_server", ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+
 env = os.environ.copy()
-env["PYRUS_SECURITY_KEY"] = "AoTR6E2Zq2G35ZivN95wr8CV5gyABUYny98S50cknXo20alXtVaHow4L7NpxZhe-~iyrZbCPr5NFpXBD7OK5pGs6UHZbXeom"
-env["PYRUS_LOGIN"] = "admin@standartmaster.ru"
-env["PYRUS_PERSON_ID"] = "1238106"
-env["MCP_TRANSPORT"] = "stdio"
+env.setdefault("MCP_TRANSPORT", "stdio")
 
 class MCPClient:
     def __init__(self):

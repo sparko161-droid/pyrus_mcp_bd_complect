@@ -9,7 +9,10 @@ class File(PyrusBaseModel):
     url: str
 
 class Announcement(PyrusBaseModel):
-    id: int
-    text: str
-    author_id: int
-    # Additional announcement fields can be added here
+    id: Optional[int] = None
+    text: Optional[str] = None
+    author_id: Optional[int] = None
+    author: Optional[dict] = None
+    create_date: Optional[str] = None
+    comments: Optional[list] = None
+    attachments: Optional[list] = None
